@@ -2,535 +2,832 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>TAAVII — Premium Appliances</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://www.paypal.com/sdk/js?client-id=AQGq8jZhtbTXl7xCGgEV3WpULCoGDwjjNgCN2EGrHHZPnBHPoL8Wixktmfdpu3pOdokGxFYd84-KGQJ5&currency=USD"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --black:#080808;--black2:#111111;--black3:#1a1a1a;
-  --gold:#c9a84c;--goldL:#e2c36d;--goldD:#9a7a2e;
-  --cream:#f0ead6;--muted:#c8bfa8;
-}
-html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--cream);font-family:'Montserrat',sans-serif;font-weight:300;cursor:none;overflow-x:hidden;}
+  :root {
+    --gold: #c9a96e;
+    --gold-light: #e8d5a3;
+    --gold-dark: #9a7a4a;
+    --black: #0a0a0a;
+    --dark: #111111;
+    --dark2: #1a1a1a;
+    --dark3: #242424;
+    --dark4: #2e2e2e;
+    --white: #f5f0e8;
+    --gray: #888;
+    --red: #e53935;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 14px; padding-bottom: 70px; }
 
-/* CURSOR */
-.cur{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
-.cur-ring{position:fixed;width:40px;height:40px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);opacity:.5;}
+  /* ── TOP BAR ── */
+  .top-bar { background: var(--gold-dark); padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
+  .top-bar span { color: var(--black); font-weight: 600; }
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:28px 60px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,padding .4s;}
-nav.scrolled{background:rgba(8,8,8,.96);backdrop-filter:blur(20px);padding:18px 60px;border-bottom:1px solid rgba(201,168,76,.15);}
-.logo{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;letter-spacing:8px;color:var(--gold);text-transform:uppercase;text-decoration:none;}
-.logo span{color:var(--cream);}
-.nav-links{display:flex;gap:40px;list-style:none;}
-.nav-links a{text-decoration:none;color:var(--muted);font-size:10px;font-weight:400;letter-spacing:3px;text-transform:uppercase;transition:color .3s;}
-.nav-links a:hover{color:var(--gold);}
-.cart-btn{background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:10px 24px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:none;transition:all .3s;position:relative;}
-.cart-btn:hover{background:var(--gold);color:var(--black);}
-.cart-cnt{position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:var(--gold);color:var(--black);border-radius:50%;font-size:10px;display:none;align-items:center;justify-content:center;font-weight:500;}
+  /* ── HEADER ── */
+  header { background: var(--dark); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+  .header-main { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--gold); letter-spacing: 4px; white-space: nowrap; }
+  .search-bar { flex: 1; display: flex; background: var(--white); border-radius: 6px; overflow: hidden; }
+  .search-bar input { flex: 1; padding: 8px 10px; border: none; background: transparent; font-size: 13px; color: var(--black); outline: none; font-family: 'Montserrat', sans-serif; }
+  .search-bar button { background: var(--gold); border: none; padding: 0 12px; cursor: pointer; }
+  .search-bar button svg { fill: var(--black); width: 16px; height: 16px; display: block; }
+  .cart-btn { background: none; border: none; cursor: pointer; position: relative; padding: 4px; }
+  .cart-btn svg { fill: var(--gold); width: 24px; height: 24px; }
+  .cart-count { position: absolute; top: -2px; right: -2px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-/* HERO */
-.hero{height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(201,168,76,.07) 0%,transparent 60%),radial-gradient(ellipse at 20% 80%,rgba(201,168,76,.04) 0%,transparent 50%),linear-gradient(135deg,#080808 0%,#111111 50%,#0d0c0a 100%);}
-.hero-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");opacity:.5;pointer-events:none;}
-.hero-vline{position:absolute;right:31%;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,rgba(201,168,76,.18),transparent);}
-.hero-content{position:relative;padding:0 60px;max-width:680px;}
-.hero-tag{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:fadeUp 1s ease .3s forwards;}
-.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(60px,8vw,108px);font-weight:300;line-height:.92;letter-spacing:-2px;color:var(--cream);margin-bottom:32px;opacity:0;animation:fadeUp 1s ease .5s forwards;}
-.hero-h1 em{font-style:italic;color:var(--gold);}
-.hero-sub{font-size:11px;letter-spacing:2px;line-height:2.2;color:var(--muted);margin-bottom:56px;max-width:400px;opacity:0;animation:fadeUp 1s ease .7s forwards;}
-.hero-acts{display:flex;gap:20px;align-items:center;opacity:0;animation:fadeUp 1s ease .9s forwards;}
-.btn-p{background:var(--gold);color:var(--black);padding:16px 48px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;text-decoration:none;display:inline-block;transition:all .3s;cursor:none;}
-.btn-p:hover{background:var(--goldL);transform:translateY(-2px);box-shadow:0 20px 40px rgba(201,168,76,.2);}
-.btn-g{color:var(--muted);padding:16px 0;font-size:10px;letter-spacing:4px;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:12px;transition:color .3s;cursor:none;}
-.btn-g::after{content:'';display:block;width:40px;height:1px;background:var(--gold);transition:width .3s;}
-.btn-g:hover{color:var(--gold);}
-.btn-g:hover::after{width:60px;}
-.hero-img-area{position:absolute;right:0;top:0;bottom:0;width:37%;overflow:hidden;}
-.hero-img-area img{width:100%;height:100%;object-fit:cover;opacity:.45;filter:sepia(20%) brightness(.65);}
-.hero-img-ov{position:absolute;inset:0;background:linear-gradient(to right,var(--black) 0%,transparent 40%,transparent 80%,var(--black) 100%),linear-gradient(to bottom,var(--black) 0%,transparent 20%,transparent 80%,var(--black) 100%);}
-.hero-scroll{position:absolute;bottom:40px;left:60px;display:flex;align-items:center;gap:16px;color:var(--muted);font-size:9px;letter-spacing:4px;text-transform:uppercase;opacity:0;animation:fadeUp 1s ease 1.2s forwards;}
-.scroll-line{width:60px;height:1px;background:var(--goldD);position:relative;overflow:hidden;}
-.scroll-line::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);animation:sline 2s ease infinite;}
-@keyframes sline{0%{left:-100%}100%{left:100%}}
+  /* ── CATEGORIES STRIP ── */
+  .cats-strip { background: var(--dark2); padding: 10px 12px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+  .cats-strip::-webkit-scrollbar { display: none; }
+  .cat-chip { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 20px; padding: 5px 14px; white-space: nowrap; font-size: 12px; color: var(--gold-light); cursor: pointer; transition: all .2s; flex-shrink: 0; }
+  .cat-chip.active, .cat-chip:hover { background: var(--gold); color: var(--black); border-color: var(--gold); font-weight: 600; }
 
-/* MARQUEE */
-.marquee{border-top:1px solid rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.1);padding:20px 0;overflow:hidden;background:rgba(201,168,76,.02);}
-.m-track{display:flex;gap:0;animation:marq 25s linear infinite;white-space:nowrap;}
-.m-item{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:6px;text-transform:uppercase;color:rgba(201,168,76,.45);display:inline-flex;align-items:center;padding:0 60px;flex-shrink:0;}
-.m-item::after{content:'✦';margin-left:60px;color:var(--goldD);font-size:8px;}
-@keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  /* ── HERO BANNER ── */
+  .hero-banner { position: relative; height: 200px; overflow: hidden; }
+  .hero-banner img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+  .hero-text { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 20px; }
+  .hero-text .sub { font-size: 10px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+  .hero-text h1 { font-family: 'Cormorant Garamond', serif; font-size: 30px; line-height: 1.1; color: var(--white); }
+  .hero-text h1 em { color: var(--gold); font-style: italic; }
+  .hero-text p { font-size: 11px; color: #ccc; margin: 8px 0 14px; line-height: 1.5; }
+  .hero-btn { display: inline-block; background: var(--gold); color: var(--black); font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 10px 20px; border-radius: 3px; text-decoration: none; border: none; cursor: pointer; }
 
-/* SECTIONS */
-section{padding:120px 60px;}
-.sec-label{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(38px,5vw,68px);font-weight:300;line-height:1.1;color:var(--cream);}
-.sec-title em{font-style:italic;color:var(--gold);}
+  /* ── DEAL BANNER ── */
+  .deal-banner { margin: 12px; background: linear-gradient(135deg, #1a1200, #2a1f00); border: 1px solid var(--gold-dark); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; }
+  .deal-icon { font-size: 28px; }
+  .deal-text h3 { color: var(--gold); font-size: 13px; font-weight: 700; }
+  .deal-text p { color: #ccc; font-size: 11px; margin-top: 2px; }
+  .deal-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
 
-/* FEATURED */
-.feat-hdr{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:80px;}
-.feat-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3px;}
-.fc{position:relative;overflow:hidden;cursor:none;}
-.fc img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:brightness(.55) sepia(10%);transition:transform .8s cubic-bezier(.25,.46,.45,.94),filter .6s;display:block;}
-.fc:first-child img{aspect-ratio:4/5;}
-.fc:hover img{transform:scale(1.05);filter:brightness(.72);}
-.fc-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.9) 0%,transparent 55%);display:flex;flex-direction:column;justify-content:flex-end;padding:32px;}
-.fc-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
-.fc-name{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--cream);margin-bottom:6px;}
-.fc-price{font-size:14px;color:var(--gold);letter-spacing:2px;}
-.fc-btn{position:absolute;top:20px;right:20px;background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:none;transition:all .3s;opacity:0;transform:translateY(-10px);}
-.fc:hover .fc-btn{opacity:1;transform:translateY(0);}
-.fc-btn:hover{background:var(--gold);color:var(--black);}
+  /* ── SECTION HEADER ── */
+  .section-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 12px 10px; }
+  .section-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--white); }
+  .section-header h2 em { color: var(--gold); font-style: italic; }
+  .view-all { color: var(--gold); font-size: 12px; text-decoration: none; font-weight: 500; }
 
-/* CATEGORIES */
-.cats{background:var(--black2);}
-.cats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:60px;}
-.cat{padding:40px 32px;border:1px solid rgba(201,168,76,.1);cursor:none;transition:all .4s;position:relative;overflow:hidden;}
-.cat::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.05),transparent);opacity:0;transition:opacity .4s;}
-.cat:hover::before{opacity:1;}
-.cat:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px);}
-.cat-icon{font-size:36px;margin-bottom:24px;display:block;}
-.cat-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream);margin-bottom:8px;}
-.cat-ct{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
-.cat-arr{position:absolute;bottom:32px;right:32px;color:var(--gold);font-size:20px;opacity:0;transform:translate(-8px,8px);transition:all .3s;}
-.cat:hover .cat-arr{opacity:1;transform:translate(0,0);}
+  /* ── PRODUCT GRID ── */
+  .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 12px; }
+  .product-card { background: var(--dark2); border: 1px solid var(--dark3); border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; active:transform: scale(.98); }
+  .product-card:active { transform: scale(.98); }
+  .product-card:hover { border-color: var(--gold-dark); }
+  .product-img { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--dark3); }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  .product-card:hover .product-img img { transform: scale(1.05); }
+  .product-badge { position: absolute; top: 8px; left: 8px; background: var(--red); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 3px; }
+  .product-badge.new { background: var(--gold-dark); color: var(--black); }
+  .product-info { padding: 10px; }
+  .product-cat { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .product-name { font-size: 13px; font-weight: 600; color: var(--white); line-height: 1.3; margin-bottom: 6px; }
+  .stars { display: flex; gap: 2px; align-items: center; margin-bottom: 6px; }
+  .stars span { color: var(--gold); font-size: 11px; }
+  .stars small { color: var(--gray); font-size: 10px; margin-left: 3px; }
+  .product-price { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+  .price-main { font-size: 16px; font-weight: 700; color: var(--gold); }
+  .price-original { font-size: 11px; color: var(--gray); text-decoration: line-through; }
+  .price-save { font-size: 10px; color: #4caf50; font-weight: 600; }
+  .add-btn { width: 100%; background: var(--gold); border: none; color: var(--black); font-size: 12px; font-weight: 700; padding: 9px; border-radius: 6px; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: background .2s; }
+  .add-btn:hover { background: var(--gold-light); }
+  .add-btn:active { background: var(--gold-dark); }
 
-/* PRODUCTS */
-.pf{display:flex;gap:8px;margin:40px 0 60px;flex-wrap:wrap;}
-.fbtn{background:none;border:1px solid rgba(201,168,76,.2);color:var(--muted);padding:10px 28px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:none;transition:all .3s;}
-.fbtn.active,.fbtn:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.05);}
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 32px;}
-.pc{cursor:none;}
-.pimg-wrap{position:relative;overflow:hidden;margin-bottom:20px;background:var(--black3);}
-.pimg{width:100%;aspect-ratio:1;object-fit:cover;filter:brightness(.65) sepia(8%);transition:transform .6s cubic-bezier(.25,.46,.45,.94),filter .4s;display:block;}
-.pc:hover .pimg{transform:scale(1.06);filter:brightness(.82);}
-.p-acts{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(8,8,8,.9),transparent);transform:translateY(100%);transition:transform .4s cubic-bezier(.25,.46,.45,.94);display:flex;gap:8px;}
-.pc:hover .p-acts{transform:translateY(0);}
-.atc{flex:1;background:var(--gold);color:var(--black);border:none;padding:12px;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;cursor:none;transition:background .3s;}
-.atc:hover{background:var(--goldL);}
-.vbtn{background:none;border:1px solid rgba(201,168,76,.4);color:var(--gold);padding:12px 14px;font-size:16px;cursor:none;transition:all .3s;}
-.vbtn:hover{background:rgba(201,168,76,.1);}
-.pbadge{position:absolute;top:16px;left:16px;background:var(--gold);color:var(--black);padding:4px 12px;font-size:8px;letter-spacing:3px;text-transform:uppercase;font-weight:500;}
-.pbrand{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-.pname{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream);margin-bottom:8px;}
-.prat{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.stars{color:var(--gold);font-size:11px;letter-spacing:2px;}
-.rcnt{font-size:10px;color:var(--muted);}
-.pprices{display:flex;align-items:center;gap:12px;}
-.pprice{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--gold);}
-.pold{font-size:14px;color:var(--muted);text-decoration:line-through;opacity:.55;}
+  /* ── FEATURED HORIZONTAL SCROLL ── */
+  .featured-scroll { display: flex; gap: 12px; padding: 0 12px 12px; overflow-x: auto; scrollbar-width: none; }
+  .featured-scroll::-webkit-scrollbar { display: none; }
+  .featured-card { flex-shrink: 0; width: 160px; background: var(--dark2); border: 1px solid var(--dark3); border-radius: 10px; overflow: hidden; cursor: pointer; }
+  .featured-card img { width: 100%; height: 120px; object-fit: cover; }
+  .featured-card .fc-info { padding: 8px 10px 10px; }
+  .featured-card .fc-name { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .featured-card .fc-price { font-size: 14px; font-weight: 700; color: var(--gold); }
 
-/* MODAL */
-.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;display:none;align-items:center;justify-content:center;padding:40px;backdrop-filter:blur(12px);}
-.modal-ov.active{display:flex;}
-.modal{background:var(--black2);max-width:960px;width:100%;display:grid;grid-template-columns:1fr 1fr;max-height:88vh;overflow:hidden;border:1px solid rgba(201,168,76,.15);}
-.m-gal{position:relative;background:var(--black3);min-height:500px;}
-.m-main{width:100%;height:100%;object-fit:cover;filter:brightness(.78);display:block;}
-.m-thumbs{position:absolute;bottom:16px;left:16px;display:flex;gap:8px;}
-.m-thumb{width:56px;height:56px;object-fit:cover;border:1px solid transparent;cursor:none;filter:brightness(.55);transition:all .3s;}
-.m-thumb.active,.m-thumb:hover{border-color:var(--gold);filter:brightness(.9);}
-.m-info{padding:48px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;position:relative;}
-.m-close{position:absolute;top:20px;right:20px;background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold);width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:none;transition:all .3s;}
-.m-close:hover{background:var(--gold);color:var(--black);}
-.m-brand{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);}
-.m-name{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream);line-height:1.1;}
-.m-price{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);}
-.m-desc{font-size:12px;line-height:2.1;color:var(--muted);border-top:1px solid rgba(201,168,76,.1);padding-top:18px;}
-.m-feats{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.m-feats li{font-size:11px;color:var(--muted);padding-left:20px;position:relative;line-height:1.7;}
-.m-feats li::before{content:'✦';position:absolute;left:0;color:var(--gold);font-size:8px;top:3px;}
-.m-atc{background:var(--gold);color:var(--black);border:none;padding:17px;width:100%;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;cursor:none;transition:background .3s;margin-top:auto;}
-.m-atc:hover{background:var(--goldL);}
+  /* ── CATEGORY BLOCKS ── */
+  .cat-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 12px; }
+  .cat-block { background: var(--dark2); border: 1px solid var(--dark3); border-radius: 10px; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: border-color .2s; }
+  .cat-block:hover { border-color: var(--gold); }
+  .cat-block .icon { font-size: 28px; }
+  .cat-block h3 { font-size: 13px; font-weight: 600; color: var(--white); }
+  .cat-block p { font-size: 11px; color: var(--gray); }
+  .cat-block .arrow { color: var(--gold); font-size: 12px; }
 
-/* CART DRAWER */
-.cart-dr{position:fixed;top:0;right:-480px;bottom:0;width:460px;background:var(--black2);border-left:1px solid rgba(201,168,76,.15);z-index:3000;transition:right .5s cubic-bezier(.25,.46,.45,.94);display:flex;flex-direction:column;}
-.cart-dr.open{right:0;}
-.c-hdr{padding:32px 40px;border-bottom:1px solid rgba(201,168,76,.1);display:flex;justify-content:space-between;align-items:center;}
-.c-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--cream);}
-.c-close{background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:none;font-size:18px;transition:all .3s;}
-.c-close:hover{background:var(--gold);color:var(--black);}
-.c-items{flex:1;overflow-y:auto;padding:24px 40px;display:flex;flex-direction:column;gap:24px;}
-.c-item{display:grid;grid-template-columns:80px 1fr auto;gap:16px;align-items:center;}
-.c-item img{width:80px;height:80px;object-fit:cover;filter:brightness(.7);}
-.c-iname{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:4px;}
-.c-iprice{font-size:13px;color:var(--gold);}
-.c-rm{background:none;border:none;color:var(--muted);cursor:none;font-size:18px;transition:color .3s;}
-.c-rm:hover{color:var(--gold);}
-.c-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--muted);}
-.c-empty-icon{font-size:48px;opacity:.25;}
-.c-empty-txt{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;}
-.c-foot{padding:32px 40px;border-top:1px solid rgba(201,168,76,.1);}
-.c-tot{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
-.c-tot-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
-.c-tot-amt{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);}
-.ckout{width:100%;background:var(--gold);color:var(--black);border:none;padding:18px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:4px;text-transform:uppercase;cursor:none;transition:background .3s;}
-.ckout:hover{background:var(--goldL);}
-.ov-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2999;display:none;cursor:none;}
-.ov-bg.active{display:block;}
+  /* ── WHY US STRIP ── */
+  .why-strip { background: var(--dark2); padding: 16px 12px; display: flex; justify-content: space-around; border-top: 1px solid var(--dark3); border-bottom: 1px solid var(--dark3); margin: 8px 0; }
+  .why-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .why-item .wi { font-size: 22px; }
+  .why-item span { font-size: 10px; color: var(--gold-light); text-align: center; font-weight: 500; }
 
-/* TOAST */
-.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--black3);border:1px solid var(--gold);color:var(--cream);padding:14px 32px;font-size:10px;letter-spacing:3px;text-transform:uppercase;z-index:9999;transition:transform .4s cubic-bezier(.25,.46,.45,.94);white-space:nowrap;}
-.toast.show{transform:translateX(-50%) translateY(0);}
+  /* ── BOTTOM NAV ── */
+  .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); border-top: 1px solid var(--dark3); display: flex; z-index: 100; }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 10px 4px 8px; cursor: pointer; transition: color .2s; color: var(--gray); border: none; background: none; font-family: 'Montserrat', sans-serif; }
+  .nav-item.active, .nav-item:hover { color: var(--gold); }
+  .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
+  .nav-item span { font-size: 9px; font-weight: 500; }
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
+  /* ── CART DRAWER ── */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .overlay.open { opacity: 1; pointer-events: all; }
+  .cart-drawer { position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); border-radius: 20px 20px 0 0; z-index: 201; transform: translateY(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); max-height: 85vh; display: flex; flex-direction: column; }
+  .cart-drawer.open { transform: translateY(0); }
+  .drawer-handle { width: 40px; height: 4px; background: var(--dark4); border-radius: 2px; margin: 12px auto 0; }
+  .drawer-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--dark3); }
+  .drawer-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--white); }
+  .close-btn { background: none; border: none; color: var(--gray); font-size: 22px; cursor: pointer; padding: 4px; line-height: 1; }
+  .cart-items { flex: 1; overflow-y: auto; padding: 12px 16px; }
+  .cart-empty { display: flex; flex-direction: column; align-items: center; padding: 30px; gap: 10px; color: var(--gray); }
+  .cart-empty span { font-size: 40px; }
+  .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--dark3); }
+  .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+  .ci-info { flex: 1; }
+  .ci-name { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .ci-price { font-size: 14px; font-weight: 700; color: var(--gold); }
+  .ci-qty { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+  .qty-btn { background: var(--dark3); border: none; color: var(--white); width: 26px; height: 26px; border-radius: 5px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .qty-num { font-size: 14px; font-weight: 600; color: var(--white); min-width: 20px; text-align: center; }
+  .ci-remove { background: none; border: none; color: var(--gray); font-size: 18px; cursor: pointer; padding: 0 4px; align-self: flex-start; }
+  .cart-footer { padding: 16px; border-top: 1px solid var(--dark3); }
+  .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .cart-total span { font-size: 14px; color: var(--gray); }
+  .cart-total strong { font-size: 20px; color: var(--gold); font-weight: 700; }
+  .checkout-btn { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 16px; font-size: 14px; font-weight: 700; letter-spacing: 1px; border-radius: 10px; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+  .checkout-btn:active { background: var(--gold-dark); }
 
-/* FOOTER */
-footer{background:var(--black2);padding:80px 60px 40px;border-top:1px solid rgba(201,168,76,.1);}
-.f-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px;}
-.f-brand{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold);letter-spacing:6px;margin-bottom:16px;}
-.f-tag{font-size:11px;line-height:2;color:var(--muted);max-width:260px;}
-.f-col-title{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
-.f-links{list-style:none;display:flex;flex-direction:column;gap:12px;}
-.f-links a{text-decoration:none;font-size:12px;color:var(--muted);transition:color .3s;}
-.f-links a:hover{color:var(--gold);}
-.f-bot{border-top:1px solid rgba(201,168,76,.1);padding-top:32px;display:flex;justify-content:space-between;align-items:center;}
-.f-copy{font-size:10px;color:var(--muted);letter-spacing:2px;}
-.f-soc{display:flex;gap:24px;}
-.f-soc a{text-decoration:none;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);transition:color .3s;}
-.f-soc a:hover{color:var(--gold);}
+  /* ── CHECKOUT MODAL ── */
+  .checkout-modal { position: fixed; inset: 0; background: var(--black); z-index: 300; overflow-y: auto; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); }
+  .checkout-modal.open { transform: translateX(0); }
+  .checkout-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--dark); border-bottom: 1px solid var(--dark3); position: sticky; top: 0; z-index: 1; }
+  .back-btn { background: none; border: none; color: var(--gold); font-size: 22px; cursor: pointer; padding: 4px; }
+  .checkout-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--white); }
+  .checkout-body { padding: 16px; }
+  .checkout-section { background: var(--dark2); border: 1px solid var(--dark3); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+  .checkout-section h3 { font-size: 13px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .form-group { margin-bottom: 12px; }
+  .form-group label { display: block; font-size: 11px; color: var(--gray); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+  .form-group input, .form-group select { width: 100%; background: var(--dark3); border: 1px solid var(--dark4); border-radius: 8px; padding: 12px; color: var(--white); font-size: 14px; font-family: 'Montserrat', sans-serif; outline: none; transition: border-color .2s; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--dark3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .order-summary-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--dark3); }
+  .order-summary-item:last-child { border-bottom: none; }
+  .osi-name { font-size: 13px; color: var(--white); }
+  .osi-price { font-size: 13px; color: var(--gold); font-weight: 600; }
+  .order-total-row { display: flex; justify-content: space-between; padding: 12px 0 0; margin-top: 8px; border-top: 1px solid var(--dark3); }
+  .order-total-row span { font-size: 15px; font-weight: 700; color: var(--white); }
+  .order-total-row strong { font-size: 20px; font-weight: 700; color: var(--gold); }
+  .place-order-btn { width: 100%; background: var(--gold); color: var(--black); border: none; padding: 18px; font-size: 15px; font-weight: 700; letter-spacing: 1px; border-radius: 10px; cursor: pointer; font-family: 'Montserrat', sans-serif; margin-top: 6px; }
+  #paypal-button-container { margin-top: 12px; min-height: 50px; }
+  .paypal-notice { text-align: center; font-size: 11px; color: var(--gray); margin-top: 8px; }
+  .paypal-notice span { color: var(--gold); }
+  .payment-icons { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+  .pay-icon { background: var(--dark3); border: 1px solid var(--dark4); border-radius: 5px; padding: 4px 10px; font-size: 11px; color: var(--gray); font-weight: 600; }
 
-/* SCROLLBAR */
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-track{background:var(--black);}
-::-webkit-scrollbar-thumb{background:var(--goldD);}
+  /* ── SUCCESS MODAL ── */
+  .success-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 400; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .success-modal.open { opacity: 1; pointer-events: all; }
+  .success-box { background: var(--dark2); border: 1px solid var(--gold-dark); border-radius: 16px; padding: 32px 24px; text-align: center; max-width: 300px; width: 90%; }
+  .success-icon { font-size: 50px; margin-bottom: 16px; }
+  .success-box h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold); margin-bottom: 8px; }
+  .success-box p { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+  .success-box button { background: var(--gold); color: var(--black); border: none; padding: 14px 28px; font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; font-family: 'Montserrat', sans-serif; }
 
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  /* ── PRODUCT MODAL ── */
+  .product-modal { position: fixed; inset: 0; background: var(--black); z-index: 300; overflow-y: auto; transform: translateY(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); }
+  .product-modal.open { transform: translateY(0); }
+  .pm-header { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--dark); border-bottom: 1px solid var(--dark3); position: sticky; top: 0; z-index: 1; }
+  .pm-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+  .pm-body { padding: 16px; }
+  .pm-cat { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .pm-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--white); line-height: 1.2; margin-bottom: 10px; }
+  .pm-stars { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+  .pm-stars span { color: var(--gold); font-size: 14px; }
+  .pm-stars small { color: var(--gray); font-size: 12px; }
+  .pm-price-row { display: flex; align-items: flex-end; gap: 10px; margin-bottom: 16px; }
+  .pm-price { font-size: 28px; font-weight: 700; color: var(--gold); }
+  .pm-orig { font-size: 16px; color: var(--gray); text-decoration: line-through; }
+  .pm-save { font-size: 13px; color: #4caf50; font-weight: 600; }
+  .pm-desc { font-size: 13px; color: #bbb; line-height: 1.7; margin-bottom: 20px; }
+  .pm-features { background: var(--dark2); border-radius: 10px; padding: 14px; margin-bottom: 20px; }
+  .pm-features h4 { font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .pm-feature { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #ccc; margin-bottom: 6px; }
+  .pm-feature::before { content: '✦'; color: var(--gold); font-size: 8px; }
+  .pm-add-btn { width: 100%; background: var(--gold); border: none; color: var(--black); font-size: 14px; font-weight: 700; padding: 16px; border-radius: 10px; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--dark); border-top: 1px solid var(--dark3); padding: 24px 16px; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold); letter-spacing: 5px; text-align: center; margin-bottom: 16px; }
+  .footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .footer-col h4 { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .footer-col a { display: block; font-size: 12px; color: var(--gray); text-decoration: none; margin-bottom: 6px; }
+  .footer-bottom { text-align: center; font-size: 11px; color: var(--dark4); border-top: 1px solid var(--dark3); padding-top: 16px; }
 </style>
 </head>
 <body>
 
-<div class="cur" id="cur"></div>
-<div class="cur-ring" id="curR"></div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <span>🚚 Free Shipping on Orders $500+</span>
+  <span>⭐ 5-Year Warranty</span>
+</div>
 
-<!-- NAV -->
-<nav id="nav">
-  <a href="#" class="logo" style="color:var(--gold);letter-spacing:10px;">TAAVII</a>
-  <ul class="nav-links">
-    <li><a href="#featured">Collection</a></li>
-    <li><a href="#cats">Categories</a></li>
-    <li><a href="#products">Shop</a></li>
-    <li><a href="#">About</a></li>
-  </ul>
-  <button class="cart-btn" id="cartBtn">
-    Cart <span class="cart-cnt" id="cartCnt">0</span>
-  </button>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grain"></div>
-  <div class="hero-vline"></div>
-  <div class="hero-content">
-    <p class="hero-tag">New Collection — 2025</p>
-    <h1 class="hero-h1">The Art of<br>Living <em>Well.</em></h1>
-    <p class="hero-sub">Curated premium appliances for the discerning home. Where engineering meets luxury.</p>
-    <div class="hero-acts">
-      <a href="#products" class="btn-p">Explore Collection</a>
-      <a href="#featured" class="btn-g">Best Sellers</a>
+<!-- HEADER -->
+<header>
+  <div class="header-main">
+    <div class="logo">TAAVII</div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search premium appliances...">
+      <button>
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      </button>
     </div>
+    <button class="cart-btn" onclick="openCart()">
+      <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96C5 16.1 6.1 17 7 17h11v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H16c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20.5 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
   </div>
-  <div class="hero-img-area">
-    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80" alt="Luxury Kitchen">
-    <div class="hero-img-ov"></div>
+  <!-- CATEGORIES STRIP -->
+  <div class="cats-strip">
+    <div class="cat-chip active" onclick="filterCat('all',this)">All</div>
+    <div class="cat-chip" onclick="filterCat('kitchen',this)">☕ Kitchen</div>
+    <div class="cat-chip" onclick="filterCat('smart',this)">🏠 Smart Home</div>
+    <div class="cat-chip" onclick="filterCat('cooling',this)">❄️ Cooling</div>
+    <div class="cat-chip" onclick="filterCat('laundry',this)">👕 Laundry</div>
+    <div class="cat-chip" onclick="filterCat('deals',this)">🔥 Deals</div>
   </div>
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    Scroll to discover
-  </div>
-</section>
+</header>
 
-<!-- MARQUEE -->
-<div class="marquee">
-  <div class="m-track" id="mTrack">
-    <span class="m-item">Premium Appliances</span>
-    <span class="m-item">Luxury Living</span>
-    <span class="m-item">Smart Home</span>
-    <span class="m-item">Kitchen Mastery</span>
-    <span class="m-item">Free Shipping</span>
-    <span class="m-item">5-Year Warranty</span>
-    <span class="m-item">Premium Appliances</span>
-    <span class="m-item">Luxury Living</span>
-    <span class="m-item">Smart Home</span>
-    <span class="m-item">Kitchen Mastery</span>
-    <span class="m-item">Free Shipping</span>
-    <span class="m-item">5-Year Warranty</span>
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80" alt="TAAVII">
+  <div class="hero-text">
+    <div class="sub">New Collection — 2025</div>
+    <h1>The Art of<br>Living <em>Well.</em></h1>
+    <p>Premium appliances for the discerning home.</p>
+    <button class="hero-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">EXPLORE NOW</button>
   </div>
+</div>
+
+<!-- DEAL BANNER -->
+<div class="deal-banner">
+  <div class="deal-icon">⚡</div>
+  <div class="deal-text">
+    <h3>Flash Sale — Limited Time</h3>
+    <p>Up to 35% off select premium appliances</p>
+  </div>
+  <div class="deal-badge">35% OFF</div>
 </div>
 
 <!-- FEATURED -->
-<section id="featured" style="background:var(--black)">
-  <div class="feat-hdr reveal">
-    <div>
-      <p class="sec-label">Signature Selection</p>
-      <h2 class="sec-title">Our <em>Finest</em><br>Pieces</h2>
-    </div>
-    <a href="#products" class="btn-g">View All</a>
+<div class="section-header">
+  <h2>Our <em>Finest</em> Pieces</h2>
+  <a href="#" class="view-all">View All →</a>
+</div>
+<div class="featured-scroll">
+  <div class="featured-card" onclick="openProduct(0)">
+    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80" alt="">
+    <div class="fc-info"><div class="fc-name">Artisan Pro Espresso</div><div class="fc-price">$2,499</div></div>
   </div>
-  <div class="feat-grid reveal">
-    <div class="fc" onclick="openModal(0)">
-      <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80" alt="Espresso">
-      <div class="fc-ov">
-        <span class="fc-tag">Kitchen — Bestseller</span>
-        <h3 class="fc-name">Artisan Pro Espresso</h3>
-        <span class="fc-price">$2,499</span>
-      </div>
-      <button class="fc-btn" onclick="event.stopPropagation();addToCart(0)">+</button>
-    </div>
-    <div class="fc" onclick="openModal(1)">
-      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80" alt="Robot Vacuum">
-      <div class="fc-ov">
-        <span class="fc-tag">Smart Home — New</span>
-        <h3 class="fc-name">Quantum Clean Pro</h3>
-        <span class="fc-price">$1,299</span>
-      </div>
-      <button class="fc-btn" onclick="event.stopPropagation();addToCart(1)">+</button>
-    </div>
-    <div class="fc" onclick="openModal(4)">
-      <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=700&q=80" alt="Wine">
-      <div class="fc-ov">
-        <span class="fc-tag">Cooling — Premium</span>
-        <h3 class="fc-name">Sommelier Wine Cave</h3>
-        <span class="fc-price">$3,199</span>
-      </div>
-      <button class="fc-btn" onclick="event.stopPropagation();addToCart(4)">+</button>
-    </div>
+  <div class="featured-card" onclick="openProduct(1)">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="">
+    <div class="fc-info"><div class="fc-name">Quantum Clean Pro</div><div class="fc-price">$1,299</div></div>
   </div>
-</section>
+  <div class="featured-card" onclick="openProduct(2)">
+    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80" alt="">
+    <div class="fc-info"><div class="fc-name">Sommelier Wine Cave</div><div class="fc-price">$3,199</div></div>
+  </div>
+  <div class="featured-card" onclick="openProduct(3)">
+    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" alt="">
+    <div class="fc-info"><div class="fc-name">Chef's Sous Vide Pro</div><div class="fc-price">$899</div></div>
+  </div>
+</div>
+
+<!-- WHY US -->
+<div class="why-strip">
+  <div class="why-item"><div class="wi">🚚</div><span>Free<br>Shipping</span></div>
+  <div class="why-item"><div class="wi">🛡️</div><span>5-Year<br>Warranty</span></div>
+  <div class="why-item"><div class="wi">↩️</div><span>30-Day<br>Returns</span></div>
+  <div class="why-item"><div class="wi">💎</div><span>Premium<br>Quality</span></div>
+</div>
+
+<!-- ALL PRODUCTS -->
+<div id="products">
+  <div class="section-header">
+    <h2>The <em>Collection</em></h2>
+    <span id="productCount" style="color:var(--gray);font-size:12px;"></span>
+  </div>
+  <div class="products-grid" id="productsGrid"></div>
+</div>
 
 <!-- CATEGORIES -->
-<section id="cats" class="cats">
-  <div class="reveal">
-    <p class="sec-label">Browse by Room</p>
-    <h2 class="sec-title">Every <em>Space,</em><br>Perfected</h2>
+<div class="section-header">
+  <h2>Shop by <em>Room</em></h2>
+</div>
+<div class="cat-blocks">
+  <div class="cat-block" onclick="filterCat('kitchen',document.querySelectorAll('.cat-chip')[1])">
+    <div class="icon">☕</div><h3>Kitchen</h3><p>24 Products</p><div class="arrow">→</div>
   </div>
-  <div class="cats-grid">
-    <div class="cat reveal" onclick="setFilter('kitchen')"><span class="cat-icon">☕</span><h3 class="cat-name">Kitchen</h3><span class="cat-ct">24 Products</span><span class="cat-arr">→</span></div>
-    <div class="cat reveal" onclick="setFilter('smart')"><span class="cat-icon">🏠</span><h3 class="cat-name">Smart Home</h3><span class="cat-ct">18 Products</span><span class="cat-arr">→</span></div>
-    <div class="cat reveal" onclick="setFilter('cooling')"><span class="cat-icon">❄️</span><h3 class="cat-name">Cooling</h3><span class="cat-ct">12 Products</span><span class="cat-arr">→</span></div>
-    <div class="cat reveal" onclick="setFilter('laundry')"><span class="cat-icon">👕</span><h3 class="cat-name">Laundry</h3><span class="cat-ct">9 Products</span><span class="cat-arr">→</span></div>
+  <div class="cat-block" onclick="filterCat('smart',document.querySelectorAll('.cat-chip')[2])">
+    <div class="icon">🏠</div><h3>Smart Home</h3><p>18 Products</p><div class="arrow">→</div>
   </div>
-</section>
-
-<!-- PRODUCTS -->
-<section id="products" style="background:var(--black)">
-  <div class="reveal">
-    <p class="sec-label">All Products</p>
-    <h2 class="sec-title">The <em>Collection</em></h2>
+  <div class="cat-block" onclick="filterCat('cooling',document.querySelectorAll('.cat-chip')[3])">
+    <div class="icon">❄️</div><h3>Cooling</h3><p>12 Products</p><div class="arrow">→</div>
   </div>
-  <div class="pf">
-    <button class="fbtn active" onclick="filterP(this,'all')">All</button>
-    <button class="fbtn" onclick="filterP(this,'kitchen')">Kitchen</button>
-    <button class="fbtn" onclick="filterP(this,'smart')">Smart Home</button>
-    <button class="fbtn" onclick="filterP(this,'cooling')">Cooling</button>
-    <button class="fbtn" onclick="filterP(this,'laundry')">Laundry</button>
+  <div class="cat-block" onclick="filterCat('laundry',document.querySelectorAll('.cat-chip')[4])">
+    <div class="icon">👕</div><h3>Laundry</h3><p>9 Products</p><div class="arrow">→</div>
   </div>
-  <div class="pgrid" id="pgrid"></div>
-</section>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="f-top">
-    <div>
-      <div class="f-brand" style="color:var(--gold);letter-spacing:10px;font-size:32px;">TAAVII</div>
-      <p class="f-tag">Curated premium home appliances for those who demand excellence in every detail of daily life.</p>
+  <div class="footer-logo">TAAVII</div>
+  <div class="footer-links">
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <a href="#">New Arrivals</a>
+      <a href="#">Best Sellers</a>
+      <a href="#">Kitchen</a>
+      <a href="#">Smart Home</a>
     </div>
-    <div><h4 class="f-col-title">Shop</h4><ul class="f-links"><li><a href="#">New Arrivals</a></li><li><a href="#">Best Sellers</a></li><li><a href="#">Kitchen</a></li><li><a href="#">Smart Home</a></li></ul></div>
-    <div><h4 class="f-col-title">Support</h4><ul class="f-links"><li><a href="#">Warranty</a></li><li><a href="#">Returns</a></li><li><a href="#">Installation</a></li><li><a href="#">Contact</a></li></ul></div>
-    <div><h4 class="f-col-title">Company</h4><ul class="f-links"><li><a href="#">About</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li><li><a href="#">Wholesale</a></li></ul></div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Warranty</a>
+      <a href="#">Returns</a>
+      <a href="#">Installation</a>
+      <a href="#">Contact</a>
+    </div>
   </div>
-  <div class="f-bot">
-    <span class="f-copy">© 2025 TAAVII. All rights reserved.</span>
-    <div class="f-soc"><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">YouTube</a></div>
-  </div>
+  <div class="footer-bottom">© 2025 TAAVII. All rights reserved. Premium Luxury Appliances.</div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-ov" id="mOv">
-  <div class="modal">
-    <div class="m-gal">
-      <img src="" id="mMain" class="m-main" alt="">
-      <div class="m-thumbs" id="mThumbs"></div>
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- CART DRAWER -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-handle"></div>
+  <div class="drawer-header">
+    <h3>Your Cart</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><span>🛒</span><p style="font-size:13px;">Your cart is empty</p></div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">$0</strong>
     </div>
-    <div class="m-info">
-      <button class="m-close" onclick="closeModal()">✕</button>
-      <p class="m-brand" id="mBrand"></p>
-      <h2 class="m-name" id="mName"></h2>
-      <p class="m-price" id="mPrice"></p>
-      <p class="m-desc" id="mDesc"></p>
-      <ul class="m-feats" id="mFeats"></ul>
-      <button class="m-atc" id="mAtc">Add to Cart</button>
-    </div>
+    <button class="checkout-btn" onclick="openCheckout()">PROCEED TO CHECKOUT</button>
   </div>
 </div>
 
-<!-- CART -->
-<div class="ov-bg" id="ovBg" onclick="closeCart()"></div>
-<div class="cart-dr" id="cartDr">
-  <div class="c-hdr">
-    <h2 class="c-title">Your Cart</h2>
-    <button class="c-close" onclick="closeCart()">✕</button>
+<!-- CHECKOUT MODAL -->
+<div class="checkout-modal" id="checkoutModal">
+  <div class="checkout-header">
+    <button class="back-btn" onclick="closeCheckout()">←</button>
+    <h2>Checkout</h2>
   </div>
-  <div class="c-items" id="cItems">
-    <div class="c-empty"><span class="c-empty-icon">✦</span><p class="c-empty-txt">Your cart is empty</p></div>
-  </div>
-  <div class="c-foot">
-    <div class="c-tot"><span class="c-tot-lbl">Total</span><span class="c-tot-amt" id="cTot">$0</span></div>
-    <button class="ckout">Proceed to Checkout</button>
+  <div class="checkout-body">
+    <!-- Order Summary -->
+    <div class="checkout-section">
+      <h3>Order Summary</h3>
+      <div id="checkoutItems"></div>
+      <div class="order-total-row">
+        <span>Total</span>
+        <strong id="checkoutTotal">$0</strong>
+      </div>
+    </div>
+    <!-- Shipping Info -->
+    <div class="checkout-section">
+      <h3>📦 Shipping Information</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" id="firstName" placeholder="John">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" id="lastName" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="john@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" id="address" placeholder="123 Main Street">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="city" placeholder="New York">
+        </div>
+        <div class="form-group">
+          <label>ZIP Code</label>
+          <input type="text" id="zip" placeholder="10001">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>State</label>
+        <select id="state">
+          <option value="">Select State</option>
+          <option>Alabama</option><option>Alaska</option><option>Arizona</option>
+          <option>California</option><option>Colorado</option><option>Connecticut</option>
+          <option>Florida</option><option>Georgia</option><option>Hawaii</option>
+          <option>Illinois</option><option>Massachusetts</option><option>Michigan</option>
+          <option>New York</option><option>New Jersey</option><option>Texas</option>
+          <option>Virginia</option><option>Washington</option>
+        </select>
+      </div>
+    </div>
+    <!-- Payment -->
+    <div class="checkout-section">
+      <h3>💳 Payment</h3>
+      <div class="form-group">
+        <label>Card Number</label>
+        <input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Expiry</label>
+          <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input type="text" id="cvv" placeholder="123" maxlength="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Name on Card</label>
+        <input type="text" id="cardName" placeholder="JOHN DOE">
+      </div>
+      <div class="payment-icons">
+        <div class="pay-icon">VISA</div>
+        <div class="pay-icon">MC</div>
+        <div class="pay-icon">AMEX</div>
+        <div class="pay-icon">PayPal</div>
+      </div>
+    </div>
+    <div id="paypal-button-container"></div>
+    <p class="paypal-notice">🔒 Secured by <span>PayPal</span> — Visa, Mastercard, Amex, Debit accepted</p>
   </div>
 </div>
 
-<div class="toast" id="toast">Added to cart</div>
+<!-- PRODUCT MODAL -->
+<div class="product-modal" id="productModal">
+  <div class="pm-header">
+    <button class="back-btn" onclick="closeProduct()">←</button>
+    <span style="font-size:13px;color:var(--gray);">Product Details</span>
+  </div>
+  <img class="pm-img" id="pmImg" src="" alt="">
+  <div class="pm-body">
+    <div class="pm-cat" id="pmCat"></div>
+    <div class="pm-name" id="pmName"></div>
+    <div class="pm-stars">
+      <span>★★★★★</span>
+      <small id="pmReviews"></small>
+    </div>
+    <div class="pm-price-row">
+      <div class="pm-price" id="pmPrice"></div>
+      <div class="pm-orig" id="pmOrig"></div>
+      <div class="pm-save" id="pmSave"></div>
+    </div>
+    <div class="pm-desc" id="pmDesc"></div>
+    <div class="pm-features">
+      <h4>Key Features</h4>
+      <div id="pmFeatures"></div>
+    </div>
+    <button class="pm-add-btn" id="pmAddBtn">ADD TO CART</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="success-modal" id="successModal">
+  <div class="success-box">
+    <div class="success-icon">✅</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for your TAAVII purchase.<br>You'll receive a confirmation email shortly.</p>
+    <button onclick="closeSuccess()">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="scrollTop()">
+    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-item" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+    <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
+    <span>Shop</span>
+  </button>
+  <button class="nav-item" onclick="filterCat('deals',document.querySelectorAll('.cat-chip')[5])">
+    <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+    <span>Deals</span>
+  </button>
+  <button class="nav-item" onclick="openCart()">
+    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96C5 16.1 6.1 17 7 17h11v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H16c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20.5 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+    <span>Cart</span>
+  </button>
+</div>
 
 <script>
-const PRODUCTS = [
-  {id:0,cat:'kitchen',brand:'Artisan Pro',name:'Maestro Espresso Machine',price:2499,old:2999,badge:'Bestseller',rating:5,rev:284,
-   img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=700&q=80','https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=700&q=80','https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=700&q=80'],
-   desc:'A masterpiece of Italian engineering — professional-grade espresso with precision temperature control and a stunning brushed stainless finish.',
-   feats:['Dual boiler system for simultaneous brewing & steaming','PID temperature control ±0.5°C','Built-in grinder with 40 grind settings','5-year full warranty included']},
-  {id:1,cat:'smart',brand:'QuantumClean',name:'Pro 5000 Robot Vacuum',price:1299,old:null,badge:'New',rating:4.5,rev:156,
-   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80','https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=700&q=80'],
-   desc:'AI-powered navigation with LiDAR mapping. Up to 180 minutes of autonomous cleaning that adapts to your home\'s unique layout with multi-floor memory.',
-   feats:['LiDAR 3D room mapping technology','7000Pa ultra-suction power','Auto-empty dock included','Works with Alexa & Google Home']},
-  {id:2,cat:'kitchen',brand:'Stellar',name:'Titanium Stand Mixer',price:899,old:1099,badge:null,rating:5,rev:392,
-   img:'https://images.unsplash.com/photo-1586444248879-bc604bc77f90?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1586444248879-bc604bc77f90?w=700&q=80','https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?w=700&q=80'],
-   desc:'1000W of pure power across 10 precision speeds. From delicate meringues to dense doughs — engineered for the home chef who refuses to compromise.',
-   feats:['1000W direct-drive motor','10 precision speed settings','6.5-quart stainless steel bowl','Includes 5 professional attachments']},
-  {id:3,cat:'laundry',brand:'Miele',name:'EcoSilk Washing System',price:2199,old:null,badge:'Eco',rating:4.5,rev:88,
-   img:'https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=700&q=80'],
-   desc:'German precision meets environmental responsibility. Uses 40% less water and energy while delivering the gentlest care for your most precious fabrics.',
-   feats:['Steam hygiene function','Ultra-quiet 47dB operation','AI fabric recognition system','10-year motor warranty']},
-  {id:4,cat:'cooling',brand:'Château',name:'Sommelier Wine Cave',price:3199,old:3799,badge:'Premium',rating:5,rev:64,
-   img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=700&q=80','https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=700&q=80'],
-   desc:'A connoisseur\'s choice. Dual-zone temperature control with UV-filtering glass and vibration-free compressor technology to protect your collection.',
-   feats:['Dual temperature zones (6–22°C)','120-bottle capacity','UV-filtering door glass','Vibration-free operation']},
-  {id:5,cat:'smart',brand:'Lumina',name:'Air Purifier Elite',price:549,old:null,badge:null,rating:4.5,rev:203,
-   img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80',
-   imgs:['https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=700&q=80'],
-   desc:'True HEPA H14 filtration removes 99.97% of airborne particles including PM2.5, pollen, pet dander, and VOCs from rooms up to 1,000 sq ft.',
-   feats:['True HEPA H14 filtration','Coverage up to 1,000 sq ft','Ultra-silent sleep mode (18dB)','Smart air quality sensor & app']},
+// ── DATA ──
+const products = [
+  { id:0, name:'Artisan Pro Espresso', cat:'kitchen', catLabel:'Kitchen', price:2499, orig:3299, img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80', badge:'Bestseller', stars:4.9, reviews:'(284)', desc:'Craft barista-quality espresso at home with precision temperature control and 19-bar pressure. Engineered for the serious coffee enthusiast.', features:['19-bar professional pressure','PID temperature control','Built-in grinder','Steam wand for latte art','60oz water reservoir'] },
+  { id:1, name:'Quantum Clean Pro', cat:'smart', catLabel:'Smart Home', price:1299, orig:1799, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', badge:'New', stars:4.7, reviews:'(156)', desc:'AI-powered robotic vacuum with 3D mapping, obstacle detection, and automatic empty base. Cleans your home so you never have to.', features:['3D LiDAR mapping','Auto-empty base 60-day capacity','4000Pa suction power','Works with Alexa & Google','90-min runtime'] },
+  { id:2, name:'Sommelier Wine Cave', cat:'cooling', catLabel:'Cooling', price:3199, orig:4299, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80', badge:'Premium', stars:5.0, reviews:'(89)', desc:'Dual-zone wine preservation system with UV-protected glass, vibration-free compressor and sommelier-grade humidity control.', features:['Dual temperature zones','Holds 46 bottles','UV-protected glass door','Vibration-free compressor','Humidity control system'] },
+  { id:3, name:"Chef's Sous Vide Pro", cat:'kitchen', catLabel:'Kitchen', price:899, orig:1199, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', badge:'Deal', stars:4.8, reviews:'(312)', desc:'Professional sous vide precision cooker with WiFi connectivity. Cook restaurant-quality meals with perfect temperature control every time.', features:['±0.1°F precision','WiFi app control','1100W heating element','Max 10-gallon capacity','100 hours continuous use'] },
+  { id:4, name:'Atlas Steam Oven', cat:'kitchen', catLabel:'Kitchen', price:2199, orig:2799, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', badge:'', stars:4.6, reviews:'(201)', desc:'Combi-steam oven with 12 cooking modes, touch display, and self-cleaning function. The professional kitchen, at home.', features:['12 cooking modes','Steam & convection combo','4.5 cu ft capacity','Self-cleaning function','LCD touch display'] },
+  { id:5, name:'Arctic Chest Freezer', cat:'cooling', catLabel:'Cooling', price:1599, orig:1999, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', badge:'', stars:4.5, reviews:'(178)', desc:'21 cubic foot chest freezer with dual compressor zones and smart temperature alerts. Keep everything perfectly preserved.', features:['21 cu ft capacity','Dual compressor zones','Smart temp alerts','Energy Star certified','Lockable lid'] },
+  { id:6, name:'Harmony Washer-Dryer', cat:'laundry', catLabel:'Laundry', price:2999, orig:3799, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80', badge:'New', stars:4.7, reviews:'(93)', desc:'All-in-one washer-dryer combo with AI fabric detection, steam refresh and silent night mode. Laundry reimagined.', features:['AI fabric detection','Steam refresh mode','4.5 cu ft drum','Silent night mode','App connectivity'] },
+  { id:7, name:'Lumina Air Purifier', cat:'smart', catLabel:'Smart Home', price:799, orig:999, img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80', badge:'Deal', stars:4.9, reviews:'(445)', desc:'HEPA H13 air purifier covering 1500 sq ft with real-time air quality display and auto mode. Breathe perfectly pure air.', features:['HEPA H13 filter','Covers 1500 sq ft','Real-time AQI display','Auto & sleep modes','Filter replacement alerts'] },
 ];
 
 let cart = [];
+let currentProduct = null;
 
-// CURSOR
-const cur = document.getElementById('cur');
-const curR = document.getElementById('curR');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
-
-// NAV
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
-
-// REVEAL
-const obs = new IntersectionObserver(entries=>{
-  entries.forEach((e,i)=>{if(e.isIntersecting){e.target.style.transitionDelay=(i*.08)+'s';e.target.classList.add('visible');}});
-},{threshold:.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-
-// RENDER
-function render(filter='all'){
-  const g=document.getElementById('pgrid');
-  const list=filter==='all'?PRODUCTS:PRODUCTS.filter(p=>p.cat===filter);
-  g.innerHTML=list.map(p=>`
-    <div class="pc reveal" onclick="openModal(${p.id})">
-      <div class="pimg-wrap">
-        <img src="${p.img}" class="pimg" alt="${p.name}">
-        ${p.badge?`<span class="pbadge">${p.badge}</span>`:''}
-        <div class="p-acts">
-          <button class="atc" onclick="event.stopPropagation();addToCart(${p.id})">Add to Cart</button>
-          <button class="vbtn" onclick="event.stopPropagation();openModal(${p.id})">↗</button>
+// ── RENDER PRODUCTS ──
+function renderProducts(list) {
+  const grid = document.getElementById('productsGrid');
+  document.getElementById('productCount').textContent = list.length + ' products';
+  grid.innerHTML = list.map(p => `
+    <div class="product-card" onclick="openProduct(${p.id})">
+      <div class="product-img">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<div class="product-badge ${p.badge==='New'?'new':''}">${p.badge}</div>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-cat">${p.catLabel}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="stars"><span>${'★'.repeat(Math.floor(p.stars))}${'☆'.repeat(5-Math.floor(p.stars))}</span><small>${p.reviews}</small></div>
+        <div class="product-price">
+          <div class="price-main">$${p.price.toLocaleString()}</div>
+          <div class="price-original">$${p.orig.toLocaleString()}</div>
+          <div class="price-save">Save $${(p.orig-p.price).toLocaleString()}</div>
         </div>
-      </div>
-      <p class="pbrand">${p.brand}</p>
-      <h3 class="pname">${p.name}</h3>
-      <div class="prat">
-        <span class="stars">${'★'.repeat(Math.floor(p.rating))}${p.rating%1?'⭑':''}</span>
-        <span class="rcnt">(${p.rev})</span>
-      </div>
-      <div class="pprices">
-        <span class="pprice">$${p.price.toLocaleString()}</span>
-        ${p.old?`<span class="pold">$${p.old.toLocaleString()}</span>`:''}
+        <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">ADD TO CART</button>
       </div>
     </div>
   `).join('');
-  document.querySelectorAll('.pc.reveal').forEach((el,i)=>{el.style.transitionDelay=(i*.1)+'s';obs.observe(el);});
-}
-render();
-
-function filterP(btn,cat){
-  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  render(cat);
 }
 
-function setFilter(cat){
-  document.querySelector('#products').scrollIntoView({behavior:'smooth'});
-  setTimeout(()=>{
-    const btn=Array.from(document.querySelectorAll('.fbtn')).find(b=>b.textContent.toLowerCase().includes(cat==='smart'?'smart':cat==='laundry'?'laundry':cat==='cooling'?'cooling':'kitchen'));
-    if(btn) filterP(btn,cat);
-  },600);
-}
-
-// MODAL
-function openModal(id){
-  const p=PRODUCTS.find(x=>x.id===id);
-  document.getElementById('mBrand').textContent=p.brand;
-  document.getElementById('mName').textContent=p.name;
-  document.getElementById('mPrice').textContent='$'+p.price.toLocaleString();
-  document.getElementById('mDesc').textContent=p.desc;
-  document.getElementById('mMain').src=p.imgs[0];
-  document.getElementById('mThumbs').innerHTML=p.imgs.map((img,i)=>`<img src="${img}" class="m-thumb ${i===0?'active':''}" onclick="switchThumb(this,'${img}')">`).join('');
-  document.getElementById('mFeats').innerHTML=p.feats.map(f=>`<li>${f}</li>`).join('');
-  document.getElementById('mAtc').onclick=()=>{addToCart(id);closeModal();};
-  document.getElementById('mOv').classList.add('active');
-  document.body.style.overflow='hidden';
-}
-function switchThumb(el,src){
-  document.querySelectorAll('.m-thumb').forEach(t=>t.classList.remove('active'));
+function filterCat(cat, el) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('mMain').src=src;
+  const filtered = cat === 'all' ? products : cat === 'deals' ? products.filter(p => p.badge === 'Deal' || (p.orig - p.price) > 500) : products.filter(p => p.cat === cat);
+  renderProducts(filtered);
+  document.getElementById('products').scrollIntoView({behavior:'smooth'});
 }
-function closeModal(){document.getElementById('mOv').classList.remove('active');document.body.style.overflow='';}
-document.getElementById('mOv').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
-// CART
-function addToCart(id){
-  const p=PRODUCTS.find(x=>x.id===id);
-  const ex=cart.find(x=>x.id===id);
-  ex?ex.qty++:cart.push({...p,qty:1});
-  updateCart();
-  showToast(p.name+' added to cart');
+// ── CART ──
+function addToCart(id) {
+  const p = products[id];
+  const ex = cart.find(i => i.id === id);
+  if (ex) ex.qty++;
+  else cart.push({...p, qty:1});
+  updateCartCount();
+  showToast(`${p.name} added to cart!`);
 }
-function removeFromCart(id){cart=cart.filter(x=>x.id!==id);updateCart();}
-function updateCart(){
-  const cnt=cart.reduce((s,x)=>s+x.qty,0);
-  const tot=cart.reduce((s,x)=>s+x.price*x.qty,0);
-  const cEl=document.getElementById('cartCnt');
-  cEl.textContent=cnt;cEl.style.display=cnt>0?'flex':'none';
-  document.getElementById('cTot').textContent='$'+tot.toLocaleString();
-  const iEl=document.getElementById('cItems');
-  iEl.innerHTML=cart.length===0
-    ?'<div class="c-empty"><span class="c-empty-icon">✦</span><p class="c-empty-txt">Your cart is empty</p></div>'
-    :cart.map(it=>`<div class="c-item"><img src="${it.img}" alt=""><div><p class="c-iname">${it.name}</p><p class="c-iprice">$${it.price.toLocaleString()} × ${it.qty}</p></div><button class="c-rm" onclick="removeFromCart(${it.id})">✕</button></div>`).join('');
-}
-function openCart(){document.getElementById('cartDr').classList.add('open');document.getElementById('ovBg').classList.add('active');document.body.style.overflow='hidden';}
-function closeCart(){document.getElementById('cartDr').classList.remove('open');document.getElementById('ovBg').classList.remove('active');document.body.style.overflow='';}
-document.getElementById('cartBtn').addEventListener('click',openCart);
 
-// TOAST
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function updateCartCount() {
+  const total = cart.reduce((s,i) => s + i.qty, 0);
+  document.getElementById('cartCount').textContent = total;
+}
+
+function openCart() {
+  renderCart();
+  document.getElementById('cartDrawer').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeCart() {
+  document.getElementById('cartDrawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+
+function renderCart() {
+  const el = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+  if (cart.length === 0) {
+    el.innerHTML = '<div class="cart-empty"><span>🛒</span><p style="font-size:13px;">Your cart is empty</p></div>';
+    footer.style.display = 'none';
+    return;
+  }
+  const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  el.innerHTML = cart.map(i => `
+    <div class="cart-item">
+      <img src="${i.img}" alt="${i.name}">
+      <div class="ci-info">
+        <div class="ci-name">${i.name}</div>
+        <div class="ci-price">$${(i.price * i.qty).toLocaleString()}</div>
+        <div class="ci-qty">
+          <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${i.id},1)">+</button>
+        </div>
+      </div>
+      <button class="ci-remove" onclick="removeFromCart(${i.id})">✕</button>
+    </div>
+  `).join('');
+  document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+  footer.style.display = 'block';
+}
+
+function changeQty(id, d) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += d;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  updateCartCount();
+  renderCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  updateCartCount();
+  renderCart();
+}
+
+// ── CHECKOUT ──
+function openCheckout() {
+  const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  document.getElementById('checkoutItems').innerHTML = cart.map(i => `
+    <div class="order-summary-item">
+      <span class="osi-name">${i.name} ×${i.qty}</span>
+      <span class="osi-price">$${(i.price * i.qty).toLocaleString()}</span>
+    </div>
+  `).join('');
+  document.getElementById('checkoutTotal').textContent = '$' + total.toLocaleString();
+  closeCart();
+  document.getElementById('checkoutModal').classList.add('open');
+}
+
+function closeCheckout() {
+  document.getElementById('checkoutModal').classList.remove('open');
+}
+
+function placeOrder() {
+  const fields = ['firstName','lastName','email','phone','address','city','zip','state','cardNum','expiry','cvv','cardName'];
+  for (let f of fields) {
+    if (!document.getElementById(f).value.trim()) {
+      document.getElementById(f).focus();
+      document.getElementById(f).style.borderColor = '#e53935';
+      showToast('Please fill all fields');
+      return;
+    }
+    document.getElementById(f).style.borderColor = '';
+  }
+  closeCheckout();
+  cart = [];
+  updateCartCount();
+  document.getElementById('successModal').classList.add('open');
+  fields.forEach(f => document.getElementById(f).value = '');
+}
+
+function closeSuccess() {
+  document.getElementById('successModal').classList.remove('open');
+}
+
+// ── PRODUCT MODAL ──
+function openProduct(id) {
+  const p = products[id];
+  currentProduct = p;
+  document.getElementById('pmImg').src = p.img;
+  document.getElementById('pmCat').textContent = p.catLabel;
+  document.getElementById('pmName').textContent = p.name;
+  document.getElementById('pmReviews').textContent = p.reviews;
+  document.getElementById('pmPrice').textContent = '$' + p.price.toLocaleString();
+  document.getElementById('pmOrig').textContent = '$' + p.orig.toLocaleString();
+  document.getElementById('pmSave').textContent = 'Save $' + (p.orig - p.price).toLocaleString();
+  document.getElementById('pmDesc').textContent = p.desc;
+  document.getElementById('pmFeatures').innerHTML = p.features.map(f => `<div class="pm-feature">${f}</div>`).join('');
+  document.getElementById('pmAddBtn').onclick = () => { addToCart(p.id); closeProduct(); };
+  document.getElementById('productModal').classList.add('open');
+}
+
+function closeProduct() {
+  document.getElementById('productModal').classList.remove('open');
+}
+
+function closeAll() {
+  closeCart();
+}
+
+// ── FORMAT CARD ──
+function formatCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function formatExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 2) v = v.substring(0,2) + '/' + v.substring(2);
+  el.value = v;
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:500;white-space:nowrap;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+function scrollTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+
+// ── PAYPAL INTEGRATION ──
+function initPayPal() {
+  if (typeof paypal === 'undefined') return;
+  paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'gold',
+      shape: 'rect',
+      label: 'pay',
+      height: 50
+    },
+    createOrder: function(data, actions) {
+      // Validate fields first
+      const fields = ['firstName','lastName','email','phone','address','city','zip','state'];
+      for (let f of fields) {
+        const el = document.getElementById(f);
+        if (!el || !el.value.trim()) {
+          el && (el.style.borderColor = '#e53935');
+          el && el.focus();
+          showToast('Please fill all shipping fields first');
+          return Promise.reject('incomplete');
+        }
+        el.style.borderColor = '';
+      }
+      const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+      if (total === 0) { showToast('Your cart is empty'); return Promise.reject('empty'); }
+      return actions.order.create({
+        purchase_units: [{
+          description: 'TAAVII Premium Appliances',
+          amount: {
+            currency_code: 'USD',
+            value: total.toFixed(2),
+            breakdown: {
+              item_total: { currency_code: 'USD', value: total.toFixed(2) }
+            }
+          },
+          items: cart.map(i => ({
+            name: i.name,
+            unit_amount: { currency_code: 'USD', value: i.price.toFixed(2) },
+            quantity: String(i.qty)
+          })),
+          shipping: {
+            name: { full_name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value },
+            address: {
+              address_line_1: document.getElementById('address').value,
+              admin_area_2: document.getElementById('city').value,
+              admin_area_1: document.getElementById('state').value,
+              postal_code: document.getElementById('zip').value,
+              country_code: 'US'
+            }
+          }
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        closeCheckout();
+        cart = [];
+        updateCartCount();
+        document.getElementById('successModal').classList.add('open');
+        // Clear form
+        ['firstName','lastName','email','phone','address','city','zip','state'].forEach(f => {
+          const el = document.getElementById(f);
+          if (el) el.value = '';
+        });
+      });
+    },
+    onError: function(err) {
+      showToast('Payment error. Please try again.');
+      console.error('PayPal error:', err);
+    },
+    onCancel: function() {
+      showToast('Payment cancelled.');
+    }
+  }).render('#paypal-button-container');
+}
+
+// ── INIT ──
+renderProducts(products);
+// Init PayPal when checkout opens
+const _openCheckout = openCheckout;
+openCheckout = function() {
+  _openCheckout();
+  setTimeout(() => {
+    const container = document.getElementById('paypal-button-container');
+    if (container && container.children.length === 0) initPayPal();
+  }, 400);
+};
 </script>
 </body>
 </html>
