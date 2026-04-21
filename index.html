@@ -31,7 +31,9 @@
   /* ── HEADER ── */
   header { background: var(--dark); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
   .header-main { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+  .logo-wrap { display: flex; align-items: center; gap: 8px; }
   .logo { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--gold); letter-spacing: 4px; white-space: nowrap; }
+  .logo-icon { width: 36px; height: 36px; border-radius: 6px; object-fit: contain; background: var(--dark3); border: 1px solid var(--gold-dark); padding: 3px; }
   .search-bar { flex: 1; display: flex; background: var(--white); border-radius: 6px; overflow: hidden; }
   .search-bar input { flex: 1; padding: 8px 10px; border: none; background: transparent; font-size: 13px; color: var(--black); outline: none; font-family: 'Montserrat', sans-serif; }
   .search-bar button { background: var(--gold); border: none; padding: 0 12px; cursor: pointer; }
@@ -232,10 +234,13 @@
 <!-- HEADER -->
 <header>
   <div class="header-main">
-    <div class="logo">TAAVII</div>
+    <div class="logo-wrap">
+      <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" class="logo-icon" alt="TAAVII Logo">
+      <div class="logo">TAAVII</div>
+    </div>
     <div class="search-bar">
-      <input type="text" placeholder="Search premium appliances...">
-      <button>
+      <input type="text" id="searchInput" placeholder="Search premium appliances..." oninput="searchProducts(this.value)" onkeydown="if(event.key==='Enter')searchProducts(this.value)">
+      <button onclick="searchProducts(document.getElementById('searchInput').value)">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       </button>
     </div>
@@ -257,7 +262,7 @@
 
 <!-- HERO BANNER -->
 <div class="hero-banner">
-  <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=80" alt="TAAVII">
+  <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="TAAVII">
   <div class="hero-text">
     <div class="sub">New Collection — 2025</div>
     <h1>The Art of<br>Living <em>Well.</em></h1>
@@ -283,19 +288,19 @@
 </div>
 <div class="featured-scroll">
   <div class="featured-card" onclick="openProduct(0)">
-    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80" alt="">
+    <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="">
     <div class="fc-info"><div class="fc-name">Artisan Pro Espresso</div><div class="fc-price">$2,499</div></div>
   </div>
   <div class="featured-card" onclick="openProduct(1)">
-    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="">
+    <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="">
     <div class="fc-info"><div class="fc-name">Quantum Clean Pro</div><div class="fc-price">$1,299</div></div>
   </div>
   <div class="featured-card" onclick="openProduct(2)">
-    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80" alt="">
+    <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="">
     <div class="fc-info"><div class="fc-name">Sommelier Wine Cave</div><div class="fc-price">$3,199</div></div>
   </div>
   <div class="featured-card" onclick="openProduct(3)">
-    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=80" alt="">
+    <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="">
     <div class="fc-info"><div class="fc-name">Chef's Sous Vide Pro</div><div class="fc-price">$899</div></div>
   </div>
 </div>
@@ -355,7 +360,7 @@
       <a href="#">Contact</a>
     </div>
   </div>
-  <div class="footer-bottom">© 2025 TAAVII. All rights reserved. Premium Luxury Appliances.</div>
+  <div class="footer-bottom">TAAVII™, a brand of Shirac Enterprise LLC. © 2026 All rights reserved.</div>
 </footer>
 
 <!-- OVERLAY -->
@@ -538,14 +543,14 @@
 <script>
 // ── DATA ──
 const products = [
-  { id:0, name:'Artisan Pro Espresso', cat:'kitchen', catLabel:'Kitchen', price:2499, orig:3299, img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80', badge:'Bestseller', stars:4.9, reviews:'(284)', desc:'Craft barista-quality espresso at home with precision temperature control and 19-bar pressure. Engineered for the serious coffee enthusiast.', features:['19-bar professional pressure','PID temperature control','Built-in grinder','Steam wand for latte art','60oz water reservoir'] },
-  { id:1, name:'Quantum Clean Pro', cat:'smart', catLabel:'Smart Home', price:1299, orig:1799, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', badge:'New', stars:4.7, reviews:'(156)', desc:'AI-powered robotic vacuum with 3D mapping, obstacle detection, and automatic empty base. Cleans your home so you never have to.', features:['3D LiDAR mapping','Auto-empty base 60-day capacity','4000Pa suction power','Works with Alexa & Google','90-min runtime'] },
-  { id:2, name:'Sommelier Wine Cave', cat:'cooling', catLabel:'Cooling', price:3199, orig:4299, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80', badge:'Premium', stars:5.0, reviews:'(89)', desc:'Dual-zone wine preservation system with UV-protected glass, vibration-free compressor and sommelier-grade humidity control.', features:['Dual temperature zones','Holds 46 bottles','UV-protected glass door','Vibration-free compressor','Humidity control system'] },
-  { id:3, name:"Chef's Sous Vide Pro", cat:'kitchen', catLabel:'Kitchen', price:899, orig:1199, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', badge:'Deal', stars:4.8, reviews:'(312)', desc:'Professional sous vide precision cooker with WiFi connectivity. Cook restaurant-quality meals with perfect temperature control every time.', features:['±0.1°F precision','WiFi app control','1100W heating element','Max 10-gallon capacity','100 hours continuous use'] },
-  { id:4, name:'Atlas Steam Oven', cat:'kitchen', catLabel:'Kitchen', price:2199, orig:2799, img:'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80', badge:'', stars:4.6, reviews:'(201)', desc:'Combi-steam oven with 12 cooking modes, touch display, and self-cleaning function. The professional kitchen, at home.', features:['12 cooking modes','Steam & convection combo','4.5 cu ft capacity','Self-cleaning function','LCD touch display'] },
-  { id:5, name:'Arctic Chest Freezer', cat:'cooling', catLabel:'Cooling', price:1599, orig:1999, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', badge:'', stars:4.5, reviews:'(178)', desc:'21 cubic foot chest freezer with dual compressor zones and smart temperature alerts. Keep everything perfectly preserved.', features:['21 cu ft capacity','Dual compressor zones','Smart temp alerts','Energy Star certified','Lockable lid'] },
-  { id:6, name:'Harmony Washer-Dryer', cat:'laundry', catLabel:'Laundry', price:2999, orig:3799, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80', badge:'New', stars:4.7, reviews:'(93)', desc:'All-in-one washer-dryer combo with AI fabric detection, steam refresh and silent night mode. Laundry reimagined.', features:['AI fabric detection','Steam refresh mode','4.5 cu ft drum','Silent night mode','App connectivity'] },
-  { id:7, name:'Lumina Air Purifier', cat:'smart', catLabel:'Smart Home', price:799, orig:999, img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80', badge:'Deal', stars:4.9, reviews:'(445)', desc:'HEPA H13 air purifier covering 1500 sq ft with real-time air quality display and auto mode. Breathe perfectly pure air.', features:['HEPA H13 filter','Covers 1500 sq ft','Real-time AQI display','Auto & sleep modes','Filter replacement alerts'] },
+  { id:0, name:'Artisan Pro Espresso', cat:'kitchen', catLabel:'Kitchen', price:2499, orig:3299, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Bestseller', stars:4.9, reviews:'(284)', desc:'Craft barista-quality espresso at home with precision temperature control and 19-bar pressure. Engineered for the serious coffee enthusiast.', features:['19-bar professional pressure','PID temperature control','Built-in grinder','Steam wand for latte art','60oz water reservoir'] },
+  { id:1, name:'Quantum Clean Pro', cat:'smart', catLabel:'Smart Home', price:1299, orig:1799, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'New', stars:4.7, reviews:'(156)', desc:'AI-powered robotic vacuum with 3D mapping, obstacle detection, and automatic empty base. Cleans your home so you never have to.', features:['3D LiDAR mapping','Auto-empty base 60-day capacity','4000Pa suction power','Works with Alexa & Google','90-min runtime'] },
+  { id:2, name:'Sommelier Wine Cave', cat:'cooling', catLabel:'Cooling', price:3199, orig:4299, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Premium', stars:5.0, reviews:'(89)', desc:'Dual-zone wine preservation system with UV-protected glass, vibration-free compressor and sommelier-grade humidity control.', features:['Dual temperature zones','Holds 46 bottles','UV-protected glass door','Vibration-free compressor','Humidity control system'] },
+  { id:3, name:"Chef's Sous Vide Pro", cat:'kitchen', catLabel:'Kitchen', price:899, orig:1199, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Deal', stars:4.8, reviews:'(312)', desc:'Professional sous vide precision cooker with WiFi connectivity. Cook restaurant-quality meals with perfect temperature control every time.', features:['±0.1°F precision','WiFi app control','1100W heating element','Max 10-gallon capacity','100 hours continuous use'] },
+  { id:4, name:'Atlas Steam Oven', cat:'kitchen', catLabel:'Kitchen', price:2199, orig:2799, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'', stars:4.6, reviews:'(201)', desc:'Combi-steam oven with 12 cooking modes, touch display, and self-cleaning function. The professional kitchen, at home.', features:['12 cooking modes','Steam & convection combo','4.5 cu ft capacity','Self-cleaning function','LCD touch display'] },
+  { id:5, name:'Arctic Chest Freezer', cat:'cooling', catLabel:'Cooling', price:1599, orig:1999, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'', stars:4.5, reviews:'(178)', desc:'21 cubic foot chest freezer with dual compressor zones and smart temperature alerts. Keep everything perfectly preserved.', features:['21 cu ft capacity','Dual compressor zones','Smart temp alerts','Energy Star certified','Lockable lid'] },
+  { id:6, name:'Harmony Washer-Dryer', cat:'laundry', catLabel:'Laundry', price:2999, orig:3799, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'New', stars:4.7, reviews:'(93)', desc:'All-in-one washer-dryer combo with AI fabric detection, steam refresh and silent night mode. Laundry reimagined.', features:['AI fabric detection','Steam refresh mode','4.5 cu ft drum','Silent night mode','App connectivity'] },
+  { id:7, name:'Lumina Air Purifier', cat:'smart', catLabel:'Smart Home', price:799, orig:999, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Deal', stars:4.9, reviews:'(445)', desc:'HEPA H13 air purifier covering 1500 sq ft with real-time air quality display and auto mode. Breathe perfectly pure air.', features:['HEPA H13 filter','Covers 1500 sq ft','Real-time AQI display','Auto & sleep modes','Filter replacement alerts'] },
 ];
 
 let cart = [];
@@ -574,6 +579,21 @@ function renderProducts(list) {
       </div>
     </div>
   `).join('');
+}
+
+function searchProducts(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) { renderProducts(products); return; }
+  const results = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.catLabel.toLowerCase().includes(q) ||
+    p.desc.toLowerCase().includes(q)
+  );
+  renderProducts(results.length ? results : []);
+  if (!results.length) {
+    document.getElementById('productsGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);">No products found for "<span style=\'color:var(--gold)\'>' + query + '</span>"</div>';
+  }
+  document.getElementById('products').scrollIntoView({behavior:'smooth'});
 }
 
 function filterCat(cat, el) {
