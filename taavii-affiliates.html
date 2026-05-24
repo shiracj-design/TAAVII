@@ -7,8 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --gold: #C9A84C;
-      --gold-light: #e2c97e;
+      --gold: #c9a96e;
+      --gold-light: #e8d5a3;
       --bg: #0b0b0f;
       --card: #111827;
       --card-hover: #1a2340;
@@ -25,7 +25,7 @@
     body {
       background: var(--bg);
       color: var(--white);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 300;
       overflow-x: hidden;
     }
@@ -44,7 +44,7 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.58rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -128,7 +128,7 @@
       border-radius: 24px;
       padding: 0.6rem 1.1rem 0.6rem 2.5rem;
       color: var(--white);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.78rem;
       outline: none;
     }
@@ -192,7 +192,7 @@
       border: 1px solid var(--border);
       background: transparent;
       color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.72rem;
       font-weight: 400;
       white-space: nowrap;
@@ -268,7 +268,7 @@
       color: #0b0b0f;
       padding: 0.7rem 1.8rem;
       border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.12em;
@@ -404,7 +404,7 @@
       border: none;
       border-radius: 8px;
       padding: 0.6rem;
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Montserrat', sans-serif;
       font-size: 0.65rem;
       font-weight: 700;
       letter-spacing: 0.1em;
@@ -554,6 +554,56 @@
       .hero-banner { min-height: 300px; }
       .hero-banner h1 { font-size: 3rem; }
     }
+
+    /* ─── LOGO DROPDOWN ─── */
+    .nav-logo-wrap { position: relative; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none; cursor: pointer; user-select: none;
+    }
+    .logo-img {
+      width: 38px; height: 38px; object-fit: contain;
+      border-radius: 8px; flex-shrink: 0;
+    }
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; letter-spacing: 0.3em;
+      color: var(--gold); font-weight: 400;
+    }
+    .logo-chevron {
+      font-size: 0.65rem; color: var(--gold);
+      opacity: 0.6; transition: transform 0.2s;
+      margin-left: -0.3rem;
+    }
+    .nav-logo-wrap.open .logo-chevron { transform: rotate(180deg); }
+    .logo-dropdown {
+      position: absolute; top: calc(100% + 0.7rem); left: 0;
+      background: #0f1623; border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.5rem;
+      min-width: 210px; z-index: 500;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-6px);
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .nav-logo-wrap.open .logo-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .logo-dropdown a {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      text-decoration: none; color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem; font-weight: 400;
+      transition: background 0.15s;
+    }
+    .logo-dropdown a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+    .logo-dropdown .dd-icon { font-size: 1rem; width: 24px; text-align: center; }
+    .logo-dropdown .dd-label { flex: 1; }
+    .logo-dropdown .dd-badge {
+      font-size: 0.48rem; letter-spacing: 0.15em; text-transform: uppercase;
+      background: rgba(201,168,76,0.12); border: 1px solid var(--border);
+      color: var(--gold); padding: 0.15rem 0.5rem; border-radius: 10px;
+    }
+    .logo-dropdown-divider { height: 1px; background: var(--border); margin: 0.3rem 0.5rem; }
   </style>
 </head>
 <body>
@@ -925,6 +975,16 @@ document.addEventListener('DOMContentLoaded', () => {
     b.classList.add('active');
   }));
 });
+
+  // ─── LOGO DROPDOWN ───────────────────────────────────────────────
+  function toggleLogoMenu() {
+    const wrap = document.getElementById('logoWrap');
+    wrap.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('logoWrap');
+    if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+  });
 </script>
 </body>
 </html>

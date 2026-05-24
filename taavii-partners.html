@@ -7,14 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --gold: #C9A84C; --gold-light: #e2c97e;
+      --gold: #c9a96e; --gold-light: #e8d5a3;
       --bg: #0b0b0f; --card: #111827; --navy: #1a2744;
       --white: #f0ece4; --muted: rgba(240,236,228,0.45);
       --border: rgba(201,168,76,0.15); --radius: 14px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+    body { background: var(--bg); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; }
 
     /* NAV */
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border); background: rgba(11,11,15,0.98); position: sticky; top: 0; z-index: 100; }
@@ -23,7 +23,7 @@
     .logo-icon svg { width: 22px; height: 22px; }
     .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 0.3em; color: var(--gold); }
     .nav-badge { font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; background: rgba(201,168,76,0.1); border: 1px solid var(--border); color: var(--gold); padding: 0.22rem 0.65rem; border-radius: 20px; }
-    .nav-cta { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.6rem 1.4rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .nav-cta { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.6rem 1.4rem; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s; text-decoration: none; }
     .nav-cta:hover { background: var(--gold-light); }
 
     /* HERO */
@@ -33,9 +33,9 @@
     .hero h1 em { font-style: italic; color: var(--gold); }
     .hero p { font-size: 0.85rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem; line-height: 2; letter-spacing: 0.04em; }
     .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-gold { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .btn-gold { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; text-decoration: none; }
     .btn-gold:hover { background: var(--gold-light); }
-    .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; text-decoration: none; }
     .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
 
     /* STATS */
@@ -70,7 +70,7 @@
     .brand-cat { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
     .brand-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
     .brand-platform { font-size: 0.58rem; color: rgba(240,236,228,0.25); }
-    .apply-btn { width: 100%; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 0.65rem; font-weight: 500; padding: 0.55rem; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
+    .apply-btn { width: 100%; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 0.65rem; font-weight: 500; padding: 0.55rem; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
     .apply-btn:hover { background: var(--gold); color: #0b0b0f; border-color: var(--gold); }
 
     /* PLATFORMS */
@@ -102,11 +102,11 @@
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-group { margin-bottom: 1rem; }
     .form-group label { display: block; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 0.9rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.75rem; outline: none; transition: border-color 0.2s; resize: none; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 0.9rem; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.75rem; outline: none; transition: border-color 0.2s; resize: none; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
     .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
     .form-group select option { background: #111827; }
-    .form-submit { width: 100%; background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+    .form-submit { width: 100%; background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem; font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
     .form-submit:hover { background: var(--gold-light); }
 
     /* FOOTER */
@@ -126,6 +126,56 @@
       nav { padding: 1rem 1.5rem; }
       .nav-badge { display: none; }
     }
+
+    /* ─── LOGO DROPDOWN ─── */
+    .nav-logo-wrap { position: relative; }
+    .nav-logo {
+      display: flex; align-items: center; gap: 0.7rem;
+      text-decoration: none; cursor: pointer; user-select: none;
+    }
+    .logo-img {
+      width: 38px; height: 38px; object-fit: contain;
+      border-radius: 8px; flex-shrink: 0;
+    }
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; letter-spacing: 0.3em;
+      color: var(--gold); font-weight: 400;
+    }
+    .logo-chevron {
+      font-size: 0.65rem; color: var(--gold);
+      opacity: 0.6; transition: transform 0.2s;
+      margin-left: -0.3rem;
+    }
+    .nav-logo-wrap.open .logo-chevron { transform: rotate(180deg); }
+    .logo-dropdown {
+      position: absolute; top: calc(100% + 0.7rem); left: 0;
+      background: #0f1623; border: 1px solid var(--border);
+      border-radius: 12px; padding: 0.5rem;
+      min-width: 210px; z-index: 500;
+      opacity: 0; pointer-events: none;
+      transform: translateY(-6px);
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .nav-logo-wrap.open .logo-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .logo-dropdown a {
+      display: flex; align-items: center; gap: 0.7rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      text-decoration: none; color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem; font-weight: 400;
+      transition: background 0.15s;
+    }
+    .logo-dropdown a:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+    .logo-dropdown .dd-icon { font-size: 1rem; width: 24px; text-align: center; }
+    .logo-dropdown .dd-label { flex: 1; }
+    .logo-dropdown .dd-badge {
+      font-size: 0.48rem; letter-spacing: 0.15em; text-transform: uppercase;
+      background: rgba(201,168,76,0.12); border: 1px solid var(--border);
+      color: var(--gold); padding: 0.15rem 0.5rem; border-radius: 10px;
+    }
+    .logo-dropdown-divider { height: 1px; background: var(--border); margin: 0.3rem 0.5rem; }
   </style>
 </head>
 <body>
@@ -399,6 +449,16 @@
       btn.disabled = false;
     }, 4000);
   }
+
+  // ─── LOGO DROPDOWN ───────────────────────────────────────────────
+  function toggleLogoMenu() {
+    const wrap = document.getElementById('logoWrap');
+    wrap.classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    const wrap = document.getElementById('logoWrap');
+    if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+  });
 </script>
 </body>
 </html>
