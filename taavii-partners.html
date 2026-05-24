@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TAAVII — Partner Program</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #C9A84C; --gold-light: #e2c97e;
+      --bg: #0b0b0f; --card: #111827; --navy: #1a2744;
+      --white: #f0ece4; --muted: rgba(240,236,228,0.45);
+      --border: rgba(201,168,76,0.15); --radius: 14px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 2.5rem; border-bottom: 1px solid var(--border); background: rgba(11,11,15,0.98); position: sticky; top: 0; z-index: 100; }
+    .nav-logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+    .logo-icon { width: 38px; height: 38px; background: var(--navy); border-radius: 9px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); }
+    .logo-icon svg { width: 22px; height: 22px; }
+    .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; letter-spacing: 0.3em; color: var(--gold); }
+    .nav-badge { font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; background: rgba(201,168,76,0.1); border: 1px solid var(--border); color: var(--gold); padding: 0.22rem 0.65rem; border-radius: 20px; }
+    .nav-cta { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.6rem 1.4rem; font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .nav-cta:hover { background: var(--gold-light); }
+
+    /* HERO */
+    .hero { padding: 6rem 2.5rem 4rem; max-width: 900px; margin: 0 auto; text-align: center; }
+    .hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.5rem; }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero p { font-size: 0.85rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem; line-height: 2; letter-spacing: 0.04em; }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-gold { background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; text-decoration: none; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem 2.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.06); }
+
+    /* STATS */
+    .stats-band { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { padding: 2rem; text-align: center; border-right: 1px solid var(--border); }
+    .stat:last-child { border-right: none; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--gold); display: block; line-height: 1; }
+    .stat-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; display: block; }
+
+    /* SECTION */
+    .section { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; }
+    .section-tag { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 300; margin-bottom: 1rem; }
+    .section-desc { font-size: 0.78rem; color: var(--muted); max-width: 480px; line-height: 2; }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; margin-top: 3rem; }
+    .step-card { background: var(--card); padding: 2.5rem 2rem; position: relative; }
+    .step-num { font-family: 'Cormorant Garamond', serif; font-size: 4rem; color: rgba(201,168,76,0.1); line-height: 1; margin-bottom: 1.5rem; display: block; }
+    .step-icon { font-size: 1.6rem; margin-bottom: 1rem; display: block; }
+    .step-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
+    .step-desc { font-size: 0.7rem; color: var(--muted); line-height: 2; }
+
+    /* BRANDS GRID */
+    .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 3rem; }
+    .brand-card { background: var(--card); border-radius: var(--radius); padding: 1.8rem; border: 1px solid var(--border); position: relative; transition: border-color 0.2s, transform 0.2s; }
+    .brand-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-2px); }
+    .brand-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .brand-icon { font-size: 1.8rem; }
+    .commission-pill { background: rgba(201,168,76,0.1); border: 1px solid var(--border); color: var(--gold); font-size: 0.65rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 20px; }
+    .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.3rem; }
+    .brand-cat { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .brand-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .brand-platform { font-size: 0.58rem; color: rgba(240,236,228,0.25); }
+    .apply-btn { width: 100%; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 0.65rem; font-weight: 500; padding: 0.55rem; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem; }
+    .apply-btn:hover { background: var(--gold); color: #0b0b0f; border-color: var(--gold); }
+
+    /* PLATFORMS */
+    .plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+    .plat-card { background: var(--navy); border-radius: var(--radius); padding: 1.8rem; border: 1px solid var(--border); }
+    .plat-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; color: rgba(201,168,76,0.2); line-height: 1; margin-bottom: 0.8rem; display: block; }
+    .plat-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .plat-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.8; }
+    .plat-link { display: inline-block; margin-top: 0.8rem; font-size: 0.6rem; color: var(--gold); text-decoration: none; letter-spacing: 0.1em; }
+    .plat-link:hover { text-decoration: underline; }
+
+    /* FAQ */
+    .faq { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 1.5rem 0; cursor: pointer; }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 500; }
+    .faq-icon { color: var(--gold); font-size: 1.2rem; transition: transform 0.3s; }
+    .faq-a { font-size: 0.72rem; color: var(--muted); line-height: 2; margin-top: 1rem; display: none; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-item.open .faq-a { display: block; }
+
+    /* CTA BAND */
+    .cta-band { background: var(--navy); padding: 4rem 2.5rem; text-align: center; }
+    .cta-band h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; margin-bottom: 1rem; }
+    .cta-band h2 em { font-style: italic; color: var(--gold); }
+    .cta-band p { font-size: 0.78rem; color: var(--muted); margin-bottom: 2rem; }
+
+    /* FORM */
+    .apply-form { max-width: 560px; margin: 0 auto; background: var(--card); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--border); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; text-transform: uppercase; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; padding: 0.65rem 0.9rem; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.75rem; outline: none; transition: border-color 0.2s; resize: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+    .form-group select option { background: #111827; }
+    .form-submit { width: 100%; background: var(--gold); color: #0b0b0f; border: none; border-radius: 8px; padding: 0.85rem; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+    .form-submit:hover { background: var(--gold-light); }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 3rem 2rem; border-top: 1px solid var(--border); }
+    .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; letter-spacing: 0.35em; color: var(--gold); display: block; margin-bottom: 1rem; }
+    footer p { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(240,236,228,0.2); }
+
+    /* DIVIDER */
+    .gold-line { width: 50px; height: 1px; background: var(--gold); opacity: 0.4; margin: 1.5rem 0; }
+
+    @media (max-width: 768px) {
+      .stats-band { grid-template-columns: repeat(2, 1fr); }
+      .steps, .brands-grid, .plat-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero { padding: 4rem 1.5rem 3rem; }
+      .section { padding: 3rem 1.5rem; }
+      nav { padding: 1rem 1.5rem; }
+      .nav-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 40 40" fill="none">
+        <path d="M8 10 L20 10 L20 14 L16 14 L16 30 L12 30 L12 14 L8 14 Z" fill="#C9A84C"/>
+        <path d="M20 10 L32 10 L28 22 L32 30 L28 30 L25 24 L22 30 L18 30 L22 22 Z" fill="white" opacity="0.9"/>
+      </svg>
+    </div>
+    <span class="logo-text">TAAVII</span>
+    <span class="nav-badge">Partner Program</span>
+  </a>
+  <a href="#apply" class="nav-cta">Apply Now →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">TAAVII Partner Program — 2026</p>
+  <h1>Earn While You<br/><em>Grow With Us.</em></h1>
+  <p>Join the TAAVII affiliate network and earn real commissions by connecting your audience with the world's most prestigious brands — no inventory, no risk.</p>
+  <div class="hero-actions">
+    <a href="#apply" class="btn-gold">Apply to Partner →</a>
+    <a href="#how" class="btn-outline">How It Works</a>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Elite Brands</span></div>
+  <div class="stat"><span class="stat-num">30%</span><span class="stat-label">Max Commission</span></div>
+  <div class="stat"><span class="stat-num">4</span><span class="stat-label">Platforms</span></div>
+  <div class="stat"><span class="stat-num">$0</span><span class="stat-label">No Stock Required</span></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+  <p class="section-tag">Simple Process</p>
+  <h2 class="section-title">How It Works</h2>
+  <div class="gold-line"></div>
+  <p class="section-desc">Three steps to start earning commissions with TAAVII's curated brand partners.</p>
+
+  <div class="steps">
+    <div class="step-card">
+      <span class="step-num">01</span>
+      <span class="step-icon">📋</span>
+      <p class="step-title">Apply Below</p>
+      <p class="step-desc">Fill out the short partner application. Tell us about your audience, platform, and goals. Approval within 48 hours.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">02</span>
+      <span class="step-icon">🔗</span>
+      <p class="step-title">Get Your Links</p>
+      <p class="step-desc">Once approved, you receive unique affiliate links for each brand. Share them on your site, social media, or newsletter.</p>
+    </div>
+    <div class="step-card">
+      <span class="step-num">03</span>
+      <span class="step-icon">💰</span>
+      <p class="step-title">Earn Commissions</p>
+      <p class="step-desc">Every sale made through your link earns you a commission — automatically tracked and paid monthly.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BRANDS -->
+<div class="section" style="padding-top:0;">
+  <p class="section-tag">Our Portfolio</p>
+  <h2 class="section-title">Partner Brands</h2>
+  <div class="gold-line"></div>
+  <p class="section-desc">Carefully selected brands that align with TAAVII's luxury lifestyle identity.</p>
+
+  <div class="brands-grid">
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">👟</span><span class="commission-pill">11% Commission</span></div>
+      <p class="brand-cat">Sport · Fashion</p>
+      <h3 class="brand-name">Nike</h3>
+      <p class="brand-desc">World's most prestigious athletic footwear, apparel and accessories. Apply via Rakuten Advertising.</p>
+      <p class="brand-platform">Platform: Rakuten Advertising</p>
+      <button class="apply-btn" onclick="location.href='https://rakutenadvertising.com'">Apply via Rakuten →</button>
+    </div>
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">🏃</span><span class="commission-pill">10% Commission</span></div>
+      <p class="brand-cat">Sport · Lifestyle</p>
+      <h3 class="brand-name">Adidas</h3>
+      <p class="brand-desc">Performance and lifestyle collections from the world's most iconic sports brand. Apply via Impact.com.</p>
+      <p class="brand-platform">Platform: Impact.com</p>
+      <button class="apply-btn" onclick="location.href='https://impact.com'">Apply via Impact →</button>
+    </div>
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">⚽</span><span class="commission-pill">10% Commission</span></div>
+      <p class="brand-cat">Official Gear</p>
+      <h3 class="brand-name">Fanatics</h3>
+      <p class="brand-desc">Official merchandise for national teams and major leagues. Perfect for the World Cup 2026 moment.</p>
+      <p class="brand-platform">Platform: CJ Affiliate</p>
+      <button class="apply-btn" onclick="location.href='https://cj.com'">Apply via CJ →</button>
+    </div>
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">✂️</span><span class="commission-pill">20% Commission</span></div>
+      <p class="brand-cat">Grooming · Men</p>
+      <h3 class="brand-name">Manscaped</h3>
+      <p class="brand-desc">Precision grooming tools and elite men's skincare. Complementary to the TRAVEN GROOM line.</p>
+      <p class="brand-platform">Platform: Impact.com</p>
+      <button class="apply-btn" onclick="location.href='https://impact.com'">Apply via Impact →</button>
+    </div>
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">⌚</span><span class="commission-pill">10% Commission</span></div>
+      <p class="brand-cat">Accessories · Luxury</p>
+      <h3 class="brand-name">MVMT</h3>
+      <p class="brand-desc">Minimalist watches and eyewear that elevate any outfit. Perfectly aligned with TAAVII aesthetics.</p>
+      <p class="brand-platform">Platform: ShareASale</p>
+      <button class="apply-btn" onclick="location.href='https://shareasale.com'">Apply via ShareASale →</button>
+    </div>
+
+    <div class="brand-card">
+      <div class="brand-top"><span class="brand-icon">🌹</span><span class="commission-pill">30% Commission</span></div>
+      <p class="brand-cat">Fragrance · Subscription</p>
+      <h3 class="brand-name">Scentbird</h3>
+      <p class="brand-desc">Monthly designer fragrance subscription — the highest commission in our entire portfolio.</p>
+      <p class="brand-platform">Platform: Impact.com</p>
+      <button class="apply-btn" onclick="location.href='https://impact.com'">Apply via Impact →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- PLATFORMS -->
+<div class="section" style="padding-top:0;">
+  <p class="section-tag">Where to Register</p>
+  <h2 class="section-title">Affiliate Platforms</h2>
+  <div class="gold-line"></div>
+
+  <div class="plat-grid">
+    <div class="plat-card">
+      <span class="plat-num">01</span>
+      <p class="plat-name">Impact.com</p>
+      <p class="plat-desc">Adidas, Manscaped, Scentbird & more. The world's largest affiliate network. Free to join.</p>
+      <a href="https://impact.com" target="_blank" class="plat-link">impact.com ↗</a>
+    </div>
+    <div class="plat-card">
+      <span class="plat-num">02</span>
+      <p class="plat-name">CJ Affiliate</p>
+      <p class="plat-desc">Fanatics, Nordstrom & major established brands. One of the oldest and most trusted networks.</p>
+      <a href="https://cj.com" target="_blank" class="plat-link">cj.com ↗</a>
+    </div>
+    <div class="plat-card">
+      <span class="plat-num">03</span>
+      <p class="plat-name">Rakuten Ads</p>
+      <p class="plat-desc">Nike & top athletic brands. Commissions up to 11%. Premium publisher network.</p>
+      <a href="https://rakutenadvertising.com" target="_blank" class="plat-link">rakutenadvertising.com ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section" style="padding-top:0;">
+  <p class="section-tag">Questions</p>
+  <h2 class="section-title">Frequently Asked</h2>
+  <div class="gold-line"></div>
+  <div class="faq" style="margin-top:2rem;">
+    <div class="faq-item">
+      <div class="faq-q">Do I need a large following to apply? <span class="faq-icon">+</span></div>
+      <div class="faq-a">No minimum following required. We evaluate partners based on content quality, audience engagement, and alignment with the TAAVII brand — not just follower count.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How and when do I get paid? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Commissions are tracked automatically by each affiliate platform and paid monthly via bank transfer or PayPal. Typical payment threshold is $50.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need to hold inventory or ship products? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Absolutely not. You share a link — the brand handles everything: inventory, shipping, returns, and customer service. Zero risk on your end.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I promote multiple brands at the same time? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. You can apply to as many brands in our portfolio as you like. There is no exclusivity requirement — the more you promote, the more you can earn.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is this available internationally? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Yes. Our affiliate partners are active worldwide. Commissions are available regardless of your location, including Haiti, Canada, France, and all other countries.</div>
+    </div>
+  </div>
+</div>
+
+<!-- APPLY FORM -->
+<div class="cta-band" id="apply">
+  <h2>Ready to <em>Partner With Us?</em></h2>
+  <p>Fill out the form below and our team will review your application within 48 hours.</p>
+
+  <div class="apply-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" placeholder="Your first name"/>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" placeholder="Your last name"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" placeholder="your@email.com"/>
+    </div>
+    <div class="form-group">
+      <label>Website or Social Profile</label>
+      <input type="text" placeholder="https://..."/>
+    </div>
+    <div class="form-group">
+      <label>Your Platform</label>
+      <select>
+        <option value="">Select your main platform...</option>
+        <option>Website / Blog</option>
+        <option>Instagram</option>
+        <option>TikTok</option>
+        <option>YouTube</option>
+        <option>Facebook</option>
+        <option>Newsletter / Email List</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Brands You Want to Promote</label>
+      <select>
+        <option value="">Select brand(s)...</option>
+        <option>Nike (11%)</option>
+        <option>Adidas (10%)</option>
+        <option>Fanatics (10%)</option>
+        <option>Manscaped (20%)</option>
+        <option>MVMT (10%)</option>
+        <option>Scentbird (30%)</option>
+        <option>All brands</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Tell us about your audience</label>
+      <textarea rows="3" placeholder="Briefly describe your audience size, interests, and why you'd be a great TAAVII partner..."></textarea>
+    </div>
+    <button class="form-submit" onclick="handleApply(this)">Submit Application →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">TAAVII</span>
+  <p>© 2026 Shirac Enterprise LLC · All Rights Reserved · <a href="taavii-shop.html" style="color:var(--gold);text-decoration:none;">Visit Shop</a></p>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  // Apply button
+  function handleApply(btn) {
+    btn.textContent = '✅ Application Sent!';
+    btn.style.background = '#4caf50';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = 'Submit Application →';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  }
+</script>
+</body>
+</html>
