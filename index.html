@@ -73,7 +73,7 @@
 
   /* ── PRODUCT GRID ── */
   .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px 12px; }
-  .product-card { background: var(--dark2); border: 1px solid var(--dark3); border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; active:transform: scale(.98); }
+  .product-card { background: var(--dark2); border: 1px solid var(--dark3); border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform .2s, border-color .2s; }
   .product-card:active { transform: scale(.98); }
   .product-card:hover { border-color: var(--gold-dark); }
   .product-img { position: relative; aspect-ratio: 1; overflow: hidden; background: var(--dark3); }
@@ -221,6 +221,38 @@
   .footer-col h4 { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
   .footer-col a { display: block; font-size: 12px; color: var(--gray); text-decoration: none; margin-bottom: 6px; }
   .footer-bottom { text-align: center; font-size: 11px; color: var(--dark4); border-top: 1px solid var(--dark3); padding-top: 16px; }
+
+  /* ── LOGO DROPDOWN ── */
+  .logo-wrap { position: relative; cursor: pointer; user-select: none; }
+  .logo-chevron { color: var(--gold); font-size: 10px; margin-left: 2px; opacity: 0.7; transition: transform .2s; }
+  .logo-wrap.open .logo-chevron { transform: rotate(180deg); }
+  .logo-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: #181818; border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 12px; padding: 6px; min-width: 210px;
+    z-index: 999; opacity: 0; pointer-events: none;
+    transform: translateY(-6px);
+    transition: opacity .2s, transform .2s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+  }
+  .logo-wrap.open .logo-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+  .logo-dropdown a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: 8px;
+    text-decoration: none; color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 400;
+    transition: background .15s;
+  }
+  .logo-dropdown a:hover { background: rgba(201,168,76,0.1); color: var(--gold); }
+  .logo-dropdown .dd-icon { font-size: 14px; width: 20px; text-align: center; }
+  .logo-dropdown .dd-sep { height: 1px; background: rgba(255,255,255,0.06); margin: 4px 8px; }
+  .logo-dropdown .dd-badge {
+    margin-left: auto; font-size: 9px; letter-spacing: .1em;
+    text-transform: uppercase; background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.2); color: var(--gold);
+    padding: 2px 6px; border-radius: 8px;
+  }
 </style>
 </head>
 <body>
@@ -234,10 +266,23 @@
 <!-- HEADER -->
 <header>
   <div class="header-main">
-    <div class="logo-wrap">
+
+    <!-- LOGO + DROPDOWN -->
+    <div class="logo-wrap" id="logoWrap" onclick="toggleLogoMenu(event)">
       <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" class="logo-icon" alt="TAAVII Logo">
       <div class="logo">TAAVII</div>
+      <span class="logo-chevron">▾</span>
+      <div class="logo-dropdown">
+        <a href="index.html"><span class="dd-icon">🏠</span> Main Store</a>
+        <a href="taavii-shop.html"><span class="dd-icon">🛍️</span> Shop Collection</a>
+        <a href="taavii-haiti.html"><span class="dd-icon">🇭🇹</span> Support Haiti</a>
+        <div class="dd-sep"></div>
+        <a href="taavii-partners.html"><span class="dd-icon">🤝</span> Partner Program</a>
+        <div class="dd-sep"></div>
+        <a href="taavii-admin.html"><span class="dd-icon">⚙️</span> Admin <span class="dd-badge">Private</span></a>
+      </div>
     </div>
+
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Search premium appliances..." oninput="searchProducts(this.value)" onkeydown="if(event.key==='Enter')searchProducts(this.value)">
       <button onclick="searchProducts(document.getElementById('searchInput').value)">
@@ -347,8 +392,8 @@
   <div class="footer-links">
     <div class="footer-col">
       <h4>Shop</h4>
-      <a href="#">New Arrivals</a>
-      <a href="#">Best Sellers</a>
+      <a href="taavii-shop.html">Shop Collection</a>
+      <a href="taavii-haiti.html">🇭🇹 Support Haiti</a>
       <a href="#">Kitchen</a>
       <a href="#">Smart Home</a>
     </div>
@@ -357,7 +402,7 @@
       <a href="#">Warranty</a>
       <a href="#">Returns</a>
       <a href="#">Installation</a>
-      <a href="#">Contact</a>
+      <a href="taavii-partners.html">Partner Program</a>
     </div>
   </div>
   <div class="footer-bottom">TAAVII™, a brand of Shirac Enterprise LLC. © 2026 All rights reserved.</div>
@@ -392,7 +437,6 @@
     <h2>Checkout</h2>
   </div>
   <div class="checkout-body">
-    <!-- Order Summary -->
     <div class="checkout-section">
       <h3>Order Summary</h3>
       <div id="checkoutItems"></div>
@@ -401,40 +445,18 @@
         <strong id="checkoutTotal">$0</strong>
       </div>
     </div>
-    <!-- Shipping Info -->
     <div class="checkout-section">
       <h3>📦 Shipping Information</h3>
       <div class="form-row">
-        <div class="form-group">
-          <label>First Name</label>
-          <input type="text" id="firstName" placeholder="John">
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" id="lastName" placeholder="Doe">
-        </div>
+        <div class="form-group"><label>First Name</label><input type="text" id="firstName" placeholder="John"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="lastName" placeholder="Doe"></div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="email" placeholder="john@example.com">
-      </div>
-      <div class="form-group">
-        <label>Phone</label>
-        <input type="tel" id="phone" placeholder="+1 (555) 000-0000">
-      </div>
-      <div class="form-group">
-        <label>Address</label>
-        <input type="text" id="address" placeholder="123 Main Street">
-      </div>
+      <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="john@example.com"></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="phone" placeholder="+1 (555) 000-0000"></div>
+      <div class="form-group"><label>Address</label><input type="text" id="address" placeholder="123 Main Street"></div>
       <div class="form-row">
-        <div class="form-group">
-          <label>City</label>
-          <input type="text" id="city" placeholder="New York">
-        </div>
-        <div class="form-group">
-          <label>ZIP Code</label>
-          <input type="text" id="zip" placeholder="10001">
-        </div>
+        <div class="form-group"><label>City</label><input type="text" id="city" placeholder="New York"></div>
+        <div class="form-group"><label>ZIP Code</label><input type="text" id="zip" placeholder="10001"></div>
       </div>
       <div class="form-group">
         <label>State</label>
@@ -449,32 +471,17 @@
         </select>
       </div>
     </div>
-    <!-- Payment -->
     <div class="checkout-section">
       <h3>💳 Payment</h3>
-      <div class="form-group">
-        <label>Card Number</label>
-        <input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)">
-      </div>
+      <div class="form-group"><label>Card Number</label><input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"></div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Expiry</label>
-          <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
-        </div>
-        <div class="form-group">
-          <label>CVV</label>
-          <input type="text" id="cvv" placeholder="123" maxlength="4">
-        </div>
+        <div class="form-group"><label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"></div>
+        <div class="form-group"><label>CVV</label><input type="text" id="cvv" placeholder="123" maxlength="4"></div>
       </div>
-      <div class="form-group">
-        <label>Name on Card</label>
-        <input type="text" id="cardName" placeholder="JOHN DOE">
-      </div>
+      <div class="form-group"><label>Name on Card</label><input type="text" id="cardName" placeholder="JOHN DOE"></div>
       <div class="payment-icons">
-        <div class="pay-icon">VISA</div>
-        <div class="pay-icon">MC</div>
-        <div class="pay-icon">AMEX</div>
-        <div class="pay-icon">PayPal</div>
+        <div class="pay-icon">VISA</div><div class="pay-icon">MC</div>
+        <div class="pay-icon">AMEX</div><div class="pay-icon">PayPal</div>
       </div>
     </div>
     <div id="paypal-button-container"></div>
@@ -492,20 +499,14 @@
   <div class="pm-body">
     <div class="pm-cat" id="pmCat"></div>
     <div class="pm-name" id="pmName"></div>
-    <div class="pm-stars">
-      <span>★★★★★</span>
-      <small id="pmReviews"></small>
-    </div>
+    <div class="pm-stars"><span>★★★★★</span><small id="pmReviews"></small></div>
     <div class="pm-price-row">
       <div class="pm-price" id="pmPrice"></div>
       <div class="pm-orig" id="pmOrig"></div>
       <div class="pm-save" id="pmSave"></div>
     </div>
     <div class="pm-desc" id="pmDesc"></div>
-    <div class="pm-features">
-      <h4>Key Features</h4>
-      <div id="pmFeatures"></div>
-    </div>
+    <div class="pm-features"><h4>Key Features</h4><div id="pmFeatures"></div></div>
     <button class="pm-add-btn" id="pmAddBtn">ADD TO CART</button>
   </div>
 </div>
@@ -541,7 +542,6 @@
 </div>
 
 <script>
-// ── DATA ──
 const products = [
   { id:0, name:'Artisan Pro Espresso', cat:'kitchen', catLabel:'Kitchen', price:2499, orig:3299, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Bestseller', stars:4.9, reviews:'(284)', desc:'Craft barista-quality espresso at home with precision temperature control and 19-bar pressure. Engineered for the serious coffee enthusiast.', features:['19-bar professional pressure','PID temperature control','Built-in grinder','Steam wand for latte art','60oz water reservoir'] },
   { id:1, name:'Quantum Clean Pro', cat:'smart', catLabel:'Smart Home', price:1299, orig:1799, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'New', stars:4.7, reviews:'(156)', desc:'AI-powered robotic vacuum with 3D mapping, obstacle detection, and automatic empty base. Cleans your home so you never have to.', features:['3D LiDAR mapping','Auto-empty base 60-day capacity','4000Pa suction power','Works with Alexa & Google','90-min runtime'] },
@@ -556,7 +556,6 @@ const products = [
 let cart = [];
 let currentProduct = null;
 
-// ── RENDER PRODUCTS ──
 function renderProducts(list) {
   const grid = document.getElementById('productsGrid');
   document.getElementById('productCount').textContent = list.length + ' products';
@@ -584,11 +583,7 @@ function renderProducts(list) {
 function searchProducts(query) {
   const q = query.trim().toLowerCase();
   if (!q) { renderProducts(products); return; }
-  const results = products.filter(p =>
-    p.name.toLowerCase().includes(q) ||
-    p.catLabel.toLowerCase().includes(q) ||
-    p.desc.toLowerCase().includes(q)
-  );
+  const results = products.filter(p => p.name.toLowerCase().includes(q) || p.catLabel.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
   renderProducts(results.length ? results : []);
   if (!results.length) {
     document.getElementById('productsGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);">No products found for "<span style=\'color:var(--gold)\'>' + query + '</span>"</div>';
@@ -604,7 +599,6 @@ function filterCat(cat, el) {
   document.getElementById('products').scrollIntoView({behavior:'smooth'});
 }
 
-// ── CART ──
 function addToCart(id) {
   const p = products[id];
   const ex = cart.find(i => i.id === id);
@@ -615,8 +609,7 @@ function addToCart(id) {
 }
 
 function updateCartCount() {
-  const total = cart.reduce((s,i) => s + i.qty, 0);
-  document.getElementById('cartCount').textContent = total;
+  document.getElementById('cartCount').textContent = cart.reduce((s,i) => s + i.qty, 0);
 }
 
 function openCart() {
@@ -635,8 +628,7 @@ function renderCart() {
   const footer = document.getElementById('cartFooter');
   if (cart.length === 0) {
     el.innerHTML = '<div class="cart-empty"><span>🛒</span><p style="font-size:13px;">Your cart is empty</p></div>';
-    footer.style.display = 'none';
-    return;
+    footer.style.display = 'none'; return;
   }
   const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
   el.innerHTML = cart.map(i => `
@@ -663,17 +655,14 @@ function changeQty(id, d) {
   if (!item) return;
   item.qty += d;
   if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-  updateCartCount();
-  renderCart();
+  updateCartCount(); renderCart();
 }
 
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
-  updateCartCount();
-  renderCart();
+  updateCartCount(); renderCart();
 }
 
-// ── CHECKOUT ──
 function openCheckout() {
   const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
   document.getElementById('checkoutItems').innerHTML = cart.map(i => `
@@ -687,36 +676,12 @@ function openCheckout() {
   document.getElementById('checkoutModal').classList.add('open');
 }
 
-function closeCheckout() {
-  document.getElementById('checkoutModal').classList.remove('open');
-}
+function closeCheckout() { document.getElementById('checkoutModal').classList.remove('open'); }
 
-function placeOrder() {
-  const fields = ['firstName','lastName','email','phone','address','city','zip','state','cardNum','expiry','cvv','cardName'];
-  for (let f of fields) {
-    if (!document.getElementById(f).value.trim()) {
-      document.getElementById(f).focus();
-      document.getElementById(f).style.borderColor = '#e53935';
-      showToast('Please fill all fields');
-      return;
-    }
-    document.getElementById(f).style.borderColor = '';
-  }
-  closeCheckout();
-  cart = [];
-  updateCartCount();
-  document.getElementById('successModal').classList.add('open');
-  fields.forEach(f => document.getElementById(f).value = '');
-}
+function closeSuccess() { document.getElementById('successModal').classList.remove('open'); }
 
-function closeSuccess() {
-  document.getElementById('successModal').classList.remove('open');
-}
-
-// ── PRODUCT MODAL ──
 function openProduct(id) {
-  const p = products[id];
-  currentProduct = p;
+  const p = products[id]; currentProduct = p;
   document.getElementById('pmImg').src = p.img;
   document.getElementById('pmCat').textContent = p.catLabel;
   document.getElementById('pmName').textContent = p.name;
@@ -730,15 +695,9 @@ function openProduct(id) {
   document.getElementById('productModal').classList.add('open');
 }
 
-function closeProduct() {
-  document.getElementById('productModal').classList.remove('open');
-}
+function closeProduct() { document.getElementById('productModal').classList.remove('open'); }
+function closeAll() { closeCart(); }
 
-function closeAll() {
-  closeCart();
-}
-
-// ── FORMAT CARD ──
 function formatCard(el) {
   let v = el.value.replace(/\D/g,'').substring(0,16);
   el.value = v.replace(/(.{4})/g,'$1 ').trim();
@@ -749,7 +708,6 @@ function formatExpiry(el) {
   el.value = v;
 }
 
-// ── TOAST ──
 function showToast(msg) {
   const t = document.createElement('div');
   t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:500;white-space:nowrap;';
@@ -760,28 +718,26 @@ function showToast(msg) {
 
 function scrollTop() { window.scrollTo({top:0, behavior:'smooth'}); }
 
-// ── PAYPAL INTEGRATION ──
+// ── LOGO DROPDOWN ──
+function toggleLogoMenu(e) {
+  e.stopPropagation();
+  document.getElementById('logoWrap').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  const w = document.getElementById('logoWrap');
+  if (w) w.classList.remove('open');
+});
+
+// ── PAYPAL ──
 function initPayPal() {
   if (typeof paypal === 'undefined') return;
   paypal.Buttons({
-    style: {
-      layout: 'vertical',
-      color: 'gold',
-      shape: 'rect',
-      label: 'pay',
-      height: 50
-    },
+    style: { layout:'vertical', color:'gold', shape:'rect', label:'pay', height:50 },
     createOrder: function(data, actions) {
-      // Validate fields first
       const fields = ['firstName','lastName','email','phone','address','city','zip','state'];
       for (let f of fields) {
         const el = document.getElementById(f);
-        if (!el || !el.value.trim()) {
-          el && (el.style.borderColor = '#e53935');
-          el && el.focus();
-          showToast('Please fill all shipping fields first');
-          return Promise.reject('incomplete');
-        }
+        if (!el || !el.value.trim()) { el && (el.style.borderColor='#e53935'); el && el.focus(); showToast('Please fill all shipping fields first'); return Promise.reject('incomplete'); }
         el.style.borderColor = '';
       }
       const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
@@ -789,57 +745,25 @@ function initPayPal() {
       return actions.order.create({
         purchase_units: [{
           description: 'TAAVII Premium Appliances',
-          amount: {
-            currency_code: 'USD',
-            value: total.toFixed(2),
-            breakdown: {
-              item_total: { currency_code: 'USD', value: total.toFixed(2) }
-            }
-          },
-          items: cart.map(i => ({
-            name: i.name,
-            unit_amount: { currency_code: 'USD', value: i.price.toFixed(2) },
-            quantity: String(i.qty)
-          })),
-          shipping: {
-            name: { full_name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value },
-            address: {
-              address_line_1: document.getElementById('address').value,
-              admin_area_2: document.getElementById('city').value,
-              admin_area_1: document.getElementById('state').value,
-              postal_code: document.getElementById('zip').value,
-              country_code: 'US'
-            }
-          }
+          amount: { currency_code:'USD', value:total.toFixed(2), breakdown:{ item_total:{ currency_code:'USD', value:total.toFixed(2) } } },
+          items: cart.map(i => ({ name:i.name, unit_amount:{ currency_code:'USD', value:i.price.toFixed(2) }, quantity:String(i.qty) })),
+          shipping: { name:{ full_name: document.getElementById('firstName').value+' '+document.getElementById('lastName').value }, address:{ address_line_1:document.getElementById('address').value, admin_area_2:document.getElementById('city').value, admin_area_1:document.getElementById('state').value, postal_code:document.getElementById('zip').value, country_code:'US' } }
         }]
       });
     },
     onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        closeCheckout();
-        cart = [];
-        updateCartCount();
+      return actions.order.capture().then(function() {
+        closeCheckout(); cart = []; updateCartCount();
         document.getElementById('successModal').classList.add('open');
-        // Clear form
-        ['firstName','lastName','email','phone','address','city','zip','state'].forEach(f => {
-          const el = document.getElementById(f);
-          if (el) el.value = '';
-        });
+        ['firstName','lastName','email','phone','address','city','zip','state'].forEach(f => { const el=document.getElementById(f); if(el) el.value=''; });
       });
     },
-    onError: function(err) {
-      showToast('Payment error. Please try again.');
-      console.error('PayPal error:', err);
-    },
-    onCancel: function() {
-      showToast('Payment cancelled.');
-    }
+    onError: function(err) { showToast('Payment error. Please try again.'); },
+    onCancel: function() { showToast('Payment cancelled.'); }
   }).render('#paypal-button-container');
 }
 
-// ── INIT ──
 renderProducts(products);
-// Init PayPal when checkout opens
 const _openCheckout = openCheckout;
 openCheckout = function() {
   _openCheckout();
