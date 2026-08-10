@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Sèl kont admin TAAVII a. Pa gen lòt moun ki ka ekri —
+    // menm si yon moun rive kreye yon kont sou pwojè a.
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.uid == 'HBKDe8yQrOTP2adTpisWHbmZCDJ2';
+    }
+
+    // Pwodwi yo — tout moun ka li, sèlman admin ka ekri
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Konfigirasyon sit la (settings/site) — menm règ la
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Tout lòt bagay: fèmen nèt
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

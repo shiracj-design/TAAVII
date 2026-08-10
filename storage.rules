@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Sèl kont admin TAAVII a.
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.uid == 'HBKDe8yQrOTP2adTpisWHbmZCDJ2';
+    }
+
+    // Imaj pwodwi yo — tout moun ka wè, sèlman admin ka voye
+    match /products/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+                   && request.resource.size < 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/.*');
+    }
+
+    // Tout lòt chemen: fèmen nèt
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

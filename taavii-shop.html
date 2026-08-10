@@ -86,6 +86,21 @@
     .product-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-3px); }
 
     .card-thumb { width: 100%; aspect-ratio: 1; background: var(--navy); display: flex; align-items: center; justify-content: center; position: relative; font-size: 4rem; }
+    /* Kad imaj: fon navy, pwodwi a antye, pa koupe */
+    .card-thumb.has-img { background: var(--navy); }
+    .card-thumb.has-img img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+    /* Flèch sou kat la — parèt lè kurseur pase sou li, pou gade imaj yo san louvri pwodwi a */
+    .card-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
+                border-radius: 50%; background: rgba(11,11,15,0.75); border: 1px solid var(--border);
+                color: #fff; font-size: 15px; line-height: 1; cursor: pointer; z-index: 2; padding: 0 0 2px;
+                display: flex; align-items: center; justify-content: center;
+                opacity: 0; transition: opacity 0.2s; }
+    .product-card:hover .card-nav { opacity: 1; }
+    .card-nav:hover { background: var(--navy); border-color: var(--gold); }
+    .card-nav.prev { left: 7px; }
+    .card-nav.next { right: 7px; }
+    /* Sou telefòn pa gen kurseur — kite yo vizib */
+    @media (hover: none) { .card-nav { opacity: 0.85; } }
     .card-badge { position: absolute; top: 0.7rem; left: 0.7rem; font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.22rem 0.6rem; border-radius: 20px; }
     .badge-new { background: var(--gold); color: #0b0b0f; }
     .badge-deal { background: #e53935; color: #fff; }
@@ -199,6 +214,9 @@
 </div>
 
 <!-- TOP BANNER -->
+<!-- Banyè admin (kontwole nan /admin.html → Paramèt) -->
+<div id="promoBanner" style="display:none; padding:0.7rem 1.5rem; text-align:center; font-size:0.75rem; font-weight:600; letter-spacing:0.05em; color:#0b0b0f;"></div>
+
 <div class="top-banner">
   <span data-i18n="banner1">🚚 Free Shipping on Orders $500+</span>
   <span data-i18n="banner2">⭐ 5-Year Warranty</span>
@@ -270,7 +288,7 @@
   <a href="#" class="view-all" data-i18n="view_all">View All →</a>
 </div>
 
-<div class="product-grid">
+<div class="product-grid" id="productGrid">
 
   <a href="#" class="product-card">
     <div class="card-thumb" style="background:#0f1c3a;">
@@ -477,6 +495,291 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrap = document.getElementById('logoWrap');
     if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
   });
+</script>
+
+<!-- ═══ TAAVII — PAJ DETAY PWODWI ═══ -->
+<style>
+  .pv-overlay { position: fixed; inset: 0; background: rgba(11,11,15,0.92); backdrop-filter: blur(8px);
+                z-index: 500; display: none; overflow-y: auto; }
+  .pv-overlay.open { display: block; }
+  .pv-sheet { max-width: 620px; margin: 0 auto; min-height: 100%; background: var(--bg); }
+  .pv-top { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 2; }
+  .pv-close { background: none; border: none; color: var(--white); font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0; }
+  .pv-top span { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+  /* Karousèl: glise ak dwèt sou telefòn, klike minyati sou òdinatè */
+  .pv-track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+              scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .pv-track::-webkit-scrollbar { display: none; }
+  .pv-track img { flex: none; width: 100%; aspect-ratio: 1; object-fit: contain;
+                  background: var(--navy); scroll-snap-align: center; padding: 12px; }
+
+  /* Flèch pou òdinatè — sourit pa ka "glise" yon karousèl */
+  .pv-stage { position: relative; }
+  .pv-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px;
+            border-radius: 50%; background: rgba(11,11,15,0.78); border: 1px solid var(--border);
+            color: var(--white); font-size: 1.4rem; line-height: 1; cursor: pointer; z-index: 3;
+            display: flex; align-items: center; justify-content: center; padding: 0 0 3px; }
+  .pv-nav:hover { background: var(--navy); border-color: var(--gold); }
+  .pv-nav.prev { left: 12px; }
+  .pv-nav.next { right: 12px; }
+
+  .pv-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0 0; }
+  .pv-dots:has(> :only-child) { display: none; }
+  .pv-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background 0.2s; }
+  .pv-dots i.on { background: var(--gold); }
+
+  .pv-thumbs { display: flex; gap: 8px; padding: 12px 1.2rem 0; overflow-x: auto; scrollbar-width: none; }
+  .pv-thumbs:has(> :only-child) { display: none; }
+  .pv-thumbs::-webkit-scrollbar { display: none; }
+  .pv-thumbs img { width: 62px; height: 62px; flex: none; object-fit: contain; background: var(--navy);
+                   border-radius: 8px; padding: 5px; border: 2px solid transparent; cursor: pointer; }
+  .pv-thumbs img.on { border-color: var(--gold); }
+
+  .pv-body { padding: 1.4rem 1.2rem 3rem; }
+  .pv-cat { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  .pv-name { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; line-height: 1.2; margin-bottom: 0.9rem; }
+  .pv-price { font-size: 1.35rem; font-weight: 600; color: var(--gold-light); margin-bottom: 1.1rem; }
+  .pv-desc { font-size: 0.82rem; line-height: 1.8; color: var(--muted); white-space: pre-wrap; margin-bottom: 1.4rem; }
+  .pv-extras { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.6rem; }
+  .pv-extras span { font-size: 0.68rem; padding: 0.4rem 0.8rem; border: 1px solid var(--border);
+                    border-radius: 20px; color: var(--gold-light); }
+  .pv-buy { display: block; width: 100%; background: var(--gold); color: #0b0b0f; text-align: center;
+            padding: 0.95rem; border-radius: 8px; border: none; font-family: 'Montserrat', sans-serif;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+            cursor: pointer; text-decoration: none; }
+  .pv-buy:hover { background: var(--gold-light); }
+</style>
+
+<div class="pv-overlay" id="pvOverlay">
+  <div class="pv-sheet">
+    <div class="pv-top">
+      <button class="pv-close" id="pvClose" aria-label="Fèmen">←</button>
+      <span>Detay pwodwi</span>
+    </div>
+    <div class="pv-stage">
+      <div class="pv-track" id="pvTrack"></div>
+      <button class="pv-nav prev" id="pvPrev" aria-label="Imaj anvan">‹</button>
+      <button class="pv-nav next" id="pvNext" aria-label="Imaj apre">›</button>
+    </div>
+    <div class="pv-dots" id="pvDots"></div>
+    <div class="pv-thumbs" id="pvThumbs"></div>
+    <div class="pv-body">
+      <div class="pv-cat" id="pvCat"></div>
+      <div class="pv-name" id="pvName"></div>
+      <div class="pv-price" id="pvPrice"></div>
+      <div class="pv-extras" id="pvExtras"></div>
+      <div class="pv-desc" id="pvDesc"></div>
+      <a class="pv-buy" id="pvBuy" target="_blank" rel="noopener">Achte kounye a</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAAVII — PWODWI DINAMIK (Firebase) ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, where, orderBy, getDocs, doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyA2qnjTuUVXEn5fbFdZu6dzB2s_rkAyURI",
+  authDomain:        "taavii-admin.firebaseapp.com",
+  projectId:         "taavii-admin",
+  storageBucket:     "taavii-admin.firebasestorage.app",
+  messagingSenderId: "351885354082",
+  appId:             "1:351885354082:web:54b24c00522aa7f361dd3b"
+};
+
+const db = getFirestore(initializeApp(firebaseConfig));
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+
+/* ── PARAMÈT SIT LA (settings/site) ── */
+async function loadSite() {
+  let s;
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'site'));
+    if (!snap.exists()) return;
+    s = snap.data();
+  } catch { return; }
+
+  // Hero — retire data-i18n pou tradiksyon an pa efase valè admin an
+  const h1 = document.querySelector('.hero h1');
+  if (s.heroTitle && h1) { h1.removeAttribute('data-i18n'); h1.textContent = s.heroTitle; }
+  const sub = document.querySelector('.hero p[data-i18n="hero_desc"], .hero p.hero-sub');
+  if (s.heroSubtitle && sub) { sub.removeAttribute('data-i18n'); sub.className = 'hero-sub'; sub.textContent = s.heroSubtitle; }
+
+  // Banyè — montre sèlman si aktif epi si dat limit la poko pase
+  const notExpired = !s.bannerUntil || new Date(s.bannerUntil + 'T23:59:59') >= new Date();
+  const bar = document.getElementById('promoBanner');
+  if (bar && s.bannerActive && s.bannerText && notExpired) {
+    bar.textContent = s.bannerText;
+    bar.style.background = s.accent || '#d4af37';
+    bar.style.display = 'block';
+  }
+
+  // Boutik fèmen → kache lyen boutik yo nan navigasyon an
+  if (s.shopActive === false) {
+    document.querySelectorAll('a[href*="taavii-shop"]').forEach(a => a.style.display = 'none');
+    document.querySelectorAll('.bnav-item').forEach(a => {
+      if (a.querySelector('[data-i18n="bnav_shop"]')) a.style.display = 'none';
+    });
+  }
+}
+
+/* ── PAJ DETAY PWODWI ── */
+const $$ = id => document.getElementById(id);
+
+function imagesOf(p) {
+  if (Array.isArray(p.images) && p.images.length) return p.images;
+  return p.image ? [p.image] : [];
+}
+
+function openProduct(p) {
+  const imgs = imagesOf(p);
+  const track = $$('pvTrack'), dots = $$('pvDots'), thumbs = $$('pvThumbs');
+
+  track.innerHTML = imgs.length
+    ? imgs.map(u => `<img src="${esc(u)}" alt="${esc(p.name)}">`).join('')
+    : '<img alt="">';
+  dots.innerHTML   = imgs.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('');
+  thumbs.innerHTML = imgs.map((u, i) => `<img src="${esc(u)}" alt="" class="${i ? '' : 'on'}">`).join('');
+
+  let cur = 0;
+  const select = i => {
+    cur = i;
+    dots.querySelectorAll('i').forEach((d, k) => d.classList.toggle('on', k === i));
+    thumbs.querySelectorAll('img').forEach((t, k) => t.classList.toggle('on', k === i));
+  };
+  const goTo = i => {
+    const n = imgs.length || 1;
+    i = (i % n + n) % n;                 // vire an wonn: apre dènye a, tounen premye a
+    track.scrollTo({ left: track.clientWidth * i, behavior: 'smooth' });
+    select(i);
+  };
+  thumbs.querySelectorAll('img').forEach((t, i) => { t.onclick = () => goTo(i); });
+  // Sinkronize pwen yo lè w glise ak dwèt ou sou telefòn
+  track.onscroll = () => select(Math.round(track.scrollLeft / track.clientWidth));
+
+  // Flèch yo — kache si gen yon sèl imaj
+  const one = imgs.length < 2;
+  $$('pvPrev').style.display = one ? 'none' : '';
+  $$('pvNext').style.display = one ? 'none' : '';
+  $$('pvPrev').onclick = () => goTo(cur - 1);
+  $$('pvNext').onclick = () => goTo(cur + 1);
+
+  $$('pvCat').textContent   = p.category || '';
+  $$('pvName').textContent  = p.name || '';
+  $$('pvPrice').textContent = '$' + Number(p.price || 0).toFixed(2);
+  $$('pvDesc').textContent  = p.description || '';
+  $$('pvExtras').innerHTML  = (p.extras || [])
+    .filter(x => x && x.label).map(x => `<span>${esc(x.label)}</span>`).join('');
+
+  const buy = $$('pvBuy');
+  if (p.payLink) { buy.href = p.payLink; buy.style.display = ''; }
+  else buy.style.display = 'none';
+
+  track.scrollLeft = 0;
+  $$('pvOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProduct() {
+  $$('pvOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+$$('pvClose').onclick = closeProduct;
+$$('pvOverlay').onclick = e => { if (e.target === $$('pvOverlay')) closeProduct(); };
+document.addEventListener('keydown', e => {
+  if (!$$('pvOverlay').classList.contains('open')) return;
+  if (e.key === 'Escape')     closeProduct();
+  if (e.key === 'ArrowLeft')  $$('pvPrev').click();
+  if (e.key === 'ArrowRight') $$('pvNext').click();
+});
+
+/* ── PWODWI YO (products) ── */
+function card(p) {
+  const a = document.createElement('a');
+  a.className = 'product-card';
+  a.href = p.payLink || '#';
+  a.onclick = e => { e.preventDefault(); openProduct(p); };
+
+  const thumb = p.image
+    ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`
+    : '🛍️';
+  const extras = (p.extras || [])
+    .filter(x => x && x.label)
+    .map(x => `<span class="card-save">${esc(x.label)}</span>`).join('');
+
+  const imgs = imagesOf(p), count = imgs.length;
+  a.innerHTML = `
+    <div class="card-thumb${p.image ? ' has-img' : ''}"${p.image ? '' : ' style="background:#0f1c3a;"'}>${thumb}
+      ${count > 1 ? `<span class="card-badge badge-limited">📷 ${count}</span>
+      <button class="card-nav prev" aria-label="Imaj anvan">‹</button>
+      <button class="card-nav next" aria-label="Imaj apre">›</button>` : ''}
+    </div>
+    <div class="card-body">
+      ${p.category ? `<p class="card-brand">${esc(p.category)}</p>` : ''}
+      <p class="card-name">${esc(p.name)}</p>
+      <div class="card-pricing">
+        <span class="card-price">$${Number(p.price || 0).toFixed(2)}</span>
+        ${extras}
+      </div>
+      <button class="card-add-btn">${p.payLink ? 'Achte' : 'Ajoute nan Panye'}</button>
+    </div>`;
+
+  a.querySelector('.card-add-btn').addEventListener('click', e => {
+    e.preventDefault(); e.stopPropagation();
+    if (p.payLink) window.open(p.payLink, '_blank', 'noopener');
+    else openProduct(p);
+  });
+
+  // Flèch sou kat la: chanje imaj la sou plas, san louvri pwodwi a
+  if (count > 1) {
+    const el = a.querySelector('.card-thumb img');
+    let i = 0;
+    const step = d => e => {
+      e.preventDefault(); e.stopPropagation();
+      i = (i + d + count) % count;
+      el.src = imgs[i];
+    };
+    a.querySelector('.card-nav.prev').addEventListener('click', step(-1));
+    a.querySelector('.card-nav.next').addEventListener('click', step(1));
+  }
+  return a;
+}
+
+async function loadProducts() {
+  const grid = document.getElementById('productGrid');
+  if (!grid) return;
+
+  let docs;
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'products'),
+      where('active', '==', true),
+      orderBy('created', 'desc')
+    ));
+    docs = snap.docs;
+  } catch (e) {
+    console.error('[TAAVII] Pwodwi yo pa chaje:', e);
+    return;                              // kite kontni estatik la si Firebase echwe
+  }
+
+  grid.innerHTML = '';
+  if (!docs.length) {
+    grid.style.display = 'block';
+    grid.innerHTML = `<p style="padding:3rem 0; text-align:center; color:var(--muted); font-size:0.85rem;">
+      Pa gen pwodwi disponib kounye a. Tounen byento.</p>`;
+    return;
+  }
+  grid.style.display = '';
+  docs.forEach(d => grid.appendChild(card({ id: d.id, ...d.data() })));
+}
+
+loadSite();
+loadProducts();
 </script>
 </body>
 </html>

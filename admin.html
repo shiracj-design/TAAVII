@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TAAVII — Administrasyon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a0e1a; --surface:#111726; --surface-2:#18203450; --line:#232c42;
+  --gold:#d4af37; --gold-dim:#a8892b; --blue:#4fc3f7;
+  --text:#e8ebf2; --muted:#8b93a7; --danger:#e05263; --ok:#4caf7d;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:.2px}
+input,select,textarea,button{font-family:inherit;font-size:14px}
+input,select,textarea{width:100%;background:var(--navy);border:1px solid var(--line);color:var(--text);padding:11px 13px;border-radius:var(--r);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:88px}
+label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px;letter-spacing:.3px}
+.field{margin-bottom:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{cursor:pointer;border:none;border-radius:var(--r);padding:11px 18px;font-weight:600;transition:opacity .15s,background .15s}
+button:hover{opacity:.88}
+button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn-gold{background:var(--gold);color:#0a0e1a}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.btn-sm{padding:7px 13px;font-size:13px}
+
+/* LOGIN */
+#gate{min-height:100vh;display:grid;place-items:center;padding:24px}
+.gate-card{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:38px 32px}
+.mark{font-family:'Playfair Display',serif;font-size:30px;letter-spacing:7px;color:var(--gold);text-align:center;margin-bottom:6px}
+.gate-sub{text-align:center;color:var(--muted);font-size:12.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:30px}
+
+/* SHELL */
+#app{display:none;min-height:100vh;grid-template-columns:212px 1fr}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column;gap:4px}
+aside .mark{font-size:20px;letter-spacing:5px;margin-bottom:26px}
+.nav{background:none;border:none;color:var(--muted);text-align:left;padding:11px 13px;border-radius:var(--r);font-weight:500;width:100%}
+.nav:hover{background:var(--surface-2);color:var(--text)}
+.nav.on{background:var(--surface-2);color:var(--gold)}
+.spacer{flex:1}
+main{padding:32px 34px 80px;max-width:960px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px}
+.head h1{font-size:26px}
+.sub{color:var(--muted);font-size:13.5px;margin-bottom:26px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+.page{display:none}
+.page.on{display:block}
+
+/* PRODUCT LIST */
+.item{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:11px}
+.thumb{width:60px;height:60px;border-radius:9px;background:var(--navy);border:1px solid var(--line);object-fit:cover;flex:none}
+.item-info{flex:1;min-width:0}
+.item-info b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-info span{color:var(--gold);font-size:13.5px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;margin-left:8px;letter-spacing:.4px}
+.tag.live{background:#4fc3f71a;color:var(--blue)}
+.tag.off{background:#8b93a71a;color:var(--muted)}
+.acts{display:flex;gap:8px;flex:none}
+
+/* MISC */
+.empty{text-align:center;color:var(--muted);padding:52px 20px;border:1px dashed var(--line);border-radius:14px}
+.empty b{display:block;color:var(--text);font-family:'Playfair Display',serif;font-size:19px;margin-bottom:6px}
+.msg{padding:11px 14px;border-radius:var(--r);font-size:13.5px;margin-bottom:16px;display:none}
+.msg.err{display:block;background:#e0526318;color:var(--danger);border:1px solid #e0526340}
+.msg.ok{display:block;background:#4caf7d18;color:var(--ok);border:1px solid #4caf7d40}
+.drop{border:1px dashed var(--line);border-radius:var(--r);padding:22px;text-align:center;color:var(--muted);cursor:pointer;font-size:13.5px}
+.drop:hover{border-color:var(--gold);color:var(--text)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:12px}
+.gal:empty{display:none}
+.gal-item{position:relative;aspect-ratio:1;border-radius:var(--r);overflow:hidden;background:var(--navy);border:1px solid var(--line);cursor:pointer}
+.gal-item img{width:100%;height:100%;object-fit:contain}
+.gal-item.main{border-color:var(--gold)}
+.gal-badge{position:absolute;left:0;right:0;bottom:0;background:var(--gold);color:#0a0e1a;font-size:10px;font-weight:700;text-align:center;padding:3px 0;letter-spacing:.04em}
+.gal-del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:#0a0e1acc;color:#fff;border:none;font-size:12px;line-height:1;cursor:pointer;padding:0}
+.gal-del:hover{background:var(--danger)}
+.hint{color:var(--muted);font-size:12px;margin-top:9px;line-height:1.55}
+.langsel{position:relative;display:flex;align-items:center;gap:7px;margin-top:16px;padding:0 11px;background:var(--navy);border:1px solid var(--line);border-radius:var(--r);transition:border-color .15s}
+.langsel:hover,.langsel:focus-within{border-color:var(--gold)}
+.langsel>span{flex:none;font-size:13px;line-height:1}
+.langsel select{width:100%;background:none;border:none;color:var(--text);padding:10px 16px 10px 0;font-size:12.5px;font-weight:600;letter-spacing:.04em;cursor:pointer;appearance:none;-webkit-appearance:none}
+.langsel select:focus{border:none;outline:none}
+.langsel select option{background:var(--surface);color:var(--text);font-weight:500}
+.langsel::after{content:'▾';position:absolute;right:11px;color:var(--muted);font-size:11px;pointer-events:none}
+.toggle{display:flex;align-items:center;gap:11px;padding:14px;background:var(--navy);border:1px solid var(--line);border-radius:var(--r);margin-bottom:16px}
+.toggle input{width:auto;flex:none;accent-color:var(--blue);width:17px;height:17px}
+.toggle div{flex:1}
+.toggle b{font-size:14px;font-weight:600}
+.toggle small{display:block;color:var(--muted);font-size:12.5px}
+.extra{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;margin-bottom:9px}
+.bar{position:sticky;bottom:0;background:linear-gradient(transparent,var(--navy) 26%);padding:22px 0 0;display:flex;gap:11px;justify-content:flex-end}
+@media(max-width:760px){
+  #app{grid-template-columns:1fr}
+  aside{flex-direction:row;overflow-x:auto;padding:12px;border-right:none;border-bottom:1px solid var(--line);align-items:center}
+  aside .mark{display:none} .spacer{display:none}
+  .nav{white-space:nowrap;width:auto}
+  main{padding:22px 18px 60px}
+  .row,.extra{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="mark">TAAVII</div>
+    <div class="gate-sub" data-t="gate_sub">Administrasyon</div>
+    <div class="msg" id="gateMsg"></div>
+    <div class="field"><label data-t="lbl_email">Imel</label><input type="email" id="email" autocomplete="username"></div>
+    <div class="field"><label data-t="lbl_pass">Modpas</label><input type="password" id="pass" autocomplete="current-password"></div>
+    <button class="btn-gold" style="width:100%" onclick="login()" data-t="btn_login">Konekte</button>
+    <div class="langsel"><span>🌐</span><select id="gateLang" aria-label="Lang"></select></div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <aside>
+    <div class="mark">TAAVII</div>
+    <button class="nav on" data-p="list" onclick="go('list')" data-t="nav_products">Pwodwi</button>
+    <button class="nav" data-p="edit" onclick="newProduct()" data-t="nav_add">Ajoute pwodwi</button>
+    <button class="nav" data-p="site" onclick="go('site')" data-t="nav_settings">Paramèt sit</button>
+    <div class="spacer"></div>
+    <div class="langsel"><span>🌐</span><select id="appLang" aria-label="Lang"></select></div>
+    <button class="nav" onclick="logout()" data-t="nav_logout">Dekonekte</button>
+  </aside>
+
+  <main>
+    <!-- LIS PWODWI -->
+    <section class="page on" id="p-list">
+      <div class="head"><h1 data-t="nav_products">Pwodwi</h1><button class="btn-gold btn-sm" onclick="newProduct()" data-t="btn_add_short">+ Ajoute</button></div>
+      <p class="sub" data-t="sub_products">Tout sa ki make an ble parèt sou sit la kounye a.</p>
+      <div id="list"></div>
+    </section>
+
+    <!-- EDITÈ -->
+    <section class="page" id="p-edit">
+      <div class="head"><h1 id="editTitle">Nouvo pwodwi</h1></div>
+      <p class="sub" data-t="sub_edit">Chanjman yo parèt sou sit la san w pa bezwen fè anyen lòt.</p>
+      <div class="msg" id="editMsg"></div>
+
+      <div class="card">
+        <div class="field">
+          <label data-t="lbl_images">Imaj</label>
+          <div class="drop" onclick="document.getElementById('file').click()" data-t="drop_text">Klike pou chwazi imaj yo — JPG oswa PNG (ou ka chwazi plizyè alafwa)</div>
+          <input type="file" id="file" accept="image/*" multiple style="display:none" onchange="pickImage(this)">
+          <div class="gal" id="gallery"></div>
+          <p class="hint" data-t="hint_images">
+            Jiska <b>8 imaj</b> pa pwodwi. Klike sou yon imaj pou fè l vin <b>prensipal</b> la (se li k ap parèt nan boutik la). Klike <b>✕</b> pou retire youn.<br>
+            Pi bon gwosè: <b>kare, 1000 × 1000 piksèl</b>, mwens pase <b>2 MB</b>. Foto ki pa kare ap parèt antye kanmenm — yo p ap koupe.
+          </p>
+        </div>
+        <div class="field"><label data-t="lbl_name">Non pwodwi</label><input id="f-name" data-tp="ph_name" placeholder="Egzanp: T-shirt Ayiti 2026"></div>
+        <div class="row">
+          <div class="field"><label data-t="lbl_price">Pri (USD)</label><input id="f-price" type="number" step="0.01" placeholder="35.00"></div>
+          <div class="field"><label data-t="lbl_cat">Kategori</label><input id="f-cat" data-tp="ph_cat" placeholder="Aparèy · Dizany · Akseswa"></div>
+        </div>
+        <div class="field"><label data-t="lbl_desc">Deskripsyon</label><textarea id="f-desc" data-tp="ph_desc" placeholder="Sa moun nan bezwen konnen anvan li achte."></textarea></div>
+        <div class="field"><label data-t="lbl_pay_full">Lyen peman PayPal <span style="opacity:.6">(opsyonèl)</span></label><input id="f-pay" placeholder="https://..."></div>
+        <div class="toggle">
+          <input type="checkbox" id="f-active" checked>
+          <div><b data-t="tg_show">Montre sou sit la</b><small data-t="tg_show_s">Dekoche pou kenbe l an poz san efase l.</small></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:5px" data-t="h_extras">Chan anplis</h3>
+        <p class="sub" style="margin-bottom:16px" data-t="sub_extras">Ajoute nenpòt detay: gwosè, koulè, materyèl, delè livrezon.</p>
+        <div id="extras"></div>
+        <button class="btn-ghost btn-sm" onclick="addExtra()" data-t="btn_add_field">+ Ajoute yon chan</button>
+      </div>
+
+      <div class="bar">
+        <button class="btn-ghost" onclick="go('list')" data-t="btn_cancel">Anile</button>
+        <button class="btn-gold" id="saveBtn" onclick="saveProduct()" data-t="btn_save">Anrejistre</button>
+      </div>
+    </section>
+
+    <!-- PARAMÈT -->
+    <section class="page" id="p-site">
+      <div class="head"><h1 data-t="h_settings">Paramèt sit</h1></div>
+      <p class="sub" data-t="sub_settings">Tit, mesaj sezon, ak sa ki louvri oswa fèmen.</p>
+      <div class="msg" id="siteMsg"></div>
+
+      <div class="card">
+        <div class="field"><label data-t="lbl_hero">Gwo tit sou paj dakèy</label><input id="s-title"></div>
+        <div class="field"><label data-t="lbl_herosub">Fraz anba tit la</label><input id="s-sub"></div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:16px" data-t="h_season">Mesaj sezon</h3>
+        <div class="field"><label data-t="lbl_banner">Tèks banyè</label><input id="s-banner" data-tp="ph_banner" placeholder="Egzanp: Koleksyon Fen Ane — 20% rabè jiska 31 desanm"></div>
+        <div class="row">
+          <div class="field"><label data-t="lbl_accent">Koulè aksan</label><input type="color" id="s-accent" value="#d4af37" style="height:46px;padding:5px"></div>
+          <div class="field"><label data-t="lbl_until">Dat fen</label><input type="date" id="s-until"></div>
+        </div>
+        <div class="toggle"><input type="checkbox" id="s-bannerOn"><div><b data-t="tg_banner">Montre banyè a</b><small data-t="tg_banner_s">Dekoche lè sezon an fini.</small></div></div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:16px" data-t="h_sections">Seksyon sit la</h3>
+        <div class="toggle"><input type="checkbox" id="s-shop"><div><b data-t="tg_shop">Boutik</b><small data-t="tg_shop_s">Kite l fèmen jiskaske w gen pwodwi an stòk.</small></div></div>
+        <div class="toggle"><input type="checkbox" id="s-design" checked><div><b data-t="tg_design">Sèvis dizany</b><small data-t="tg_design_s">Paj kòmand dizany grafik la.</small></div></div>
+      </div>
+
+      <div class="bar"><button class="btn-gold" id="siteBtn" onclick="saveSite()" data-t="btn_save">Anrejistre</button></div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, getDoc, setDoc, addDoc, updateDoc, deleteDoc, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+/* ═══════════════════════════════════════════════════════
+   ★ RANPLASE 6 LIY SA YO AK VALÈ FIREBASE PA W ★
+   Firebase Console → Project settings → Your apps → Web
+   ═══════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyA2qnjTuUVXEn5fbFdZu6dzB2s_rkAyURI",
+  authDomain:        "taavii-admin.firebaseapp.com",
+  projectId:         "taavii-admin",
+  storageBucket:     "taavii-admin.firebasestorage.app",
+  messagingSenderId: "351885354082",
+  appId:             "1:351885354082:web:54b24c00522aa7f361dd3b"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app), db = getFirestore(app), storage = getStorage(app);
+
+let editingId = null, gallery = [], extras = [];
+const MAX_IMAGES = 8;
+
+/* ═══ LANG ═══
+   Tradiksyon yo fèt pa machin. Fè yon moun ki pale lang lan verifye yo
+   anvan ou konte sou yo devan kliyan. */
+const LANGS = { ht: 'KREYÒL', en: 'ENGLISH', fr: 'FRANÇAIS', es: 'ESPAÑOL', pt: 'PORTUGUÊS' };
+
+const I18N = {
+ht: {
+  gate_sub:'Administrasyon', lbl_email:'Imel', lbl_pass:'Modpas', btn_login:'Konekte',
+  err_login:'Imel oswa modpas la pa kòrèk.',
+  nav_products:'Pwodwi', nav_add:'Ajoute pwodwi', nav_settings:'Paramèt sit', nav_logout:'Dekonekte',
+  btn_add_short:'+ Ajoute', sub_products:'Tout sa ki make an ble parèt sou sit la kounye a.',
+  loading:'N ap chaje…', empty_title:'Poko gen pwodwi', empty_body:'Ajoute premye a pou l parèt sou taavii.com.',
+  err_conn_title:'Koneksyon an pa pase', err_conn_body:'Verifye konfigirasyon Firebase la.',
+  tag_live:'Sou sit la', tag_off:'An poz', btn_edit:'Modifye', btn_delete:'Efase',
+  h_new:'Nouvo pwodwi', h_edit:'Modifye pwodwi',
+  sub_edit:'Chanjman yo parèt sou sit la san w pa bezwen fè anyen lòt.',
+  lbl_images:'Imaj', drop_text:'Klike pou chwazi imaj yo — JPG oswa PNG (ou ka chwazi plizyè alafwa)',
+  hint_images:'Jiska <b>8 imaj</b> pa pwodwi. Klike sou yon imaj pou fè l vin <b>prensipal</b> la (se li k ap parèt nan boutik la). Klike <b>✕</b> pou retire youn.<br>Pi bon gwosè: <b>kare, 1000 × 1000 piksèl</b>, mwens pase <b>2 MB</b>. Foto ki pa kare ap parèt antye kanmenm — yo p ap koupe.',
+  lbl_name:'Non pwodwi', ph_name:'Egzanp: T-shirt Ayiti 2026',
+  lbl_price:'Pri (USD)', lbl_cat:'Kategori', ph_cat:'Aparèy · Dizany · Akseswa',
+  lbl_desc:'Deskripsyon', ph_desc:'Sa moun nan bezwen konnen anvan li achte.',
+  lbl_pay_full:'Lyen peman PayPal <span style="opacity:.6">(opsyonèl)</span>',
+  tg_show:'Montre sou sit la', tg_show_s:'Dekoche pou kenbe l an poz san efase l.',
+  h_extras:'Chan anplis', sub_extras:'Ajoute nenpòt detay: gwosè, koulè, materyèl, delè livrezon.',
+  btn_add_field:'+ Ajoute yon chan', ph_field_name:'Non chan an', ph_field_value:'Valè', btn_remove:'Retire',
+  btn_cancel:'Anile', btn_save:'Anrejistre', saving:'N ap anrejistre…', uploading:'N ap voye imaj {i}/{n}…',
+  err_need_name:'Pwodwi a bezwen yon non.',
+  err_save:'Anrejistreman an pa pase. Verifye koneksyon entènèt la epi eseye ankò.',
+  err_max:'Limit la se {max} imaj — nou pran premye {n} yo.',
+  confirm_del:'Efase pwodwi sa a nèt? Ou p ap ka retounen l.',
+  gal_main:'PRENSIPAL', gal_tip:'Klike pou fè l prensipal', gal_del:'Retire',
+  h_settings:'Paramèt sit', sub_settings:'Tit, mesaj sezon, ak sa ki louvri oswa fèmen.',
+  lbl_hero:'Gwo tit sou paj dakèy', lbl_herosub:'Fraz anba tit la',
+  h_season:'Mesaj sezon', lbl_banner:'Tèks banyè', ph_banner:'Egzanp: Koleksyon Fen Ane — 20% rabè jiska 31 desanm',
+  lbl_accent:'Koulè aksan', lbl_until:'Dat fen',
+  tg_banner:'Montre banyè a', tg_banner_s:'Dekoche lè sezon an fini.',
+  h_sections:'Seksyon sit la', tg_shop:'Boutik', tg_shop_s:'Kite l fèmen jiskaske w gen pwodwi an stòk.',
+  tg_design:'Sèvis dizany', tg_design_s:'Paj kòmand dizany grafik la.',
+  ok_settings:'Paramèt yo anrejistre. Sit la mete ajou.', err_settings:'Anrejistreman an pa pase. Eseye ankò.'
+},
+en: {
+  gate_sub:'Administration', lbl_email:'Email', lbl_pass:'Password', btn_login:'Sign in',
+  err_login:'Incorrect email or password.',
+  nav_products:'Products', nav_add:'Add product', nav_settings:'Site settings', nav_logout:'Sign out',
+  btn_add_short:'+ Add', sub_products:'Everything marked in blue is live on the site right now.',
+  loading:'Loading…', empty_title:'No products yet', empty_body:'Add the first one so it appears on taavii.com.',
+  err_conn_title:'Connection failed', err_conn_body:'Check the Firebase configuration.',
+  tag_live:'Live', tag_off:'Paused', btn_edit:'Edit', btn_delete:'Delete',
+  h_new:'New product', h_edit:'Edit product',
+  sub_edit:'Changes appear on the site automatically.',
+  lbl_images:'Images', drop_text:'Click to choose images — JPG or PNG (you can select several at once)',
+  hint_images:'Up to <b>8 images</b> per product. Click an image to make it the <b>main</b> one (that is what shows in the shop). Click <b>✕</b> to remove one.<br>Best size: <b>square, 1000 × 1000 pixels</b>, under <b>2 MB</b>. Photos that are not square still show in full — they are never cropped.',
+  lbl_name:'Product name', ph_name:'Example: Haiti 2026 T-shirt',
+  lbl_price:'Price (USD)', lbl_cat:'Category', ph_cat:'Appliances · Design · Accessories',
+  lbl_desc:'Description', ph_desc:'What the buyer needs to know before purchasing.',
+  lbl_pay_full:'PayPal payment link <span style="opacity:.6">(optional)</span>',
+  tg_show:'Show on the site', tg_show_s:'Uncheck to pause it without deleting it.',
+  h_extras:'Extra fields', sub_extras:'Add any detail: size, colour, material, delivery time.',
+  btn_add_field:'+ Add a field', ph_field_name:'Field name', ph_field_value:'Value', btn_remove:'Remove',
+  btn_cancel:'Cancel', btn_save:'Save', saving:'Saving…', uploading:'Uploading image {i}/{n}…',
+  err_need_name:'The product needs a name.',
+  err_save:'Could not save. Check your internet connection and try again.',
+  err_max:'The limit is {max} images — we kept the first {n}.',
+  confirm_del:'Delete this product permanently? This cannot be undone.',
+  gal_main:'MAIN', gal_tip:'Click to make it the main image', gal_del:'Remove',
+  h_settings:'Site settings', sub_settings:'Titles, seasonal message, and what is open or closed.',
+  lbl_hero:'Main heading on the home page', lbl_herosub:'Line under the heading',
+  h_season:'Seasonal message', lbl_banner:'Banner text', ph_banner:'Example: Year-End Collection — 20% off until 31 December',
+  lbl_accent:'Accent colour', lbl_until:'End date',
+  tg_banner:'Show the banner', tg_banner_s:'Uncheck when the season is over.',
+  h_sections:'Site sections', tg_shop:'Shop', tg_shop_s:'Leave it closed until you have products in stock.',
+  tg_design:'Design services', tg_design_s:'The graphic design order page.',
+  ok_settings:'Settings saved. The site is updated.', err_settings:'Could not save. Please try again.'
+},
+fr: {
+  gate_sub:'Administration', lbl_email:'E-mail', lbl_pass:'Mot de passe', btn_login:'Se connecter',
+  err_login:'E-mail ou mot de passe incorrect.',
+  nav_products:'Produits', nav_add:'Ajouter un produit', nav_settings:'Paramètres du site', nav_logout:'Se déconnecter',
+  btn_add_short:'+ Ajouter', sub_products:'Tout ce qui est marqué en bleu est en ligne sur le site.',
+  loading:'Chargement…', empty_title:'Aucun produit', empty_body:"Ajoutez le premier pour qu'il apparaisse sur taavii.com.",
+  err_conn_title:'Échec de la connexion', err_conn_body:'Vérifiez la configuration Firebase.',
+  tag_live:'En ligne', tag_off:'En pause', btn_edit:'Modifier', btn_delete:'Supprimer',
+  h_new:'Nouveau produit', h_edit:'Modifier le produit',
+  sub_edit:'Les changements apparaissent automatiquement sur le site.',
+  lbl_images:'Images', drop_text:'Cliquez pour choisir des images — JPG ou PNG (plusieurs à la fois)',
+  hint_images:"Jusqu'à <b>8 images</b> par produit. Cliquez sur une image pour en faire l'image <b>principale</b> (celle qui s'affiche dans la boutique). Cliquez sur <b>✕</b> pour en retirer une.<br>Taille idéale : <b>carrée, 1000 × 1000 pixels</b>, moins de <b>2 Mo</b>. Les photos non carrées s'affichent entièrement — elles ne sont jamais rognées.",
+  lbl_name:'Nom du produit', ph_name:'Exemple : T-shirt Haïti 2026',
+  lbl_price:'Prix (USD)', lbl_cat:'Catégorie', ph_cat:'Appareils · Design · Accessoires',
+  lbl_desc:'Description', ph_desc:"Ce que l'acheteur doit savoir avant d'acheter.",
+  lbl_pay_full:'Lien de paiement PayPal <span style="opacity:.6">(facultatif)</span>',
+  tg_show:'Afficher sur le site', tg_show_s:'Décochez pour le mettre en pause sans le supprimer.',
+  h_extras:'Champs supplémentaires', sub_extras:'Ajoutez tout détail : taille, couleur, matière, délai de livraison.',
+  btn_add_field:'+ Ajouter un champ', ph_field_name:'Nom du champ', ph_field_value:'Valeur', btn_remove:'Retirer',
+  btn_cancel:'Annuler', btn_save:'Enregistrer', saving:'Enregistrement…', uploading:"Envoi de l'image {i}/{n}…",
+  err_need_name:"Le produit a besoin d'un nom.",
+  err_save:'Enregistrement impossible. Vérifiez votre connexion et réessayez.',
+  err_max:'La limite est de {max} images — nous avons gardé les {n} premières.',
+  confirm_del:'Supprimer définitivement ce produit ? Cette action est irréversible.',
+  gal_main:'PRINCIPALE', gal_tip:"Cliquez pour en faire l'image principale", gal_del:'Retirer',
+  h_settings:'Paramètres du site', sub_settings:'Titres, message saisonnier, et ce qui est ouvert ou fermé.',
+  lbl_hero:"Grand titre de la page d'accueil", lbl_herosub:'Phrase sous le titre',
+  h_season:'Message saisonnier', lbl_banner:'Texte de la bannière', ph_banner:"Exemple : Collection de fin d'année — 20% jusqu'au 31 décembre",
+  lbl_accent:"Couleur d'accent", lbl_until:'Date de fin',
+  tg_banner:'Afficher la bannière', tg_banner_s:'Décochez quand la saison est terminée.',
+  h_sections:'Sections du site', tg_shop:'Boutique', tg_shop_s:"Laissez fermé jusqu'à ce que vous ayez du stock.",
+  tg_design:'Services de design', tg_design_s:'La page de commande de design graphique.',
+  ok_settings:'Paramètres enregistrés. Le site est à jour.', err_settings:'Enregistrement impossible. Réessayez.'
+},
+es: {
+  gate_sub:'Administración', lbl_email:'Correo electrónico', lbl_pass:'Contraseña', btn_login:'Iniciar sesión',
+  err_login:'Correo o contraseña incorrectos.',
+  nav_products:'Productos', nav_add:'Añadir producto', nav_settings:'Ajustes del sitio', nav_logout:'Cerrar sesión',
+  btn_add_short:'+ Añadir', sub_products:'Todo lo marcado en azul está publicado en el sitio.',
+  loading:'Cargando…', empty_title:'Aún no hay productos', empty_body:'Añade el primero para que aparezca en taavii.com.',
+  err_conn_title:'Error de conexión', err_conn_body:'Revisa la configuración de Firebase.',
+  tag_live:'Publicado', tag_off:'En pausa', btn_edit:'Editar', btn_delete:'Eliminar',
+  h_new:'Nuevo producto', h_edit:'Editar producto',
+  sub_edit:'Los cambios aparecen en el sitio automáticamente.',
+  lbl_images:'Imágenes', drop_text:'Haz clic para elegir imágenes — JPG o PNG (puedes elegir varias a la vez)',
+  hint_images:'Hasta <b>8 imágenes</b> por producto. Haz clic en una imagen para convertirla en la <b>principal</b> (la que se ve en la tienda). Haz clic en <b>✕</b> para quitar una.<br>Tamaño ideal: <b>cuadrada, 1000 × 1000 píxeles</b>, menos de <b>2 MB</b>. Las fotos que no son cuadradas se muestran completas — nunca se recortan.',
+  lbl_name:'Nombre del producto', ph_name:'Ejemplo: Camiseta Haití 2026',
+  lbl_price:'Precio (USD)', lbl_cat:'Categoría', ph_cat:'Electrodomésticos · Diseño · Accesorios',
+  lbl_desc:'Descripción', ph_desc:'Lo que el comprador necesita saber antes de comprar.',
+  lbl_pay_full:'Enlace de pago de PayPal <span style="opacity:.6">(opcional)</span>',
+  tg_show:'Mostrar en el sitio', tg_show_s:'Desmarca para pausarlo sin eliminarlo.',
+  h_extras:'Campos adicionales', sub_extras:'Añade cualquier detalle: talla, color, material, plazo de entrega.',
+  btn_add_field:'+ Añadir un campo', ph_field_name:'Nombre del campo', ph_field_value:'Valor', btn_remove:'Quitar',
+  btn_cancel:'Cancelar', btn_save:'Guardar', saving:'Guardando…', uploading:'Subiendo imagen {i}/{n}…',
+  err_need_name:'El producto necesita un nombre.',
+  err_save:'No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.',
+  err_max:'El límite es de {max} imágenes — se guardaron las primeras {n}.',
+  confirm_del:'¿Eliminar este producto de forma permanente? No se puede deshacer.',
+  gal_main:'PRINCIPAL', gal_tip:'Haz clic para convertirla en la principal', gal_del:'Quitar',
+  h_settings:'Ajustes del sitio', sub_settings:'Títulos, mensaje de temporada y lo que está abierto o cerrado.',
+  lbl_hero:'Título principal de la página de inicio', lbl_herosub:'Frase bajo el título',
+  h_season:'Mensaje de temporada', lbl_banner:'Texto del banner', ph_banner:'Ejemplo: Colección de fin de año — 20% hasta el 31 de diciembre',
+  lbl_accent:'Color de acento', lbl_until:'Fecha de fin',
+  tg_banner:'Mostrar el banner', tg_banner_s:'Desmarca cuando termine la temporada.',
+  h_sections:'Secciones del sitio', tg_shop:'Tienda', tg_shop_s:'Déjala cerrada hasta que tengas productos en stock.',
+  tg_design:'Servicios de diseño', tg_design_s:'La página de pedidos de diseño gráfico.',
+  ok_settings:'Ajustes guardados. El sitio está actualizado.', err_settings:'No se pudo guardar. Inténtalo de nuevo.'
+},
+pt: {
+  gate_sub:'Administração', lbl_email:'E-mail', lbl_pass:'Senha', btn_login:'Entrar',
+  err_login:'E-mail ou senha incorretos.',
+  nav_products:'Produtos', nav_add:'Adicionar produto', nav_settings:'Configurações do site', nav_logout:'Sair',
+  btn_add_short:'+ Adicionar', sub_products:'Tudo marcado em azul está publicado no site.',
+  loading:'Carregando…', empty_title:'Ainda não há produtos', empty_body:'Adicione o primeiro para aparecer em taavii.com.',
+  err_conn_title:'Falha na conexão', err_conn_body:'Verifique a configuração do Firebase.',
+  tag_live:'Publicado', tag_off:'Pausado', btn_edit:'Editar', btn_delete:'Excluir',
+  h_new:'Novo produto', h_edit:'Editar produto',
+  sub_edit:'As alterações aparecem no site automaticamente.',
+  lbl_images:'Imagens', drop_text:'Clique para escolher imagens — JPG ou PNG (pode escolher várias de uma vez)',
+  hint_images:'Até <b>8 imagens</b> por produto. Clique numa imagem para torná-la a <b>principal</b> (a que aparece na loja). Clique em <b>✕</b> para remover uma.<br>Tamanho ideal: <b>quadrada, 1000 × 1000 pixels</b>, menos de <b>2 MB</b>. Fotos que não são quadradas aparecem inteiras — nunca são cortadas.',
+  lbl_name:'Nome do produto', ph_name:'Exemplo: Camiseta Haiti 2026',
+  lbl_price:'Preço (USD)', lbl_cat:'Categoria', ph_cat:'Eletrodomésticos · Design · Acessórios',
+  lbl_desc:'Descrição', ph_desc:'O que o comprador precisa saber antes de comprar.',
+  lbl_pay_full:'Link de pagamento PayPal <span style="opacity:.6">(opcional)</span>',
+  tg_show:'Mostrar no site', tg_show_s:'Desmarque para pausar sem excluir.',
+  h_extras:'Campos adicionais', sub_extras:'Adicione qualquer detalhe: tamanho, cor, material, prazo de entrega.',
+  btn_add_field:'+ Adicionar um campo', ph_field_name:'Nome do campo', ph_field_value:'Valor', btn_remove:'Remover',
+  btn_cancel:'Cancelar', btn_save:'Salvar', saving:'Salvando…', uploading:'Enviando imagem {i}/{n}…',
+  err_need_name:'O produto precisa de um nome.',
+  err_save:'Não foi possível salvar. Verifique sua conexão e tente novamente.',
+  err_max:'O limite é {max} imagens — guardamos as primeiras {n}.',
+  confirm_del:'Excluir este produto permanentemente? Não será possível desfazer.',
+  gal_main:'PRINCIPAL', gal_tip:'Clique para torná-la a principal', gal_del:'Remover',
+  h_settings:'Configurações do site', sub_settings:'Títulos, mensagem sazonal e o que está aberto ou fechado.',
+  lbl_hero:'Título principal da página inicial', lbl_herosub:'Frase abaixo do título',
+  h_season:'Mensagem sazonal', lbl_banner:'Texto do banner', ph_banner:'Exemplo: Coleção de Fim de Ano — 20% até 31 de dezembro',
+  lbl_accent:'Cor de destaque', lbl_until:'Data final',
+  tg_banner:'Mostrar o banner', tg_banner_s:'Desmarque quando a temporada terminar.',
+  h_sections:'Seções do site', tg_shop:'Loja', tg_shop_s:'Deixe fechada até ter produtos em estoque.',
+  tg_design:'Serviços de design', tg_design_s:'A página de pedidos de design gráfico.',
+  ok_settings:'Configurações salvas. O site está atualizado.', err_settings:'Não foi possível salvar. Tente novamente.'
+}
+};
+
+// Premye vizit: pran lang aparèy la. Apre sa, sa Shirac chwazi a genyen.
+function deviceLang() {
+  const n = (navigator.language || '').toLowerCase();
+  for (const c of ['ht', 'fr', 'es', 'pt', 'en']) if (n.startsWith(c)) return c;
+  return 'ht';
+}
+const saved = localStorage.getItem('taavii_admin_lang');
+let LANG = I18N[saved] ? saved : deviceLang();
+
+function T(k, vars) {
+  let s = (I18N[LANG] && I18N[LANG][k]) ?? I18N.ht[k] ?? k;
+  if (vars) for (const v in vars) s = s.split('{' + v + '}').join(vars[v]);
+  return s;
+}
+
+function applyLang(l, persist) {
+  if (I18N[l]) LANG = l;
+  if (persist) localStorage.setItem('taavii_admin_lang', LANG);
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-t]').forEach(el => el.innerHTML = T(el.dataset.t));
+  document.querySelectorAll('[data-tp]').forEach(el => el.placeholder = T(el.dataset.tp));
+  ['gateLang', 'appLang'].forEach(id => { const s = $(id); if (s) s.value = LANG; });
+  // Pati ki jenere pa JS yo
+  const et = $('editTitle'); if (et) et.textContent = editingId ? T('h_edit') : T('h_new');
+  renderExtras(); renderGallery();
+  if (auth.currentUser && $('p-list').classList.contains('on')) loadProducts();
+}
+
+function buildLangSelects() {
+  const html = Object.keys(LANGS)
+    .map(c => `<option value="${c}">${LANGS[c]}</option>`).join('');
+  ['gateLang', 'appLang'].forEach(id => {
+    const sel = $(id); if (!sel) return;
+    sel.innerHTML = html;
+    sel.value = LANG;
+    sel.onchange = () => applyLang(sel.value, true);
+  });
+}
+
+const $ = id => document.getElementById(id);
+const say = (el, text, type) => { const n = $(el); n.textContent = text; n.className = "msg " + type; };
+const clear = el => { $(el).className = "msg"; };
+
+/* ── AUTH ── */
+window.login = async () => {
+  clear('gateMsg');
+  try { await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value); }
+  catch { say('gateMsg', T('err_login'), "err"); }
+};
+window.logout = () => signOut(auth);
+
+onAuthStateChanged(auth, user => {
+  $('gate').style.display = user ? 'none' : 'grid';
+  $('app').style.display  = user ? 'grid' : 'none';
+  if (user) { loadProducts(); loadSite(); }
+});
+
+/* ── NAVIGASYON ── */
+window.go = page => {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  $('p-' + page).classList.add('on');
+  document.querySelectorAll('.nav').forEach(n => n.classList.toggle('on', n.dataset.p === page));
+  window.scrollTo(0, 0);
+  if (page === 'list') loadProducts();
+};
+
+/* ── LIS ── */
+async function loadProducts() {
+  const box = $('list');
+  box.innerHTML = `<p style="color:var(--muted)">${T('loading')}</p>`;
+  try {
+    const snap = await getDocs(query(collection(db, 'products'), orderBy('created', 'desc')));
+    if (snap.empty) {
+      box.innerHTML = `<div class="empty"><b>${T('empty_title')}</b>${T('empty_body')}</div>`;
+      return;
+    }
+    box.innerHTML = '';
+    snap.forEach(d => {
+      const p = d.data();
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = `
+        <img class="thumb" src="${p.image || 'data:image/gif;base64,R0lGODlhAQABAAAAACw='}" alt="">
+        <div class="item-info">
+          <b>${esc(p.name)}<span class="tag ${p.active ? 'live' : 'off'}">${p.active ? T('tag_live') : T('tag_off')}</span></b>
+          <span>$${Number(p.price || 0).toFixed(2)}</span>
+        </div>
+        <div class="acts">
+          <button class="btn-ghost btn-sm" data-edit="${d.id}">${T('btn_edit')}</button>
+          <button class="btn-danger btn-sm" data-del="${d.id}">${T('btn_delete')}</button>
+        </div>`;
+      box.appendChild(el);
+    });
+    box.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editProduct(b.dataset.edit));
+    box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => delProduct(b.dataset.del));
+  } catch (e) {
+    box.innerHTML = `<div class="empty"><b>${T('err_conn_title')}</b>${T('err_conn_body')}</div>`;
+  }
+}
+const esc = s => String(s ?? '').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+
+/* ── EDITÈ ── */
+window.newProduct = () => {
+  editingId = null; gallery = []; extras = [];
+  $('editTitle').textContent = T('h_new');
+  ['f-name','f-price','f-cat','f-desc','f-pay'].forEach(i => $(i).value = '');
+  $('f-active').checked = true;
+  renderGallery();
+  renderExtras(); clear('editMsg'); go('edit');
+};
+
+async function editProduct(id) {
+  const snap = await getDoc(doc(db, 'products', id));
+  if (!snap.exists()) return;
+  const p = snap.data();
+  editingId = id;
+  $('editTitle').textContent = T('h_edit');
+  $('f-name').value = p.name || ''; $('f-price').value = p.price ?? '';
+  $('f-cat').value = p.category || ''; $('f-desc').value = p.description || '';
+  $('f-pay').value = p.payLink || ''; $('f-active').checked = p.active !== false;
+  // Ansyen pwodwi yo gen yon sèl `image`; nouvo yo gen yon lis `images`
+  const urls = Array.isArray(p.images) && p.images.length ? p.images
+             : (p.image ? [p.image] : []);
+  gallery = urls.map(u => ({ url: u }));
+  renderGallery();
+  extras = Array.isArray(p.extras) ? [...p.extras] : [];
+  renderExtras(); clear('editMsg'); go('edit');
+}
+
+/* ── GALRI IMAJ ── */
+function renderGallery() {
+  $('gallery').innerHTML = gallery.map((im, i) => `
+    <div class="gal-item${i === 0 ? ' main' : ''}" onclick="makeMain(${i})" title="${T('gal_tip')}">
+      <img src="${im.url || im.dataUrl}" alt="">
+      ${i === 0 ? `<span class="gal-badge">${T('gal_main')}</span>` : ''}
+      <button class="gal-del" onclick="event.stopPropagation();removeImage(${i})" title="${T('gal_del')}">✕</button>
+    </div>`).join('');
+}
+
+window.makeMain = i => {
+  if (i === 0) return;
+  gallery.unshift(gallery.splice(i, 1)[0]);
+  renderGallery();
+};
+
+window.removeImage = i => { gallery.splice(i, 1); renderGallery(); };
+
+window.pickImage = input => {
+  const room = MAX_IMAGES - gallery.length;
+  const files = [...input.files].slice(0, Math.max(0, room));
+  if (input.files.length > files.length)
+    say('editMsg', T('err_max', { max: MAX_IMAGES, n: files.length }), "err");
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = e => { gallery.push({ file: f, dataUrl: e.target.result }); renderGallery(); };
+    r.readAsDataURL(f);
+  });
+  input.value = '';   // pou w ka rechwazi menm fichye a
+};
+
+window.addExtra = () => { extras.push({ label: '', value: '' }); renderExtras(); };
+function renderExtras() {
+  const box = $('extras'); box.innerHTML = '';
+  extras.forEach((x, i) => {
+    const row = document.createElement('div');
+    row.className = 'extra';
+    row.innerHTML = `<input placeholder="${T('ph_field_name')}" value="${esc(x.label)}">
+                     <input placeholder="${T('ph_field_value')}" value="${esc(x.value)}">
+                     <button class="btn-danger btn-sm">${T('btn_remove')}</button>`;
+    const [a, b, del] = row.children;
+    a.oninput = e => extras[i].label = e.target.value;
+    b.oninput = e => extras[i].value = e.target.value;
+    del.onclick = () => { extras.splice(i, 1); renderExtras(); };
+    box.appendChild(row);
+  });
+}
+
+window.saveProduct = async () => {
+  const name = $('f-name').value.trim();
+  if (!name) return say('editMsg', T('err_need_name'), "err");
+  const btn = $('saveBtn'); btn.disabled = true; btn.textContent = T('saving');
+  try {
+    // Voye imaj ki nouvo yo; sa ki deja anliy yo rete jan yo ye
+    const images = [];
+    for (let i = 0; i < gallery.length; i++) {
+      const im = gallery[i];
+      if (im.url) { images.push(im.url); continue; }
+      btn.textContent = T('uploading', { i: i + 1, n: gallery.length });
+      const safe = im.file.name.replace(/[^\w.\-]/g, '_');
+      const path = `products/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safe}`;
+      const snap = await uploadBytes(ref(storage, path), im.file);
+      images.push(await getDownloadURL(snap.ref));
+    }
+    const image = images[0] || '';   // `image` rete pou konpatibilite
+    const data = {
+      name,
+      price: parseFloat($('f-price').value) || 0,
+      category: $('f-cat').value.trim(),
+      description: $('f-desc').value.trim(),
+      payLink: $('f-pay').value.trim(),
+      active: $('f-active').checked,
+      extras: extras.filter(x => x.label.trim()),
+      images,
+      image,
+      updated: Date.now()
+    };
+    if (editingId) await updateDoc(doc(db, 'products', editingId), data);
+    else await addDoc(collection(db, 'products'), { ...data, created: Date.now() });
+    go('list');
+  } catch (e) {
+    say('editMsg', T('err_save'), "err");
+  } finally { btn.disabled = false; btn.textContent = T('btn_save'); }
+};
+
+async function delProduct(id) {
+  if (!confirm(T('confirm_del'))) return;
+  await deleteDoc(doc(db, 'products', id));
+  loadProducts();
+}
+
+/* ── PARAMÈT ── */
+async function loadSite() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'site'));
+    const s = snap.exists() ? snap.data() : {};
+    $('s-title').value = s.heroTitle || '';
+    $('s-sub').value = s.heroSubtitle || '';
+    $('s-banner').value = s.bannerText || '';
+    $('s-accent').value = s.accent || '#d4af37';
+    $('s-until').value = s.bannerUntil || '';
+    $('s-bannerOn').checked = !!s.bannerActive;
+    $('s-shop').checked = !!s.shopActive;
+    $('s-design').checked = s.designActive !== false;
+  } catch {}
+}
+
+window.saveSite = async () => {
+  const btn = $('siteBtn'); btn.disabled = true; btn.textContent = T('saving');
+  try {
+    await setDoc(doc(db, 'settings', 'site'), {
+      heroTitle: $('s-title').value.trim(),
+      heroSubtitle: $('s-sub').value.trim(),
+      bannerText: $('s-banner').value.trim(),
+      accent: $('s-accent').value,
+      bannerUntil: $('s-until').value,
+      bannerActive: $('s-bannerOn').checked,
+      shopActive: $('s-shop').checked,
+      designActive: $('s-design').checked,
+      updated: Date.now()
+    }, { merge: true });
+    say('siteMsg', T('ok_settings'), "ok");
+    setTimeout(() => clear('siteMsg'), 3500);
+  } catch {
+    say('siteMsg', T('err_settings'), "err");
+  } finally { btn.disabled = false; btn.textContent = T('btn_save'); }
+};
+
+$('pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+
+buildLangSelects();
+applyLang(LANG, false);
+</script>
+</body>
+</html>
