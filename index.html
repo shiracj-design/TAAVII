@@ -272,14 +272,21 @@
     border: 1px solid rgba(201,168,76,0.2); color: var(--gold);
     padding: 2px 6px; border-radius: 8px;
   }
+  /* ─── BAR LANG ─── */
+  .lang-bar { display: flex; justify-content: flex-end; gap: 4px; padding: 6px 12px; background: var(--dark2); border-bottom: 1px solid var(--dark3); }
+  .lang-btn { background: transparent; border: 1px solid transparent; color: var(--gray); font-family: inherit; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; cursor: pointer; transition: color .2s, border-color .2s; }
+  .lang-btn:hover { color: var(--gold); }
+  .lang-btn.active { color: var(--gold); border-color: var(--gold-dark); }
 </style>
 </head>
 <body>
 
 <!-- TOP BAR -->
+<div class="lang-bar" id="langBar"></div>
+
 <div class="top-bar">
-  <span>🚚 Free Shipping on Orders $500+</span>
-  <span>⭐ 5-Year Warranty</span>
+  <span data-i18n="tb1">🚚 Free Shipping on Orders $500+</span>
+  <span data-i18n="tb2">⭐ 5-Year Warranty</span>
 </div>
 
 <!-- HEADER -->
@@ -292,16 +299,16 @@
       <div class="logo">TAAVII</div>
       <span class="logo-chevron">▾</span>
       <div class="logo-dropdown">
-        <a href="index.html"><span class="dd-icon">🏠</span> Main Store</a>
-        <a href="taavii-shop.html"><span class="dd-icon">🛍️</span> Shop Collection</a>
-        <a href="taavii-haiti.html"><span class="dd-icon">🇭🇹</span> Support Haiti</a>
+        <a href="index.html"><span class="dd-icon">🏠</span> <span data-i18n="dd_main">Main Store</span></a>
+        <a href="taavii-shop.html"><span class="dd-icon">🛍️</span> <span data-i18n="dd_shop">Shop Collection</span></a>
+        <a href="taavii-haiti.html"><span class="dd-icon">🇭🇹</span> <span data-i18n="dd_haiti">Support Haiti</span></a>
         <div class="dd-sep"></div>
-        <a href="taavii-partners.html"><span class="dd-icon">🤝</span> Partner Program</a>
+        <a href="taavii-partners.html"><span class="dd-icon">🤝</span> <span data-i18n="dd_partner">Partner Program</span></a>
       </div>
     </div>
 
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search premium appliances..." oninput="searchProducts(this.value)" onkeydown="if(event.key==='Enter')searchProducts(this.value)">
+      <input type="text" id="searchInput" data-i18n-ph="ph_search" placeholder="Search premium appliances..." oninput="searchProducts(this.value)" onkeydown="if(event.key==='Enter')searchProducts(this.value)">
       <button onclick="searchProducts(document.getElementById('searchInput').value)">
         <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
       </button>
@@ -313,12 +320,12 @@
   </div>
   <!-- CATEGORIES STRIP -->
   <div class="cats-strip">
-    <div class="cat-chip active" onclick="filterCat('all',this)">All</div>
-    <div class="cat-chip" onclick="filterCat('kitchen',this)">☕ Kitchen</div>
-    <div class="cat-chip" onclick="filterCat('smart',this)">🏠 Smart Home</div>
-    <div class="cat-chip" onclick="filterCat('cooling',this)">❄️ Cooling</div>
-    <div class="cat-chip" onclick="filterCat('laundry',this)">👕 Laundry</div>
-    <div class="cat-chip" onclick="filterCat('deals',this)">🔥 Deals</div>
+    <div class="cat-chip active" onclick="filterCat('all',this)" data-i18n="cat_all">All</div>
+    <div class="cat-chip" onclick="filterCat('kitchen',this)" data-i18n="cat_kitchen">☕ Kitchen</div>
+    <div class="cat-chip" onclick="filterCat('smart',this)" data-i18n="cat_smart">🏠 Smart Home</div>
+    <div class="cat-chip" onclick="filterCat('cooling',this)" data-i18n="cat_cooling">❄️ Cooling</div>
+    <div class="cat-chip" onclick="filterCat('laundry',this)" data-i18n="cat_laundry">👕 Laundry</div>
+    <div class="cat-chip" onclick="filterCat('deals',this)" data-i18n="cat_deals">🔥 Deals</div>
   </div>
 </header>
 
@@ -326,10 +333,10 @@
 <div class="hero-banner">
   <img src="icon%20-%20logo%20-%20Taavii%20-%20%40300x.png" alt="TAAVII">
   <div class="hero-text">
-    <div class="sub">New Collection — 2026</div>
-    <h1>The Art of<br>Living <em>Well.</em></h1>
-    <p>Premium appliances for the discerning home.</p>
-    <button class="hero-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">EXPLORE NOW</button>
+    <div class="sub" data-i18n="hero_eyebrow">New Collection — 2026</div>
+    <h1 data-i18n="hero_h1">The Art of<br>Living <em>Well.</em></h1>
+    <p data-i18n="hero_p">Premium appliances for the discerning home.</p>
+    <button class="hero-btn" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})" data-i18n="hero_btn">EXPLORE NOW</button>
   </div>
 </div>
 
@@ -337,16 +344,16 @@
 <div class="deal-banner">
   <div class="deal-icon">⚡</div>
   <div class="deal-text">
-    <h3>Flash Sale — Limited Time</h3>
-    <p>Up to 35% off select premium appliances</p>
+    <h3 data-i18n="flash_h3">Flash Sale — Limited Time</h3>
+    <p data-i18n="flash_p">Up to 35% off select premium appliances</p>
   </div>
-  <div class="deal-badge">35% OFF</div>
+  <div class="deal-badge" data-i18n="flash_badge">35% OFF</div>
 </div>
 
 <!-- FEATURED -->
 <div class="section-header">
-  <h2>Our <em>Finest</em> Pieces</h2>
-  <a href="#" class="view-all">View All →</a>
+  <h2 data-i18n="sec_finest">Our <em>Finest</em> Pieces</h2>
+  <a href="#" class="view-all" data-i18n="view_all">View All →</a>
 </div>
 <div class="featured-scroll">
   <div class="featured-card" onclick="openProduct(0)">
@@ -369,16 +376,16 @@
 
 <!-- WHY US -->
 <div class="why-strip">
-  <div class="why-item"><div class="wi">🚚</div><span>Free<br>Shipping</span></div>
-  <div class="why-item"><div class="wi">🛡️</div><span>5-Year<br>Warranty</span></div>
-  <div class="why-item"><div class="wi">↩️</div><span>30-Day<br>Returns</span></div>
-  <div class="why-item"><div class="wi">💎</div><span>Premium<br>Quality</span></div>
+  <div class="why-item"><div class="wi">🚚</div><span data-i18n="why1">Free<br>Shipping</span></div>
+  <div class="why-item"><div class="wi">🛡️</div><span data-i18n="why2">5-Year<br>Warranty</span></div>
+  <div class="why-item"><div class="wi">↩️</div><span data-i18n="why3">30-Day<br>Returns</span></div>
+  <div class="why-item"><div class="wi">💎</div><span data-i18n="why4">Premium<br>Quality</span></div>
 </div>
 
 <!-- ALL PRODUCTS -->
 <div id="products">
   <div class="section-header">
-    <h2>The <em>Collection</em></h2>
+    <h2 data-i18n="sec_collection">The <em>Collection</em></h2>
     <span id="productCount" style="color:var(--gray);font-size:12px;"></span>
   </div>
   <div class="products-grid" id="productsGrid"></div>
@@ -386,20 +393,20 @@
 
 <!-- CATEGORIES -->
 <div class="section-header">
-  <h2>Shop by <em>Room</em></h2>
+  <h2 data-i18n="sec_room">Shop by <em>Room</em></h2>
 </div>
 <div class="cat-blocks">
   <div class="cat-block" onclick="filterCat('kitchen',document.querySelectorAll('.cat-chip')[1])">
-    <div class="icon">☕</div><h3>Kitchen</h3><p>24 Products</p><div class="arrow">→</div>
+    <div class="icon">☕</div><h3 data-i18n="room_kitchen">Kitchen</h3><p data-i18n="cnt24">24 Products</p><div class="arrow">→</div>
   </div>
   <div class="cat-block" onclick="filterCat('smart',document.querySelectorAll('.cat-chip')[2])">
-    <div class="icon">🏠</div><h3>Smart Home</h3><p>18 Products</p><div class="arrow">→</div>
+    <div class="icon">🏠</div><h3 data-i18n="room_smart">Smart Home</h3><p data-i18n="cnt18">18 Products</p><div class="arrow">→</div>
   </div>
   <div class="cat-block" onclick="filterCat('cooling',document.querySelectorAll('.cat-chip')[3])">
-    <div class="icon">❄️</div><h3>Cooling</h3><p>12 Products</p><div class="arrow">→</div>
+    <div class="icon">❄️</div><h3 data-i18n="room_cooling">Cooling</h3><p data-i18n="cnt12">12 Products</p><div class="arrow">→</div>
   </div>
   <div class="cat-block" onclick="filterCat('laundry',document.querySelectorAll('.cat-chip')[4])">
-    <div class="icon">👕</div><h3>Laundry</h3><p>9 Products</p><div class="arrow">→</div>
+    <div class="icon">👕</div><h3 data-i18n="room_laundry">Laundry</h3><p data-i18n="cnt9">9 Products</p><div class="arrow">→</div>
   </div>
 </div>
 
@@ -408,21 +415,21 @@
   <div class="footer-logo">TAAVII</div>
   <div class="footer-links">
     <div class="footer-col">
-      <h4>Shop</h4>
-      <a href="taavii-shop.html">Shop Collection</a>
-      <a href="taavii-haiti.html">🇭🇹 Support Haiti</a>
-      <a href="#">Kitchen</a>
-      <a href="#">Smart Home</a>
+      <h4 data-i18n="foot_shop">Shop</h4>
+      <a href="taavii-shop.html" data-i18n="dd_shop">Shop Collection</a>
+      <a href="taavii-haiti.html" data-i18n="foot_haiti">🇭🇹 Support Haiti</a>
+      <a href="#" data-i18n="room_kitchen">Kitchen</a>
+      <a href="#" data-i18n="room_smart">Smart Home</a>
     </div>
     <div class="footer-col">
-      <h4>Support</h4>
-      <a href="#">Warranty</a>
-      <a href="#">Returns</a>
-      <a href="#">Installation</a>
-      <a href="taavii-partners.html">Partner Program</a>
+      <h4 data-i18n="foot_support">Support</h4>
+      <a href="#" data-i18n="foot_warranty">Warranty</a>
+      <a href="#" data-i18n="foot_returns">Returns</a>
+      <a href="#" data-i18n="foot_install">Installation</a>
+      <a href="taavii-partners.html" data-i18n="dd_partner">Partner Program</a>
     </div>
   </div>
-  <div class="footer-bottom">TAAVII™, a brand of Shirac Enterprise LLC. © 2026 All rights reserved.</div>
+  <div class="footer-bottom" data-i18n="foot_bottom">TAAVII™, a brand of Shirac Enterprise LLC. © 2026 All rights reserved.</div>
 </footer>
 
 <!-- OVERLAY -->
@@ -432,18 +439,18 @@
 <div class="cart-drawer" id="cartDrawer">
   <div class="drawer-handle"></div>
   <div class="drawer-header">
-    <h3>Your Cart</h3>
+    <h3 data-i18n="cart_title">Your Cart</h3>
     <button class="close-btn" onclick="closeCart()">✕</button>
   </div>
   <div class="cart-items" id="cartItems">
-    <div class="cart-empty"><span>🛒</span><p style="font-size:13px;">Your cart is empty</p></div>
+    <div class="cart-empty"><span>🛒</span><p style="font-size:13px;" data-i18n="cart_empty">Your cart is empty</p></div>
   </div>
   <div class="cart-footer" id="cartFooter" style="display:none;">
     <div class="cart-total">
       <span>Total</span>
       <strong id="cartTotal">$0</strong>
     </div>
-    <button class="checkout-btn" onclick="openCheckout()">PROCEED TO CHECKOUT</button>
+    <button class="checkout-btn" onclick="openCheckout()" data-i18n="checkout_btn">PROCEED TO CHECKOUT</button>
   </div>
 </div>
 
@@ -451,11 +458,11 @@
 <div class="checkout-modal" id="checkoutModal">
   <div class="checkout-header">
     <button class="back-btn" onclick="closeCheckout()">←</button>
-    <h2>Checkout</h2>
+    <h2 data-i18n="checkout_title">Checkout</h2>
   </div>
   <div class="checkout-body">
     <div class="checkout-section">
-      <h3>Order Summary</h3>
+      <h3 data-i18n="order_summary">Order Summary</h3>
       <div id="checkoutItems"></div>
       <div class="order-total-row">
         <span>Total</span>
@@ -463,22 +470,22 @@
       </div>
     </div>
     <div class="checkout-section">
-      <h3>📦 Shipping Information</h3>
+      <h3 data-i18n="shipping_info">📦 Shipping Information</h3>
       <div class="form-row">
-        <div class="form-group"><label>First Name</label><input type="text" id="firstName" placeholder="John"></div>
-        <div class="form-group"><label>Last Name</label><input type="text" id="lastName" placeholder="Doe"></div>
+        <div class="form-group"><label data-i18n="f_first">First Name</label><input type="text" id="firstName" placeholder="John"></div>
+        <div class="form-group"><label data-i18n="f_last">Last Name</label><input type="text" id="lastName" placeholder="Doe"></div>
       </div>
-      <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="john@example.com"></div>
-      <div class="form-group"><label>Phone</label><input type="tel" id="phone" placeholder="+1 (555) 000-0000"></div>
-      <div class="form-group"><label>Address</label><input type="text" id="address" placeholder="123 Main Street"></div>
+      <div class="form-group"><label data-i18n="f_email">Email</label><input type="email" id="email" placeholder="john@example.com"></div>
+      <div class="form-group"><label data-i18n="f_phone">Phone</label><input type="tel" id="phone" placeholder="+1 (555) 000-0000"></div>
+      <div class="form-group"><label data-i18n="f_address">Address</label><input type="text" id="address" placeholder="123 Main Street"></div>
       <div class="form-row">
-        <div class="form-group"><label>City</label><input type="text" id="city" placeholder="New York"></div>
-        <div class="form-group"><label>ZIP Code</label><input type="text" id="zip" placeholder="10001"></div>
+        <div class="form-group"><label data-i18n="f_city">City</label><input type="text" id="city" placeholder="New York"></div>
+        <div class="form-group"><label data-i18n="f_zip">ZIP Code</label><input type="text" id="zip" placeholder="10001"></div>
       </div>
       <div class="form-group">
-        <label>State</label>
+        <label data-i18n="f_state">State</label>
         <select id="state">
-          <option value="">Select State</option>
+          <option value="" data-i18n="select_state">Select State</option>
           <option>Alabama</option><option>Alaska</option><option>Arizona</option>
           <option>California</option><option>Colorado</option><option>Connecticut</option>
           <option>Florida</option><option>Georgia</option><option>Hawaii</option>
@@ -489,20 +496,20 @@
       </div>
     </div>
     <div class="checkout-section">
-      <h3>💳 Payment</h3>
-      <div class="form-group"><label>Card Number</label><input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"></div>
+      <h3 data-i18n="payment">💳 Payment</h3>
+      <div class="form-group"><label data-i18n="f_card">Card Number</label><input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)"></div>
       <div class="form-row">
-        <div class="form-group"><label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"></div>
-        <div class="form-group"><label>CVV</label><input type="text" id="cvv" placeholder="123" maxlength="4"></div>
+        <div class="form-group"><label data-i18n="f_expiry">Expiry</label><input type="text" id="expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"></div>
+        <div class="form-group"><label data-i18n="f_cvv">CVV</label><input type="text" id="cvv" placeholder="123" maxlength="4"></div>
       </div>
-      <div class="form-group"><label>Name on Card</label><input type="text" id="cardName" placeholder="JOHN DOE"></div>
+      <div class="form-group"><label data-i18n="f_cardname">Name on Card</label><input type="text" id="cardName" placeholder="JOHN DOE"></div>
       <div class="payment-icons">
         <div class="pay-icon">VISA</div><div class="pay-icon">MC</div>
         <div class="pay-icon">AMEX</div><div class="pay-icon">PayPal</div>
       </div>
     </div>
     <div id="paypal-button-container"></div>
-    <p class="paypal-notice">🔒 Secured by <span>PayPal</span> — Visa, Mastercard, Amex, Debit accepted</p>
+    <p class="paypal-notice" data-i18n="paypal_notice">🔒 Secured by <span>PayPal</span> — Visa, Mastercard, Amex, Debit accepted</p>
   </div>
 </div>
 
@@ -510,7 +517,7 @@
 <div class="product-modal" id="productModal">
   <div class="pm-header">
     <button class="back-btn" onclick="closeProduct()">←</button>
-    <span style="font-size:13px;color:var(--gray);">Product Details</span>
+    <span style="font-size:13px;color:var(--gray);" data-i18n="product_details">Product Details</span>
   </div>
   <div class="pm-stage">
     <img class="pm-img" id="pmImg" src="" alt="">
@@ -528,8 +535,8 @@
       <div class="pm-save" id="pmSave"></div>
     </div>
     <div class="pm-desc" id="pmDesc"></div>
-    <div class="pm-features"><h4>Key Features</h4><div id="pmFeatures"></div></div>
-    <button class="pm-add-btn" id="pmAddBtn">ADD TO CART</button>
+    <div class="pm-features"><h4 data-i18n="key_features">Key Features</h4><div id="pmFeatures"></div></div>
+    <button class="pm-add-btn" id="pmAddBtn" data-i18n="add_cart">ADD TO CART</button>
   </div>
 </div>
 
@@ -537,9 +544,9 @@
 <div class="success-modal" id="successModal">
   <div class="success-box">
     <div class="success-icon">✅</div>
-    <h2>Order Placed!</h2>
-    <p>Thank you for your TAAVII purchase.<br>You'll receive a confirmation email shortly.</p>
-    <button onclick="closeSuccess()">CONTINUE SHOPPING</button>
+    <h2 data-i18n="order_placed">Order Placed!</h2>
+    <p data-i18n="order_thanks">Thank you for your TAAVII purchase.<br>You'll receive a confirmation email shortly.</p>
+    <button onclick="closeSuccess()" data-i18n="continue_shopping">CONTINUE SHOPPING</button>
   </div>
 </div>
 
@@ -547,23 +554,186 @@
 <div class="bottom-nav">
   <button class="nav-item active" onclick="scrollTop()">
     <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    <span>Home</span>
+    <span data-i18n="bn_home">Home</span>
   </button>
   <button class="nav-item" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
     <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"/></svg>
-    <span>Shop</span>
+    <span data-i18n="bn_shop">Shop</span>
   </button>
   <button class="nav-item" onclick="filterCat('deals',document.querySelectorAll('.cat-chip')[5])">
     <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-    <span>Deals</span>
+    <span data-i18n="bn_deals">Deals</span>
   </button>
   <button class="nav-item" onclick="openCart()">
     <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96C5 16.1 6.1 17 7 17h11v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H16c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20.5 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-    <span>Cart</span>
+    <span data-i18n="bn_cart">Cart</span>
   </button>
 </div>
 
 <script>
+/* ═══ LANG ═══
+   Tradiksyon machin — fè yon moun ki pale lang lan verifye yo anvan
+   ou konte sou yo devan kliyan. Non pwodwi yo pa tradui (se done ou tape). */
+const I18N = {
+en: {
+ tb1:"🚚 Free Shipping on Orders $500+", tb2:"⭐ 5-Year Warranty",
+ dd_main:"Main Store", dd_shop:"Shop Collection", dd_haiti:"Support Haiti", dd_partner:"Partner Program",
+ ph_search:"Search premium appliances...",
+ cat_all:"All", cat_kitchen:"☕ Kitchen", cat_smart:"🏠 Smart Home", cat_cooling:"❄️ Cooling", cat_laundry:"👕 Laundry", cat_deals:"🔥 Deals",
+ hero_eyebrow:"New Collection — 2026", hero_h1:"The Art of<br>Living <em>Well.</em>", hero_p:"Premium appliances for the discerning home.", hero_btn:"EXPLORE NOW",
+ flash_h3:"Flash Sale — Limited Time", flash_p:"Up to 35% off select premium appliances", flash_badge:"35% OFF",
+ sec_finest:"Our <em>Finest</em> Pieces", view_all:"View All →", sec_collection:"The <em>Collection</em>", sec_room:"Shop by <em>Room</em>",
+ why1:"Free<br>Shipping", why2:"5-Year<br>Warranty", why3:"30-Day<br>Returns", why4:"Premium<br>Quality",
+ room_kitchen:"Kitchen", room_smart:"Smart Home", room_cooling:"Cooling", room_laundry:"Laundry",
+ cnt24:"24 Products", cnt18:"18 Products", cnt12:"12 Products", cnt9:"9 Products",
+ foot_shop:"Shop", foot_haiti:"🇭🇹 Support Haiti", foot_support:"Support", foot_warranty:"Warranty", foot_returns:"Returns", foot_install:"Installation",
+ foot_bottom:"TAAVII™, a brand of Shirac Enterprise LLC. © 2026 All rights reserved.",
+ cart_title:"Your Cart", cart_empty:"Your cart is empty", total:"Total", checkout_btn:"PROCEED TO CHECKOUT",
+ checkout_title:"Checkout", order_summary:"Order Summary", shipping_info:"📦 Shipping Information",
+ f_first:"First Name", f_last:"Last Name", f_email:"Email", f_phone:"Phone", f_address:"Address", f_city:"City", f_zip:"ZIP Code", f_state:"State", select_state:"Select State",
+ payment:"💳 Payment", f_card:"Card Number", f_expiry:"Expiry", f_cvv:"CVV", f_cardname:"Name on Card",
+ paypal_notice:"🔒 Secured by <span>PayPal</span> — Visa, Mastercard, Amex, Debit accepted",
+ product_details:"Product Details", key_features:"Key Features", add_cart:"ADD TO CART",
+ order_placed:"Order Placed!", order_thanks:"Thank you for your TAAVII purchase.<br>You'll receive a confirmation email shortly.", continue_shopping:"CONTINUE SHOPPING",
+ bn_home:"Home", bn_shop:"Shop", bn_deals:"Deals", bn_cart:"Cart",
+ n_products:"{n} products", no_results:'No products found for "{q}"', added_cart:"{name} added to cart!",
+ fill_fields:"Please fill all shipping fields first", save_amt:"Save ${v}", no_products:"No products available right now. Please check back soon."
+},
+fr: {
+ tb1:"🚚 Livraison gratuite dès 500$", tb2:"⭐ Garantie 5 ans",
+ dd_main:"Boutique principale", dd_shop:"Voir la collection", dd_haiti:"Soutenir Haïti", dd_partner:"Programme partenaire",
+ ph_search:"Rechercher des appareils premium...",
+ cat_all:"Tout", cat_kitchen:"☕ Cuisine", cat_smart:"🏠 Maison connectée", cat_cooling:"❄️ Froid", cat_laundry:"👕 Lavage", cat_deals:"🔥 Promos",
+ hero_eyebrow:"Nouvelle collection — 2026", hero_h1:"L'Art de<br>Bien <em>Vivre.</em>", hero_p:"Des appareils premium pour une maison raffinée.", hero_btn:"EXPLORER",
+ flash_h3:"Vente flash — durée limitée", flash_p:"Jusqu'à 35% sur une sélection d'appareils premium", flash_badge:"35% OFF",
+ sec_finest:"Nos <em>plus belles</em> pièces", view_all:"Voir tout →", sec_collection:"La <em>Collection</em>", sec_room:"Acheter par <em>pièce</em>",
+ why1:"Livraison<br>gratuite", why2:"Garantie<br>5 ans", why3:"Retours<br>30 jours", why4:"Qualité<br>premium",
+ room_kitchen:"Cuisine", room_smart:"Maison connectée", room_cooling:"Froid", room_laundry:"Lavage",
+ cnt24:"24 produits", cnt18:"18 produits", cnt12:"12 produits", cnt9:"9 produits",
+ foot_shop:"Boutique", foot_haiti:"🇭🇹 Soutenir Haïti", foot_support:"Assistance", foot_warranty:"Garantie", foot_returns:"Retours", foot_install:"Installation",
+ foot_bottom:"TAAVII™, une marque de Shirac Enterprise LLC. © 2026 Tous droits réservés.",
+ cart_title:"Votre panier", cart_empty:"Votre panier est vide", total:"Total", checkout_btn:"PASSER LA COMMANDE",
+ checkout_title:"Commande", order_summary:"Récapitulatif", shipping_info:"📦 Adresse de livraison",
+ f_first:"Prénom", f_last:"Nom", f_email:"E-mail", f_phone:"Téléphone", f_address:"Adresse", f_city:"Ville", f_zip:"Code postal", f_state:"État", select_state:"Choisir un état",
+ payment:"💳 Paiement", f_card:"Numéro de carte", f_expiry:"Expiration", f_cvv:"CVV", f_cardname:"Nom sur la carte",
+ paypal_notice:"🔒 Sécurisé par <span>PayPal</span> — Visa, Mastercard, Amex, carte de débit acceptées",
+ product_details:"Détails du produit", key_features:"Caractéristiques", add_cart:"AJOUTER AU PANIER",
+ order_placed:"Commande passée !", order_thanks:"Merci pour votre achat TAAVII.<br>Vous recevrez un e-mail de confirmation sous peu.", continue_shopping:"CONTINUER MES ACHATS",
+ bn_home:"Accueil", bn_shop:"Boutique", bn_deals:"Promos", bn_cart:"Panier",
+ n_products:"{n} produits", no_results:'Aucun produit trouvé pour "{q}"', added_cart:"{name} ajouté au panier !",
+ fill_fields:"Veuillez d'abord remplir tous les champs de livraison", save_amt:"Économisez ${v}", no_products:"Aucun produit disponible pour le moment. Revenez bientôt."
+},
+es: {
+ tb1:"🚚 Envío gratis en pedidos +$500", tb2:"⭐ Garantía de 5 años",
+ dd_main:"Tienda principal", dd_shop:"Ver la colección", dd_haiti:"Apoyar a Haití", dd_partner:"Programa de socios",
+ ph_search:"Buscar electrodomésticos premium...",
+ cat_all:"Todo", cat_kitchen:"☕ Cocina", cat_smart:"🏠 Hogar inteligente", cat_cooling:"❄️ Refrigeración", cat_laundry:"👕 Lavado", cat_deals:"🔥 Ofertas",
+ hero_eyebrow:"Nueva colección — 2026", hero_h1:"El Arte de<br>Vivir <em>Bien.</em>", hero_p:"Electrodomésticos premium para un hogar refinado.", hero_btn:"EXPLORAR",
+ flash_h3:"Venta relámpago — tiempo limitado", flash_p:"Hasta 35% en electrodomésticos premium seleccionados", flash_badge:"35% OFF",
+ sec_finest:"Nuestras <em>mejores</em> piezas", view_all:"Ver todo →", sec_collection:"La <em>Colección</em>", sec_room:"Comprar por <em>ambiente</em>",
+ why1:"Envío<br>gratis", why2:"Garantía<br>5 años", why3:"Devoluciones<br>30 días", why4:"Calidad<br>premium",
+ room_kitchen:"Cocina", room_smart:"Hogar inteligente", room_cooling:"Refrigeración", room_laundry:"Lavado",
+ cnt24:"24 productos", cnt18:"18 productos", cnt12:"12 productos", cnt9:"9 productos",
+ foot_shop:"Tienda", foot_haiti:"🇭🇹 Apoyar a Haití", foot_support:"Ayuda", foot_warranty:"Garantía", foot_returns:"Devoluciones", foot_install:"Instalación",
+ foot_bottom:"TAAVII™, una marca de Shirac Enterprise LLC. © 2026 Todos los derechos reservados.",
+ cart_title:"Tu carrito", cart_empty:"Tu carrito está vacío", total:"Total", checkout_btn:"IR A PAGAR",
+ checkout_title:"Pago", order_summary:"Resumen del pedido", shipping_info:"📦 Datos de envío",
+ f_first:"Nombre", f_last:"Apellido", f_email:"Correo electrónico", f_phone:"Teléfono", f_address:"Dirección", f_city:"Ciudad", f_zip:"Código postal", f_state:"Estado", select_state:"Selecciona un estado",
+ payment:"💳 Pago", f_card:"Número de tarjeta", f_expiry:"Vencimiento", f_cvv:"CVV", f_cardname:"Nombre en la tarjeta",
+ paypal_notice:"🔒 Protegido por <span>PayPal</span> — Visa, Mastercard, Amex y débito aceptados",
+ product_details:"Detalles del producto", key_features:"Características", add_cart:"AÑADIR AL CARRITO",
+ order_placed:"¡Pedido realizado!", order_thanks:"Gracias por tu compra en TAAVII.<br>Recibirás un correo de confirmación en breve.", continue_shopping:"SEGUIR COMPRANDO",
+ bn_home:"Inicio", bn_shop:"Tienda", bn_deals:"Ofertas", bn_cart:"Carrito",
+ n_products:"{n} productos", no_results:'No se encontraron productos para "{q}"', added_cart:"¡{name} añadido al carrito!",
+ fill_fields:"Completa primero todos los campos de envío", save_amt:"Ahorra ${v}", no_products:"No hay productos disponibles por ahora. Vuelve pronto."
+},
+pt: {
+ tb1:"🚚 Frete grátis em pedidos +$500", tb2:"⭐ Garantia de 5 anos",
+ dd_main:"Loja principal", dd_shop:"Ver a coleção", dd_haiti:"Apoiar o Haiti", dd_partner:"Programa de parceiros",
+ ph_search:"Buscar eletrodomésticos premium...",
+ cat_all:"Tudo", cat_kitchen:"☕ Cozinha", cat_smart:"🏠 Casa inteligente", cat_cooling:"❄️ Refrigeração", cat_laundry:"👕 Lavanderia", cat_deals:"🔥 Ofertas",
+ hero_eyebrow:"Nova coleção — 2026", hero_h1:"A Arte de<br>Viver <em>Bem.</em>", hero_p:"Eletrodomésticos premium para uma casa refinada.", hero_btn:"EXPLORAR",
+ flash_h3:"Venda relâmpago — tempo limitado", flash_p:"Até 35% em eletrodomésticos premium selecionados", flash_badge:"35% OFF",
+ sec_finest:"Nossas <em>melhores</em> peças", view_all:"Ver tudo →", sec_collection:"A <em>Coleção</em>", sec_room:"Comprar por <em>ambiente</em>",
+ why1:"Frete<br>grátis", why2:"Garantia<br>5 anos", why3:"Devoluções<br>30 dias", why4:"Qualidade<br>premium",
+ room_kitchen:"Cozinha", room_smart:"Casa inteligente", room_cooling:"Refrigeração", room_laundry:"Lavanderia",
+ cnt24:"24 produtos", cnt18:"18 produtos", cnt12:"12 produtos", cnt9:"9 produtos",
+ foot_shop:"Loja", foot_haiti:"🇭🇹 Apoiar o Haiti", foot_support:"Suporte", foot_warranty:"Garantia", foot_returns:"Devoluções", foot_install:"Instalação",
+ foot_bottom:"TAAVII™, uma marca da Shirac Enterprise LLC. © 2026 Todos os direitos reservados.",
+ cart_title:"Seu carrinho", cart_empty:"Seu carrinho está vazio", total:"Total", checkout_btn:"FINALIZAR COMPRA",
+ checkout_title:"Pagamento", order_summary:"Resumo do pedido", shipping_info:"📦 Dados de entrega",
+ f_first:"Nome", f_last:"Sobrenome", f_email:"E-mail", f_phone:"Telefone", f_address:"Endereço", f_city:"Cidade", f_zip:"CEP", f_state:"Estado", select_state:"Selecione um estado",
+ payment:"💳 Pagamento", f_card:"Número do cartão", f_expiry:"Validade", f_cvv:"CVV", f_cardname:"Nome no cartão",
+ paypal_notice:"🔒 Protegido por <span>PayPal</span> — Visa, Mastercard, Amex e débito aceitos",
+ product_details:"Detalhes do produto", key_features:"Características", add_cart:"ADICIONAR AO CARRINHO",
+ order_placed:"Pedido realizado!", order_thanks:"Obrigado pela sua compra na TAAVII.<br>Você receberá um e-mail de confirmação em breve.", continue_shopping:"CONTINUAR COMPRANDO",
+ bn_home:"Início", bn_shop:"Loja", bn_deals:"Ofertas", bn_cart:"Carrinho",
+ n_products:"{n} produtos", no_results:'Nenhum produto encontrado para "{q}"', added_cart:"{name} adicionado ao carrinho!",
+ fill_fields:"Preencha primeiro todos os campos de entrega", save_amt:"Economize ${v}", no_products:"Nenhum produto disponível no momento. Volte em breve."
+},
+ht: {
+ tb1:"🚚 Livrezon gratis pou lòd $500+", tb2:"⭐ Garanti 5 ane",
+ dd_main:"Boutik prensipal", dd_shop:"Wè koleksyon an", dd_haiti:"Soutni Ayiti", dd_partner:"Pwogram patnè",
+ ph_search:"Chèche aparèy elit...",
+ cat_all:"Tout", cat_kitchen:"☕ Kizin", cat_smart:"🏠 Kay entelijan", cat_cooling:"❄️ Frèt", cat_laundry:"👕 Lesiv", cat_deals:"🔥 Pwomo",
+ hero_eyebrow:"Nouvo koleksyon — 2026", hero_h1:"Fason pou<br>Viv <em>Byen.</em>", hero_p:"Aparèy elit pou yon kay rafine.", hero_btn:"EKSPLORE",
+ flash_h3:"Vant flash — tan limite", flash_p:"Jiska 35% rabè sou aparèy elit chwazi yo", flash_badge:"35% RABÈ",
+ sec_finest:"Pi <em>bèl</em> pyès nou yo", view_all:"Wè tout →", sec_collection:"<em>Koleksyon</em> an", sec_room:"Achte pa <em>pyès kay</em>",
+ why1:"Livrezon<br>gratis", why2:"Garanti<br>5 ane", why3:"Retou<br>30 jou", why4:"Kalite<br>elit",
+ room_kitchen:"Kizin", room_smart:"Kay entelijan", room_cooling:"Frèt", room_laundry:"Lesiv",
+ cnt24:"24 pwodwi", cnt18:"18 pwodwi", cnt12:"12 pwodwi", cnt9:"9 pwodwi",
+ foot_shop:"Boutik", foot_haiti:"🇭🇹 Soutni Ayiti", foot_support:"Sipò", foot_warranty:"Garanti", foot_returns:"Retou", foot_install:"Enstalasyon",
+ foot_bottom:"TAAVII™, yon mak Shirac Enterprise LLC. © 2026 Tout dwa rezève.",
+ cart_title:"Panye w", cart_empty:"Panye w vid", total:"Total", checkout_btn:"ALE PEYE",
+ checkout_title:"Peman", order_summary:"Rezime kòmand lan", shipping_info:"📦 Enfòmasyon livrezon",
+ f_first:"Prenon", f_last:"Siyati", f_email:"Imel", f_phone:"Telefòn", f_address:"Adrès", f_city:"Vil", f_zip:"Kòd postal", f_state:"Eta", select_state:"Chwazi yon eta",
+ payment:"💳 Peman", f_card:"Nimewo kat la", f_expiry:"Ekspirasyon", f_cvv:"CVV", f_cardname:"Non sou kat la",
+ paypal_notice:"🔒 Sekirize pa <span>PayPal</span> — Visa, Mastercard, Amex, kat debi aksepte",
+ product_details:"Detay pwodwi a", key_features:"Karakteristik", add_cart:"AJOUTE NAN PANYE",
+ order_placed:"Kòmand lan pase!", order_thanks:"Mèsi pou acha TAAVII w la.<br>W ap resevwa yon imel konfimasyon talè.", continue_shopping:"KONTINYE ACHTE",
+ bn_home:"Akèy", bn_shop:"Boutik", bn_deals:"Pwomo", bn_cart:"Panye",
+ n_products:"{n} pwodwi", no_results:'Nou pa jwenn okenn pwodwi pou "{q}"', added_cart:"{name} ajoute nan panye a!",
+ fill_fields:"Ranpli tout chan livrezon yo an premye", save_amt:"Ekonomize ${v}", no_products:"Pa gen pwodwi disponib kounye a. Tounen byento."
+}
+};
+
+const LANG_NAMES = { en:'EN', fr:'FR', es:'ES', pt:'PT', ht:'HT' };
+
+function detectLang() {
+  const saved = localStorage.getItem('taavii_lang');
+  if (saved && I18N[saved]) return saved;
+  const n = (navigator.language || 'en').toLowerCase();
+  for (const c of ['ht','fr','es','pt','en']) if (n.startsWith(c)) return c;
+  return 'en';
+}
+
+let LANG = detectLang();
+
+function T(k, vars) {
+  let s = (I18N[LANG] && I18N[LANG][k]) ?? I18N.en[k] ?? k;
+  if (vars) for (const v in vars) s = s.split('{' + v + '}').join(vars[v]);
+  return s;
+}
+
+function applyLang(l, persist) {
+  if (I18N[l]) LANG = l;
+  if (persist) localStorage.setItem('taavii_lang', LANG);
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el => el.innerHTML = T(el.dataset.i18n));
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = T(el.dataset.i18nPh));
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === LANG));
+  // Pati ki jenere pa JS yo
+  if (typeof renderProducts === 'function' && Array.isArray(products)) renderProducts(products);
+  if (typeof renderCart === 'function') renderCart();
+}
+
+function buildLangBar() {
+  const bar = document.getElementById('langBar'); if (!bar) return;
+  bar.innerHTML = Object.keys(LANG_NAMES)
+    .map(c => `<button class="lang-btn" data-lang="${c}">${LANG_NAMES[c]}</button>`).join('');
+  bar.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => applyLang(b.dataset.lang, true));
+}
+
 let products = [
   { id:0, name:'Artisan Pro Espresso', cat:'kitchen', catLabel:'Kitchen', price:2499, orig:3299, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'Bestseller', stars:4.9, reviews:'(284)', desc:'Craft barista-quality espresso at home with precision temperature control and 19-bar pressure. Engineered for the serious coffee enthusiast.', features:['19-bar professional pressure','PID temperature control','Built-in grinder','Steam wand for latte art','60oz water reservoir'] },
   { id:1, name:'Quantum Clean Pro', cat:'smart', catLabel:'Smart Home', price:1299, orig:1799, img:'icon%20-%20logo%20-%20Taavii%20-%20%40300x.png', badge:'New', stars:4.7, reviews:'(156)', desc:'AI-powered robotic vacuum with 3D mapping, obstacle detection, and automatic empty base. Cleans your home so you never have to.', features:['3D LiDAR mapping','Auto-empty base 60-day capacity','4000Pa suction power','Works with Alexa & Google','90-min runtime'] },
@@ -580,7 +750,7 @@ let currentProduct = null;
 
 function renderProducts(list) {
   const grid = document.getElementById('productsGrid');
-  document.getElementById('productCount').textContent = list.length + ' products';
+  document.getElementById('productCount').textContent = T('n_products', { n: list.length });
   grid.innerHTML = list.map(p => `
     <div class="product-card" onclick="openProduct(${p.id})">
       <div class="product-img">
@@ -597,9 +767,9 @@ function renderProducts(list) {
         <div class="product-price">
           <div class="price-main">$${p.price.toLocaleString()}</div>
           ${p.orig > p.price ? `<div class="price-original">$${p.orig.toLocaleString()}</div>
-          <div class="price-save">Save $${(p.orig-p.price).toLocaleString()}</div>` : ''}
+          <div class="price-save">${T('save_amt', { v: (p.orig-p.price).toLocaleString() })}</div>` : ''}
         </div>
-        <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">ADD TO CART</button>
+        <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">${T('add_cart')}</button>
       </div>
     </div>
   `).join('');
@@ -620,7 +790,7 @@ function searchProducts(query) {
   const results = products.filter(p => p.name.toLowerCase().includes(q) || p.catLabel.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
   renderProducts(results.length ? results : []);
   if (!results.length) {
-    document.getElementById('productsGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);">No products found for "<span style=\'color:var(--gold)\'>' + query + '</span>"</div>';
+    document.getElementById('productsGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--gray);">' + T('no_results', { q: '<span style="color:var(--gold)">' + query + '</span>' }) + '</div>';
   }
   document.getElementById('products').scrollIntoView({behavior:'smooth'});
 }
@@ -639,7 +809,7 @@ function addToCart(id) {
   if (ex) ex.qty++;
   else cart.push({...p, qty:1});
   updateCartCount();
-  showToast(`${p.name} added to cart!`);
+  showToast(T('added_cart', { name: p.name }));
 }
 
 function updateCartCount() {
@@ -661,7 +831,7 @@ function renderCart() {
   const el = document.getElementById('cartItems');
   const footer = document.getElementById('cartFooter');
   if (cart.length === 0) {
-    el.innerHTML = '<div class="cart-empty"><span>🛒</span><p style="font-size:13px;">Your cart is empty</p></div>';
+    el.innerHTML = `<div class="cart-empty"><span>🛒</span><p style="font-size:13px;">${T('cart_empty')}</p></div>`;
     footer.style.display = 'none'; return;
   }
   const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
@@ -744,7 +914,7 @@ function openProduct(id) {
   document.getElementById('pmPrice').textContent = '$' + p.price.toLocaleString();
   const hasOrig = p.orig > p.price;
   document.getElementById('pmOrig').textContent = hasOrig ? '$' + p.orig.toLocaleString() : '';
-  document.getElementById('pmSave').textContent = hasOrig ? 'Save $' + (p.orig - p.price).toLocaleString() : '';
+  document.getElementById('pmSave').textContent = hasOrig ? T('save_amt', { v: (p.orig - p.price).toLocaleString() }) : '';
   document.getElementById('pmDesc').textContent = p.desc || '';
   document.getElementById('pmFeatures').innerHTML = (p.features || []).map(f => `<div class="pm-feature">${f}</div>`).join('');
   document.getElementById('pmAddBtn').onclick = () => { addToCart(p.id); closeProduct(); };
@@ -793,7 +963,7 @@ function initPayPal() {
       const fields = ['firstName','lastName','email','phone','address','city','zip','state'];
       for (let f of fields) {
         const el = document.getElementById(f);
-        if (!el || !el.value.trim()) { el && (el.style.borderColor='#e53935'); el && el.focus(); showToast('Please fill all shipping fields first'); return Promise.reject('incomplete'); }
+        if (!el || !el.value.trim()) { el && (el.style.borderColor='#e53935'); el && el.focus(); showToast(T('fill_fields')); return Promise.reject('incomplete'); }
         el.style.borderColor = '';
       }
       const total = cart.reduce((s,i) => s + i.price * i.qty, 0);
@@ -819,6 +989,8 @@ function initPayPal() {
   }).render('#paypal-button-container');
 }
 
+buildLangBar();
+applyLang(LANG, false);
 renderProducts(products);
 const _openCheckout = openCheckout;
 openCheckout = function() {
@@ -914,7 +1086,7 @@ async function loadProducts() {
   if (!products.length) {
     document.getElementById('productCount').textContent = '';
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);">'
-      + 'Pa gen pwodwi disponib kounye a. Tounen byento.</div>';
+      + T('no_products') + '</div>';
     return;
   }
   renderProducts(products);
