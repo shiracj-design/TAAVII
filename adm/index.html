@@ -83,6 +83,26 @@ main{padding:32px 34px 80px;max-width:960px}
 .gal-del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:#0a0e1acc;color:#fff;border:none;font-size:12px;line-height:1;cursor:pointer;padding:0}
 .gal-del:hover{background:var(--danger)}
 .hint{color:var(--muted);font-size:12px;margin-top:9px;line-height:1.55}
+/* ── PREVIEW FENÈT PWOMO ── */
+.pv-wrap{background:var(--navy);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:4px}
+.pv-frame{position:relative;background:#0b0b0f;border:1px solid var(--line);border-radius:12px;min-height:290px;display:grid;place-items:center;padding:26px 18px;overflow:hidden}
+.pv-frame::before{content:'';position:absolute;inset:0;background:
+  linear-gradient(115deg,#141b2e 0%,#0b0b0f 55%),
+  radial-gradient(circle at 78% 22%,rgba(212,175,55,.13),transparent 58%)}
+.pv-dim{position:absolute;inset:0;background:rgba(6,8,14,.6);backdrop-filter:blur(2px)}
+.pop{position:relative;width:100%;max-width:310px;background:#111726;border:1px solid #2b3450;border-radius:16px;overflow:hidden;box-shadow:0 24px 60px -20px rgba(0,0,0,.85);text-align:center}
+.pop-x{position:absolute;top:9px;right:9px;width:26px;height:26px;border-radius:50%;background:rgba(10,14,26,.72);color:#e8ebf2;border:none;font-size:13px;line-height:1;cursor:pointer;padding:0;z-index:2}
+.pop-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--navy)}
+.pop-body{padding:22px 22px 24px}
+.pop-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;line-height:1.2;margin-bottom:9px;color:var(--text)}
+.pop-text{font-size:13.5px;line-height:1.6;color:var(--muted);white-space:pre-wrap;margin-bottom:18px}
+.pop-btn{display:inline-block;padding:11px 26px;border-radius:9px;font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#0a0e1a;text-decoration:none;border:none;cursor:pointer}
+.pv-empty{position:relative;color:var(--muted);font-size:13px;text-align:center;max-width:230px;line-height:1.6}
+.pv-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;flex-wrap:wrap}
+.pv-note{color:var(--muted);font-size:12px;flex:1;min-width:170px}
+.pop-anim{animation:popIn .34s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes popIn{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pop-anim{animation:none}}
 .langsel{position:relative;display:flex;align-items:center;gap:7px;margin-top:16px;padding:0 11px;background:var(--navy);border:1px solid var(--line);border-radius:var(--r);transition:border-color .15s}
 .langsel:hover,.langsel:focus-within{border-color:var(--gold)}
 .langsel>span{flex:none;font-size:13px;line-height:1}
@@ -213,6 +233,56 @@ main{padding:32px 34px 80px;max-width:960px}
         <div class="toggle"><input type="checkbox" id="s-design" checked><div><b data-t="tg_design">Sèvis dizany</b><small data-t="tg_design_s">Paj kòmand dizany grafik la.</small></div></div>
       </div>
 
+      <div class="card">
+        <h3 style="font-size:17px;margin-bottom:5px" data-t="h_popup">Fenèt pwomo</h3>
+        <p class="sub" style="margin-bottom:20px" data-t="sub_popup">Yon ti kad ki louvri sou sit la lè yon moun rive. Preview la anba a montre egzakteman sa kliyan an ap wè.</p>
+
+        <div class="pv-wrap">
+          <div class="pv-frame" id="popPreview"></div>
+          <div class="pv-bar">
+            <span class="pv-note" data-t="sub_preview">Preview la mete ajou pandan w ap tape.</span>
+            <button class="btn-ghost btn-sm" onclick="replayPreview()" data-t="btn_replay">↻ Rejwe animasyon an</button>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:20px"><label data-t="lbl_pop_title">Tit</label><input id="s-popTitle" data-tp="ph_pop_title" placeholder="Egzanp: 10% rabè sou premye kòmand ou"></div>
+        <div class="field"><label data-t="lbl_pop_text">Tèks</label><textarea id="s-popText" data-tp="ph_pop_text" placeholder="Eksplike ofri a an de fraz."></textarea></div>
+
+        <div class="field">
+          <label data-t="lbl_pop_img">Imaj (opsyonèl)</label>
+          <div class="drop" onclick="document.getElementById('popFile').click()" data-t="drop_pop_img">Klike pou chwazi yon imaj — JPG oswa PNG</div>
+          <input type="file" id="popFile" accept="image/*" style="display:none" onchange="pickPopImage(this)">
+          <div class="gal" id="popImgBox"></div>
+        </div>
+
+        <div class="row">
+          <div class="field"><label data-t="lbl_pop_btn">Etikèt bouton (opsyonèl)</label><input id="s-popBtn" data-tp="ph_pop_btn" placeholder="Wè ofri a"></div>
+          <div class="field"><label data-t="lbl_pop_link">Lyen bouton an</label><input id="s-popLink" placeholder="https://..."></div>
+        </div>
+
+        <div class="row">
+          <div class="field"><label data-t="lbl_pop_color">Koulè bouton an</label><input type="color" id="s-popColor" value="#d4af37" style="height:46px;padding:5px"></div>
+          <div class="field"><label data-t="lbl_pop_until">Dat fen</label><input type="date" id="s-popUntil"></div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label data-t="lbl_pop_delay">Apre konbyen segond</label>
+            <input type="number" id="s-popDelay" min="0" max="60" step="1" value="3">
+          </div>
+          <div class="field">
+            <label data-t="lbl_pop_freq">Konbyen fwa</label>
+            <select id="s-popFreq">
+              <option value="day" data-t="freq_day">Yon fwa pa jou</option>
+              <option value="once" data-t="freq_once">Yon sèl fwa pou tout tan</option>
+              <option value="always" data-t="freq_always">Chak vizit</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toggle"><input type="checkbox" id="s-popOn"><div><b data-t="tg_popup">Montre fenèt la</b><small data-t="tg_popup_s">Dekoche pou kanpe l san efase sa w ekri a.</small></div></div>
+      </div>
+
       <div class="bar"><button class="btn-gold" id="siteBtn" onclick="saveSite()" data-t="btn_save">Anrejistre</button></div>
     </section>
   </main>
@@ -253,6 +323,31 @@ const LANGS = { ht: 'KREYÒL', en: 'ENGLISH', fr: 'FRANÇAIS', es: 'ESPAÑOL', p
 
 const I18N = {
 ht: {
+  h_popup:'Fenèt pwomo',
+  sub_popup:'Yon ti kad ki louvri sou sit la lè yon moun rive. Preview la anba a montre egzakteman sa kliyan an ap wè.',
+  sub_preview:'Preview la mete ajou pandan w ap tape.',
+  btn_replay:'↻ Rejwe animasyon an',
+  lbl_pop_title:'Tit',
+  ph_pop_title:'Egzanp: 10% rabè sou premye kòmand ou',
+  lbl_pop_text:'Tèks',
+  ph_pop_text:'Eksplike ofri a an de fraz.',
+  lbl_pop_img:'Imaj (opsyonèl)',
+  drop_pop_img:'Klike pou chwazi yon imaj — JPG oswa PNG',
+  lbl_pop_btn:'Etikèt bouton (opsyonèl)',
+  ph_pop_btn:'Wè ofri a',
+  lbl_pop_link:'Lyen bouton an',
+  lbl_pop_color:'Koulè bouton an',
+  lbl_pop_until:'Dat fen',
+  lbl_pop_delay:'Apre konbyen segond',
+  lbl_pop_freq:'Konbyen fwa',
+  freq_day:'Yon fwa pa jou',
+  freq_once:'Yon sèl fwa pou tout tan',
+  freq_always:'Chak vizit',
+  tg_popup:'Montre fenèt la',
+  tg_popup_s:'Dekoche pou kanpe l san efase sa w ekri a.',
+  pv_empty:'Mete yon tit pou w wè preview la.',
+  pv_off:'Fenèt la fèmen. Koche « Montre fenèt la » pou l parèt sou sit la.',
+  pv_expired:'Dat fen an pase — fenèt la p ap parèt sou sit la.',
   gate_sub:'Administrasyon', lbl_email:'Imel', lbl_pass:'Modpas', btn_login:'Konekte',
   err_login:'Imel oswa modpas la pa kòrèk.',
   nav_products:'Pwodwi', nav_add:'Ajoute pwodwi', nav_settings:'Paramèt sit', nav_logout:'Dekonekte',
@@ -287,6 +382,31 @@ ht: {
   ok_settings:'Paramèt yo anrejistre. Sit la mete ajou.', err_settings:'Anrejistreman an pa pase. Eseye ankò.'
 },
 en: {
+  h_popup:'Promo window',
+  sub_popup:'A small card that opens on the site when someone arrives. The preview below shows exactly what the customer will see.',
+  sub_preview:'The preview updates as you type.',
+  btn_replay:'↻ Replay animation',
+  lbl_pop_title:'Title',
+  ph_pop_title:'Example: 10% off your first order',
+  lbl_pop_text:'Text',
+  ph_pop_text:'Explain the offer in two sentences.',
+  lbl_pop_img:'Image (optional)',
+  drop_pop_img:'Click to choose an image — JPG or PNG',
+  lbl_pop_btn:'Button label (optional)',
+  ph_pop_btn:'See the offer',
+  lbl_pop_link:'Button link',
+  lbl_pop_color:'Button colour',
+  lbl_pop_until:'End date',
+  lbl_pop_delay:'After how many seconds',
+  lbl_pop_freq:'How often',
+  freq_day:'Once a day',
+  freq_once:'Once, ever',
+  freq_always:'Every visit',
+  tg_popup:'Show the window',
+  tg_popup_s:'Uncheck to stop it without deleting what you wrote.',
+  pv_empty:'Add a title to see the preview.',
+  pv_off:'The window is off. Tick “Show the window” for it to appear on the site.',
+  pv_expired:'The end date has passed — the window will not appear on the site.',
   gate_sub:'Administration', lbl_email:'Email', lbl_pass:'Password', btn_login:'Sign in',
   err_login:'Incorrect email or password.',
   nav_products:'Products', nav_add:'Add product', nav_settings:'Site settings', nav_logout:'Sign out',
@@ -321,6 +441,31 @@ en: {
   ok_settings:'Settings saved. The site is updated.', err_settings:'Could not save. Please try again.'
 },
 fr: {
+  h_popup:'Fenêtre promo',
+  sub_popup:'Une petite carte qui s\'ouvre sur le site à l\'arrivée d\'un visiteur. L\'aperçu ci-dessous montre exactement ce que le client verra.',
+  sub_preview:'L\'aperçu se met à jour pendant que vous tapez.',
+  btn_replay:'↻ Rejouer l\'animation',
+  lbl_pop_title:'Titre',
+  ph_pop_title:'Exemple : 10% sur votre première commande',
+  lbl_pop_text:'Texte',
+  ph_pop_text:'Expliquez l\'offre en deux phrases.',
+  lbl_pop_img:'Image (facultatif)',
+  drop_pop_img:'Cliquez pour choisir une image — JPG ou PNG',
+  lbl_pop_btn:'Libellé du bouton (facultatif)',
+  ph_pop_btn:'Voir l\'offre',
+  lbl_pop_link:'Lien du bouton',
+  lbl_pop_color:'Couleur du bouton',
+  lbl_pop_until:'Date de fin',
+  lbl_pop_delay:'Après combien de secondes',
+  lbl_pop_freq:'À quelle fréquence',
+  freq_day:'Une fois par jour',
+  freq_once:'Une seule fois',
+  freq_always:'À chaque visite',
+  tg_popup:'Afficher la fenêtre',
+  tg_popup_s:'Décochez pour l\'arrêter sans effacer ce que vous avez écrit.',
+  pv_empty:'Ajoutez un titre pour voir l\'aperçu.',
+  pv_off:'La fenêtre est désactivée. Cochez « Afficher la fenêtre » pour qu\'elle apparaisse.',
+  pv_expired:'La date de fin est passée — la fenêtre n\'apparaîtra pas sur le site.',
   gate_sub:'Administration', lbl_email:'E-mail', lbl_pass:'Mot de passe', btn_login:'Se connecter',
   err_login:'E-mail ou mot de passe incorrect.',
   nav_products:'Produits', nav_add:'Ajouter un produit', nav_settings:'Paramètres du site', nav_logout:'Se déconnecter',
@@ -355,6 +500,31 @@ fr: {
   ok_settings:'Paramètres enregistrés. Le site est à jour.', err_settings:'Enregistrement impossible. Réessayez.'
 },
 es: {
+  h_popup:'Ventana promocional',
+  sub_popup:'Una tarjeta que se abre en el sitio cuando alguien llega. La vista previa de abajo muestra exactamente lo que verá el cliente.',
+  sub_preview:'La vista previa se actualiza mientras escribes.',
+  btn_replay:'↻ Repetir animación',
+  lbl_pop_title:'Título',
+  ph_pop_title:'Ejemplo: 10% en tu primer pedido',
+  lbl_pop_text:'Texto',
+  ph_pop_text:'Explica la oferta en dos frases.',
+  lbl_pop_img:'Imagen (opcional)',
+  drop_pop_img:'Haz clic para elegir una imagen — JPG o PNG',
+  lbl_pop_btn:'Texto del botón (opcional)',
+  ph_pop_btn:'Ver la oferta',
+  lbl_pop_link:'Enlace del botón',
+  lbl_pop_color:'Color del botón',
+  lbl_pop_until:'Fecha de fin',
+  lbl_pop_delay:'Después de cuántos segundos',
+  lbl_pop_freq:'Con qué frecuencia',
+  freq_day:'Una vez al día',
+  freq_once:'Una sola vez',
+  freq_always:'Cada visita',
+  tg_popup:'Mostrar la ventana',
+  tg_popup_s:'Desmarca para detenerla sin borrar lo que escribiste.',
+  pv_empty:'Añade un título para ver la vista previa.',
+  pv_off:'La ventana está desactivada. Marca «Mostrar la ventana» para que aparezca.',
+  pv_expired:'La fecha de fin ya pasó — la ventana no aparecerá en el sitio.',
   gate_sub:'Administración', lbl_email:'Correo electrónico', lbl_pass:'Contraseña', btn_login:'Iniciar sesión',
   err_login:'Correo o contraseña incorrectos.',
   nav_products:'Productos', nav_add:'Añadir producto', nav_settings:'Ajustes del sitio', nav_logout:'Cerrar sesión',
@@ -389,6 +559,31 @@ es: {
   ok_settings:'Ajustes guardados. El sitio está actualizado.', err_settings:'No se pudo guardar. Inténtalo de nuevo.'
 },
 pt: {
+  h_popup:'Janela promocional',
+  sub_popup:'Um cartão que abre no site quando alguém chega. A pré-visualização abaixo mostra exatamente o que o cliente verá.',
+  sub_preview:'A pré-visualização atualiza enquanto você digita.',
+  btn_replay:'↻ Repetir animação',
+  lbl_pop_title:'Título',
+  ph_pop_title:'Exemplo: 10% no seu primeiro pedido',
+  lbl_pop_text:'Texto',
+  ph_pop_text:'Explique a oferta em duas frases.',
+  lbl_pop_img:'Imagem (opcional)',
+  drop_pop_img:'Clique para escolher uma imagem — JPG ou PNG',
+  lbl_pop_btn:'Texto do botão (opcional)',
+  ph_pop_btn:'Ver a oferta',
+  lbl_pop_link:'Link do botão',
+  lbl_pop_color:'Cor do botão',
+  lbl_pop_until:'Data final',
+  lbl_pop_delay:'Depois de quantos segundos',
+  lbl_pop_freq:'Com que frequência',
+  freq_day:'Uma vez por dia',
+  freq_once:'Uma única vez',
+  freq_always:'Cada visita',
+  tg_popup:'Mostrar a janela',
+  tg_popup_s:'Desmarque para parar sem apagar o que você escreveu.',
+  pv_empty:'Adicione um título para ver a pré-visualização.',
+  pv_off:'A janela está desligada. Marque “Mostrar a janela” para ela aparecer.',
+  pv_expired:'A data final já passou — a janela não vai aparecer no site.',
   gate_sub:'Administração', lbl_email:'E-mail', lbl_pass:'Senha', btn_login:'Entrar',
   err_login:'E-mail ou senha incorretos.',
   nav_products:'Produtos', nav_add:'Adicionar produto', nav_settings:'Configurações do site', nav_logout:'Sair',
@@ -448,7 +643,7 @@ function applyLang(l, persist) {
   ['gateLang', 'appLang'].forEach(id => { const s = $(id); if (s) s.value = LANG; });
   // Pati ki jenere pa JS yo
   const et = $('editTitle'); if (et) et.textContent = editingId ? T('h_edit') : T('h_new');
-  renderExtras(); renderGallery();
+  renderExtras(); renderGallery(); renderPopImage(); renderPopPreview(false);
   if (auth.currentUser && $('p-list').classList.contains('on')) loadProducts();
 }
 
@@ -644,6 +839,79 @@ async function delProduct(id) {
   loadProducts();
 }
 
+
+/* ── FENÈT PWOMO: preview vivan ── */
+let popImage = null;   // { url } oswa { file, dataUrl }
+
+const POP_FIELDS = ['s-popTitle','s-popText','s-popBtn','s-popLink','s-popColor','s-popUntil','s-popDelay','s-popFreq','s-popOn'];
+
+function popState() {
+  return {
+    title: $('s-popTitle').value.trim(),
+    text:  $('s-popText').value.trim(),
+    btn:   $('s-popBtn').value.trim(),
+    link:  $('s-popLink').value.trim(),
+    color: $('s-popColor').value,
+    until: $('s-popUntil').value,
+    on:    $('s-popOn').checked,
+    img:   popImage ? (popImage.url || popImage.dataUrl) : ''
+  };
+}
+
+function renderPopPreview(animate) {
+  const box = $('popPreview'); if (!box) return;
+  const p = popState();
+  const expired = p.until && new Date(p.until + 'T23:59:59') < new Date();
+
+  if (!p.title && !p.text && !p.img) {
+    box.innerHTML = `<p class="pv-empty">${T('pv_empty')}</p>`;
+    return;
+  }
+  const warn = !p.on ? T('pv_off') : (expired ? T('pv_expired') : '');
+  box.innerHTML = `
+    <div class="pv-dim"></div>
+    <div class="pop${animate ? ' pop-anim' : ''}" style="${warn ? 'opacity:.5' : ''}">
+      <button class="pop-x" tabindex="-1" aria-hidden="true">✕</button>
+      ${p.img ? `<img class="pop-img" src="${p.img}" alt="">` : ''}
+      <div class="pop-body">
+        ${p.title ? `<div class="pop-title">${esc(p.title)}</div>` : ''}
+        ${p.text ? `<div class="pop-text">${esc(p.text)}</div>` : ''}
+        ${p.btn ? `<span class="pop-btn" style="background:${p.color}">${esc(p.btn)}</span>` : ''}
+      </div>
+    </div>
+    ${warn ? `<p class="pv-empty" style="position:absolute;bottom:12px;left:0;right:0;max-width:none;padding:0 16px">${warn}</p>` : ''}`;
+}
+
+window.replayPreview = () => renderPopPreview(true);
+
+function renderPopImage() {
+  const box = $('popImgBox'); if (!box) return;
+  if (!popImage) { box.innerHTML = ''; return; }
+  box.innerHTML = `
+    <div class="gal-item main">
+      <img src="${popImage.url || popImage.dataUrl}" alt="">
+      <button class="gal-del" onclick="removePopImage()" title="${T('gal_del')}">✕</button>
+    </div>`;
+}
+
+window.removePopImage = () => { popImage = null; renderPopImage(); renderPopPreview(false); };
+
+window.pickPopImage = input => {
+  const f = input.files[0]; input.value = '';
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => { popImage = { file: f, dataUrl: e.target.result }; renderPopImage(); renderPopPreview(true); };
+  r.readAsDataURL(f);
+};
+
+function wirePopPreview() {
+  POP_FIELDS.forEach(id => {
+    const el = $(id); if (!el) return;
+    el.addEventListener('input',  () => renderPopPreview(false));
+    el.addEventListener('change', () => renderPopPreview(false));
+  });
+}
+
 /* ── PARAMÈT ── */
 async function loadSite() {
   try {
@@ -657,12 +925,33 @@ async function loadSite() {
     $('s-bannerOn').checked = !!s.bannerActive;
     $('s-shop').checked = !!s.shopActive;
     $('s-design').checked = s.designActive !== false;
+    $('s-popTitle').value = s.popupTitle || '';
+    $('s-popText').value  = s.popupText || '';
+    $('s-popBtn').value   = s.popupBtnLabel || '';
+    $('s-popLink').value  = s.popupBtnLink || '';
+    $('s-popColor').value = s.popupColor || '#d4af37';
+    $('s-popUntil').value = s.popupUntil || '';
+    $('s-popDelay').value = s.popupDelay ?? 3;
+    $('s-popFreq').value  = s.popupFreq || 'day';
+    $('s-popOn').checked  = !!s.popupActive;
+    popImage = s.popupImage ? { url: s.popupImage } : null;
+    renderPopImage(); renderPopPreview(false);
   } catch {}
 }
 
 window.saveSite = async () => {
   const btn = $('siteBtn'); btn.disabled = true; btn.textContent = T('saving');
   try {
+    // Voye imaj pwomo a si l nouvo
+    let popupImageUrl = '';
+    if (popImage && popImage.url) popupImageUrl = popImage.url;
+    else if (popImage && popImage.file) {
+      const safe = popImage.file.name.replace(/[^\w.\-]/g, '_');
+      const snap = await uploadBytes(ref(storage, `products/popup-${Date.now()}-${safe}`), popImage.file);
+      popupImageUrl = await getDownloadURL(snap.ref);
+      popImage = { url: popupImageUrl };
+      renderPopImage();
+    }
     await setDoc(doc(db, 'settings', 'site'), {
       heroTitle: $('s-title').value.trim(),
       heroSubtitle: $('s-sub').value.trim(),
@@ -672,6 +961,16 @@ window.saveSite = async () => {
       bannerActive: $('s-bannerOn').checked,
       shopActive: $('s-shop').checked,
       designActive: $('s-design').checked,
+      popupActive: $('s-popOn').checked,
+      popupTitle: $('s-popTitle').value.trim(),
+      popupText: $('s-popText').value.trim(),
+      popupBtnLabel: $('s-popBtn').value.trim(),
+      popupBtnLink: $('s-popLink').value.trim(),
+      popupColor: $('s-popColor').value,
+      popupUntil: $('s-popUntil').value,
+      popupDelay: Math.max(0, Math.min(60, parseInt($('s-popDelay').value, 10) || 0)),
+      popupFreq: $('s-popFreq').value,
+      popupImage: popupImageUrl,
       updated: Date.now()
     }, { merge: true });
     say('siteMsg', T('ok_settings'), "ok");
@@ -684,6 +983,7 @@ window.saveSite = async () => {
 $('pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 
 buildLangSelects();
+wirePopPreview();
 applyLang(LANG, false);
 </script>
 </body>
