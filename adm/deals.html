@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TAAVII — Deal (afilyasyon)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0a0e1a; --surface:#111726; --surface-2:#18203450; --line:#232c42;
+  --gold:#d4af37; --gold-dim:#a8892b; --blue:#4fc3f7;
+  --text:#e8ebf2; --muted:#8b93a7; --danger:#e05263; --ok:#4caf7d;
+  --r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--text);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:.2px}
+input,select,textarea,button{font-family:inherit;font-size:14px}
+input,select,textarea{width:100%;background:var(--navy);border:1px solid var(--line);color:var(--text);padding:11px 13px;border-radius:var(--r);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px}
+label{display:block;font-size:12px;color:var(--muted);margin:0 0 6px;letter-spacing:.3px}
+.field{margin-bottom:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{cursor:pointer;border:none;border-radius:var(--r);padding:11px 18px;font-weight:600;transition:opacity .15s,background .15s}
+button:hover{opacity:.88}
+button:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn-gold{background:var(--gold);color:#0a0e1a}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.btn-sm{padding:7px 13px;font-size:13px}
+
+#gate{min-height:100vh;display:grid;place-items:center;padding:24px}
+.gate-card{width:100%;max-width:380px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:38px 32px}
+.mark{font-family:'Playfair Display',serif;font-size:30px;letter-spacing:7px;color:var(--gold);text-align:center;margin-bottom:6px}
+.gate-sub{text-align:center;color:var(--muted);font-size:12.5px;letter-spacing:2px;text-transform:uppercase;margin-bottom:30px}
+
+#app{display:none;min-height:100vh;grid-template-columns:212px 1fr}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:26px 16px;display:flex;flex-direction:column;gap:4px}
+aside .mark{font-size:20px;letter-spacing:5px;margin-bottom:26px}
+.nav{background:none;border:none;color:var(--muted);text-align:left;padding:11px 13px;border-radius:var(--r);font-weight:500;width:100%;display:block;text-decoration:none;font-size:14px}
+.nav:hover{background:var(--surface-2);color:var(--text)}
+.nav.on{background:var(--surface-2);color:var(--gold)}
+.spacer{flex:1}
+main{padding:32px 34px 80px;max-width:960px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:8px}
+.head h1{font-size:26px}
+.sub{color:var(--muted);font-size:13.5px;margin-bottom:26px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:18px}
+.page{display:none}
+.page.on{display:block}
+
+.item{display:flex;align-items:center;gap:16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:11px}
+.thumb{width:60px;height:60px;border-radius:9px;background:var(--navy);border:1px solid var(--line);object-fit:contain;flex:none}
+.item-info{flex:1;min-width:0}
+.item-info b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-info span.price{color:var(--gold);font-size:13.5px}
+.item-meta{color:var(--muted);font-size:12.5px;display:flex;gap:12px;flex-wrap:wrap;margin-top:2px}
+.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;margin-left:8px;letter-spacing:.4px}
+.tag.live{background:#4fc3f71a;color:var(--blue)}
+.tag.off{background:#8b93a71a;color:var(--muted)}
+.acts{display:flex;gap:8px;flex:none}
+@media(max-width:760px){
+  #app{grid-template-columns:1fr}
+  aside{flex-direction:row;flex-wrap:wrap;align-items:center;border-right:none;border-bottom:1px solid var(--line);padding:14px}
+  aside .mark{margin:0 14px 0 0;font-size:17px}
+  .nav{width:auto;padding:8px 11px}
+  .spacer{display:none}
+  main{padding:22px 16px 70px}
+  .row{grid-template-columns:1fr}
+  .item{flex-wrap:wrap}
+  .acts{width:100%}
+}
+
+.empty{text-align:center;color:var(--muted);padding:52px 20px;border:1px dashed var(--line);border-radius:14px}
+.empty b{display:block;color:var(--text);font-family:'Playfair Display',serif;font-size:19px;margin-bottom:6px}
+.msg{padding:11px 14px;border-radius:var(--r);font-size:13.5px;margin-bottom:16px;display:none}
+.msg.err{display:block;background:#e0526318;color:var(--danger);border:1px solid #e0526340}
+.msg.ok{display:block;background:#4caf7d18;color:var(--ok);border:1px solid #4caf7d40}
+.drop{border:1px dashed var(--line);border-radius:var(--r);padding:22px;text-align:center;color:var(--muted);cursor:pointer;font-size:13.5px}
+.drop:hover{border-color:var(--gold);color:var(--text)}
+.hint{color:var(--muted);font-size:12px;margin-top:9px;line-height:1.55}
+.prev-img{width:100%;max-width:150px;aspect-ratio:1;object-fit:contain;background:var(--navy);border:1px solid var(--line);border-radius:var(--r);margin-top:12px;display:none}
+.stat{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.stat div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:110px}
+.stat b{display:block;font-family:'Playfair Display',serif;font-size:22px;color:var(--gold)}
+.stat span{font-size:11.5px;color:var(--muted);letter-spacing:.4px;text-transform:uppercase}
+.req{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="gate">
+  <div class="gate-card">
+    <div class="mark">TAAVII</div>
+    <div class="gate-sub">Deal · Afilyasyon</div>
+    <div class="msg" id="gateMsg"></div>
+    <div class="field"><label>Imel</label><input type="email" id="email" autocomplete="username"></div>
+    <div class="field"><label>Modpas</label><input type="password" id="pass" autocomplete="current-password"></div>
+    <button class="btn-gold" style="width:100%" onclick="login()">Konekte</button>
+    <p class="hint" style="text-align:center">Menm kont ak <a href="/adm/" style="color:var(--gold)">/adm</a></p>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <aside>
+    <div class="mark">TAAVII</div>
+    <button class="nav on" data-p="list" onclick="go('list')">Deal yo</button>
+    <button class="nav" data-p="edit" onclick="newDeal()">+ Ajoute yon deal</button>
+    <a class="nav" href="/deal/" target="_blank" rel="noopener">Wè paj la ↗</a>
+    <a class="nav" href="/adm/">← Panèl prensipal</a>
+    <div class="spacer"></div>
+    <button class="nav" onclick="logout()">Dekonekte</button>
+  </aside>
+
+  <main>
+    <!-- LIS -->
+    <section class="page on" id="p-list">
+      <div class="head"><h1>Deal afilye</h1><button class="btn-gold btn-sm" onclick="newDeal()">+ Ajoute</button></div>
+      <p class="sub">Sa ki make an ble parèt sou <b>taavii.com/deal</b> kounye a. Boutik ou a (<b>/taavii-shop.html</b>) pa touche.</p>
+      <div class="stat" id="stats"></div>
+      <div id="list"></div>
+    </section>
+
+    <!-- EDITÈ -->
+    <section class="page" id="p-edit">
+      <div class="head"><h1 id="editTitle">Nouvo deal</h1><button class="btn-ghost btn-sm" onclick="go('list')">Anile</button></div>
+      <p class="sub">Ranpli sa ou konnen. Sèlman non an ak lyen afilye a obligatwa.</p>
+      <div class="msg" id="editMsg"></div>
+
+      <div class="card">
+        <div class="field">
+          <label>Lyen afilye <span class="req">*</span></label>
+          <input id="f-link" placeholder="https://www.amazon.com/dp/XXXX?tag=kod-ou-an" inputmode="url">
+          <p class="hint">Kole lyen tracking ou a jan pwogram nan ba ou li — pa modifye l. Se kòd ki ladan l lan ki fè komisyon w lan konte.</p>
+        </div>
+
+        <div class="row">
+          <div class="field"><label>Non pwodwi a <span class="req">*</span></label><input id="f-name" placeholder="Egzanp: Casque Sony WH-1000XM5"></div>
+          <div class="field"><label>Magazen an</label><input id="f-merchant" placeholder="Amazon · eBay · AliExpress" list="merchants">
+            <datalist id="merchants">
+              <option value="Amazon"><option value="eBay"><option value="AliExpress"><option value="Walmart"><option value="Temu"><option value="Etsy"><option value="Shein"><option value="Best Buy"><option value="Target"><option value="Nike"><option value="Adidas">
+            </datalist>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field"><label>Pri (USD)</label><input id="f-price" type="number" step="0.01" min="0" placeholder="Kite l vid si w pa vle montre pri">
+            <p class="hint">Amazon entèdi afiche yon pri ki pa ajou. Si w pa sèten, <b>kite l vid</b> — bouton an ap di « Wè pri a sou Amazon ».</p>
+          </div>
+          <div class="field"><label>Ansyen pri (opsyonèl)</label><input id="f-old" type="number" step="0.01" min="0" placeholder="Pou montre rabè a">
+            <p class="hint">Si l pi gwo pase pri a, yon badj <b>-%</b> ap parèt sou imaj la.</p>
+          </div>
+        </div>
+
+        <div class="field"><label>Kategori</label><input id="f-cat" placeholder="Teknoloji · Mòd · Swen · Kay" list="cats"><datalist id="cats"></datalist>
+          <p class="hint">Kategori yo vin tounen bouton filtè sou paj la otomatikman.</p>
+        </div>
+
+        <div class="field"><label>Ti deskripsyon (opsyonèl)</label><textarea id="f-desc" placeholder="Yon fraz sou poukisa ou rekòmande l."></textarea></div>
+
+        <div class="field">
+          <label>Imaj</label>
+          <input id="f-image" placeholder="Kole yon lyen imaj (https://...) oswa voye yon fichye anba a" inputmode="url">
+          <div class="drop" style="margin-top:10px" onclick="document.getElementById('file').click()">📷 Klike pou voye yon imaj (max 5 Mo)</div>
+          <input type="file" id="file" accept="image/*" style="display:none" onchange="pickImage(this)">
+          <img class="prev-img" id="prev" alt="">
+          <p class="hint">Pou pwodwi Amazon, klike dwat sou imaj la sou paj Amazon an → « Kopye adrès imaj la » → kole l isit.</p>
+        </div>
+
+        <label style="display:flex;align-items:center;gap:9px;cursor:pointer;margin-top:4px">
+          <input type="checkbox" id="f-active" checked style="width:auto">
+          <span style="color:var(--text);font-size:14px">Montre l sou paj la</span>
+        </label>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn-gold" id="saveBtn" onclick="saveDeal()">Sove</button>
+        <button class="btn-ghost" onclick="go('list')">Anile</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, orderBy }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyA2qnjTuUVXEn5fbFdZu6dzB2s_rkAyURI",
+  authDomain:        "taavii-admin.firebaseapp.com",
+  projectId:         "taavii-admin",
+  storageBucket:     "taavii-admin.firebasestorage.app",
+  messagingSenderId: "351885354082",
+  appId:             "1:351885354082:web:54b24c00522aa7f361dd3b"
+};
+const app     = initializeApp(firebaseConfig);
+const auth    = getAuth(app);
+const db      = getFirestore(app);
+const storage = getStorage(app);
+
+const $   = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[<>&"]/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+const say = (id, txt, kind) => { const e = $(id); e.textContent = txt; e.className = 'msg ' + kind; };
+const clear = id => { $(id).textContent = ''; $(id).className = 'msg'; };
+
+/* ── AUTH ── */
+window.login = async () => {
+  clear('gateMsg');
+  try { await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value); }
+  catch { say('gateMsg', "Imel oswa modpas pa bon.", "err"); }
+};
+window.logout = () => signOut(auth);
+
+onAuthStateChanged(auth, user => {
+  $('gate').style.display = user ? 'none' : 'grid';
+  $('app').style.display  = user ? 'grid' : 'none';
+  if (user) loadDeals();
+});
+
+window.go = page => {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  $('p-' + page).classList.add('on');
+  document.querySelectorAll('button.nav').forEach(n => n.classList.toggle('on', n.dataset.p === page));
+  window.scrollTo(0, 0);
+  if (page === 'list') loadDeals();
+};
+
+/* ── LIS ── */
+const money = v => '$' + Number(v).toFixed(2);
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+
+async function loadDeals() {
+  const box = $('list');
+  box.innerHTML = `<p style="color:var(--muted)">N ap chaje…</p>`;
+  let docs;
+  try {
+    const snap = await getDocs(query(collection(db, 'deals'), orderBy('created', 'desc')));
+    docs = snap.docs;
+  } catch (e) {
+    console.error(e);
+    box.innerHTML = `<div class="empty"><b>Koneksyon an pa pase</b>Verifye entènèt ou epi rechaje paj la. Si l kontinye, gade si règ Firestore yo gen koleksyon <b>deals</b> lan.</div>`;
+    $('stats').innerHTML = '';
+    return;
+  }
+
+  const all = docs.map(d => ({ id: d.id, ...d.data() }));
+  const live = all.filter(d => d.active).length;
+  const clicks = all.reduce((n, d) => n + (Number(d.clicks) || 0), 0);
+  $('stats').innerHTML = `
+    <div><b>${all.length}</b><span>Total</span></div>
+    <div><b>${live}</b><span>Anliy</span></div>
+    <div><b>${clicks}</b><span>Klik</span></div>`;
+
+  // Ranpli lis kategori yo pou fòm nan
+  $('cats').innerHTML = [...new Set(all.map(d => (d.category || '').trim()).filter(Boolean))].sort()
+    .map(c => `<option value="${esc(c)}">`).join('');
+
+  if (!all.length) {
+    box.innerHTML = `<div class="empty"><b>Poko gen deal</b>Klike « + Ajoute » pou mete premye lyen afilye ou a.</div>`;
+    return;
+  }
+
+  box.innerHTML = '';
+  all.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'item';
+    let host = '';
+    try { host = new URL(d.link).hostname.replace(/^www\./, ''); } catch {}
+    el.innerHTML = `
+      <img class="thumb" src="${esc(d.image || BLANK)}" alt="" onerror="this.src='${BLANK}'">
+      <div class="item-info">
+        <b>${esc(d.name)}<span class="tag ${d.active ? 'live' : 'off'}">${d.active ? 'Anliy' : 'Kache'}</span></b>
+        <span class="price">${d.price ? money(d.price) : 'san pri'}</span>
+        <div class="item-meta">
+          ${d.merchant ? `<span>🏬 ${esc(d.merchant)}</span>` : ''}
+          ${host ? `<span>🔗 ${esc(host)}</span>` : ''}
+          <span>👁 ${Number(d.clicks) || 0} klik</span>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="btn-ghost btn-sm" data-toggle="${d.id}">${d.active ? 'Kache' : 'Montre'}</button>
+        <button class="btn-ghost btn-sm" data-edit="${d.id}">Chanje</button>
+        <button class="btn-danger btn-sm" data-del="${d.id}">Efase</button>
+      </div>`;
+    box.appendChild(el);
+  });
+  box.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => editDeal(b.dataset.edit));
+  box.querySelectorAll('[data-del]').forEach(b => b.onclick = () => delDeal(b.dataset.del));
+  box.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => toggleDeal(b.dataset.toggle));
+}
+
+/* ── EDITÈ ── */
+let editingId = null, pending = null;   // pending = fichye imaj ki poko voye
+
+function fillForm(d) {
+  $('f-link').value     = d.link || '';
+  $('f-name').value     = d.name || '';
+  $('f-merchant').value = d.merchant || '';
+  $('f-price').value    = d.price || '';
+  $('f-old').value      = d.oldPrice || '';
+  $('f-cat').value      = d.category || '';
+  $('f-desc').value     = d.description || '';
+  $('f-image').value    = d.image || '';
+  $('f-active').checked = d.active !== false;
+  pending = null;
+  $('file').value = '';
+  showPreview(d.image || '');
+}
+
+function showPreview(src) {
+  const img = $('prev');
+  if (src) { img.src = src; img.style.display = 'block'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; }
+}
+$('f-image').addEventListener('input', e => { pending = null; showPreview(e.target.value.trim()); });
+
+window.pickImage = input => {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  if (f.size > 5 * 1024 * 1024) { say('editMsg', "Imaj la twò gwo (max 5 Mo).", "err"); input.value = ''; return; }
+  clear('editMsg');
+  pending = f;
+  $('f-image').value = '';
+  showPreview(URL.createObjectURL(f));
+};
+
+window.newDeal = () => {
+  editingId = null;
+  $('editTitle').textContent = 'Nouvo deal';
+  clear('editMsg');
+  fillForm({});
+  go('edit');
+};
+
+async function editDeal(id) {
+  const snap = await getDoc(doc(db, 'deals', id));
+  if (!snap.exists()) return;
+  editingId = id;
+  $('editTitle').textContent = 'Chanje deal la';
+  clear('editMsg');
+  fillForm(snap.data());
+  go('edit');
+}
+
+function validLink(u) {
+  try {
+    const url = new URL(String(u).trim());
+    return (url.protocol === 'https:' || url.protocol === 'http:') ? url.href : '';
+  } catch { return ''; }
+}
+
+window.saveDeal = async () => {
+  clear('editMsg');
+  const name = $('f-name').value.trim();
+  const link = validLink($('f-link').value);
+  if (!name) return say('editMsg', "Mete non pwodwi a.", "err");
+  if (!link) return say('editMsg', "Lyen afilye a manke oswa li pa bon. Li dwe kòmanse ak https://", "err");
+
+  const btn = $('saveBtn'); btn.disabled = true; btn.textContent = 'N ap sove…';
+  try {
+    let image = $('f-image').value.trim();
+    if (pending) {
+      btn.textContent = 'N ap voye imaj la…';
+      const safe = pending.name.replace(/[^\w.\-]/g, '_');
+      const path = `products/deal-${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safe}`;
+      const snap = await uploadBytes(ref(storage, path), pending);
+      image = await getDownloadURL(snap.ref);
+    }
+
+    const data = {
+      name,
+      link,
+      merchant:    $('f-merchant').value.trim(),
+      price:       parseFloat($('f-price').value) || 0,
+      oldPrice:    parseFloat($('f-old').value) || 0,
+      category:    $('f-cat').value.trim(),
+      description: $('f-desc').value.trim(),
+      image,
+      active:      $('f-active').checked,
+      updated:     Date.now()
+    };
+
+    if (editingId) await updateDoc(doc(db, 'deals', editingId), data);
+    else await addDoc(collection(db, 'deals'), { ...data, clicks: 0, created: Date.now() });
+    go('list');
+  } catch (e) {
+    console.error(e);
+    say('editMsg', "Nou pa ka sove l. Verifye koneksyon ou epi eseye ankò.", "err");
+  } finally { btn.disabled = false; btn.textContent = 'Sove'; }
+};
+
+async function toggleDeal(id) {
+  const snap = await getDoc(doc(db, 'deals', id));
+  if (!snap.exists()) return;
+  await updateDoc(doc(db, 'deals', id), { active: !snap.data().active, updated: Date.now() });
+  loadDeals();
+}
+
+async function delDeal(id) {
+  if (!confirm("Efase deal sa a nèt?")) return;
+  await deleteDoc(doc(db, 'deals', id));
+  loadDeals();
+}
+</script>
+</body>
+</html>

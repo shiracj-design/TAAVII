@@ -206,7 +206,10 @@
     .marquee { overflow: hidden; }
     .marquee-track { display: flex; width: max-content; animation: marquee 34s linear infinite; }
     .marquee-track span { padding: 0.55rem 2rem; white-space: nowrap; font-size: 0.7rem; font-weight: 400; color: var(--gold-light); letter-spacing: 0.06em; }
-    .marquee:hover .marquee-track { animation-play-state: paused; }
+    @media (hover: hover) {
+      .marquee:hover .marquee-track { animation-play-state: paused; }
+    }
+    .marquee.paused .marquee-track { animation-play-state: paused; }
     @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
     /* ═══ PARÈT PANDAN W AP DESANN ═══ */
@@ -267,6 +270,40 @@
     .pop-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 400;
                  line-height: 1.2; margin-bottom: 0.6rem; color: var(--white); }
     .pop-text { color: var(--muted); font-size: 0.82rem; }
+
+    /* ═══ ANONS KI AP PASE ═══ */
+    .ann-mode { display: block !important; overflow: hidden; position: relative; }
+    .ann { position: relative; width: 100%; }
+    .ann-stage { position: relative; width: 100%; height: 84px; overflow: hidden; }
+    .ann-slide { position: absolute; inset: 0; display: flex; align-items: center; gap: 12px;
+                 text-decoration: none; color: inherit; opacity: 0; transform: translateY(60%);
+                 pointer-events: none;
+                 transition: opacity .4s ease, transform .55s cubic-bezier(.22,.61,.36,1); }
+    .ann-slide.on  { opacity: 1; transform: none; pointer-events: auto; }
+    .ann-slide.out { opacity: 0; transform: translateY(-60%); }
+    .ann-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .ann-scrim { position: absolute; inset: 0; z-index: 1;
+                 background: linear-gradient(90deg, rgba(6,8,14,.86) 0%, rgba(6,8,14,.42) 58%, rgba(6,8,14,.12) 100%); }
+    .ann-icon { position: relative; z-index: 2; flex: none; font-size: 26px; line-height: 1; }
+    .ann-copy { position: relative; z-index: 2; min-width: 0; flex: 1; }
+    .ann-badge { position: relative; z-index: 2; flex: none; }
+    .ann-dots { position: absolute; bottom: 6px; left: 0; right: 0; display: flex; justify-content: center;
+                gap: 5px; z-index: 3; }
+    .ann-dots i { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.3);
+                  cursor: pointer; transition: background .25s, width .25s; }
+    .ann-dots i.on { width: 14px; border-radius: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .ann-slide { transition: opacity .3s; transform: none; }
+      .ann-slide.out { transform: none; }
+    }
+    .ann-title { font-size: 0.82rem; font-weight: 600; color: var(--white); line-height: 1.25; }
+    .ann-text { font-size: 0.65rem; color: var(--muted); margin-top: 2px; line-height: 1.45;
+                overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ann-badge { background: #e53935; color: #fff; padding: 0.4rem 0.9rem; border-radius: 6px;
+                 font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; white-space: nowrap; }
+    .ann-dots i.on { background: var(--gold); }
+    .flash-band.ann-mode { padding: 0 !important; }
+    .ann-slide { padding: 0 1.5rem; }
   </style>
 </head>
 <body>
@@ -517,6 +554,19 @@ function buildMarquee(t) {
   track.innerHTML = [...msgs, ...msgs].map(m => `<span>${m}</span>`).join('');
 }
 
+// Sou telefòn, yon tap kite eta "hover" a kole — ribon an t ap kanpe nèt.
+// Kounye a li kanpe 4 segond apre yon manyen, epi li repran pou kont li.
+function wireMarqueePause() {
+  const m = document.querySelector('.marquee'); if (!m) return;
+  let timer = null;
+  m.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return;     // sourit la deja jere pa CSS
+    m.classList.add('paused');
+    clearTimeout(timer);
+    timer = setTimeout(() => m.classList.remove('paused'), 4000);
+  }, { passive: true });
+}
+
 /* ═══ PARÈT PANDAN W AP DESANN ═══ */
 const revealObserver = ('IntersectionObserver' in window)
   ? new IntersectionObserver((entries, obs) => {
@@ -567,6 +617,7 @@ function toast(msg) {
 document.addEventListener('DOMContentLoaded', () => {
   applyLang(detectLang());   // sa a rele buildMarquee() tou
   observeReveals();
+  wireMarqueePause();
   document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
   document.querySelectorAll('.cat-pill').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.cat-pill').forEach(x => x.classList.remove('active')); b.classList.add('active'); }));
   document.querySelectorAll('.card-add-btn').forEach(btn => {
@@ -687,6 +738,73 @@ const db = getFirestore(initializeApp(firebaseConfig));
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 
+/* ── ANONS KI AP PASE ── */
+function setupSlides(s, bandSelector) {
+  const band = document.querySelector(bandSelector); if (!band) return;
+  const list = (Array.isArray(s.slides) ? s.slides : [])
+    .filter(x => x && (x.image || x.title || x.text)).slice(0, 10);
+  if (!s.slidesActive || !list.length) return;   // kite ban orijinal la
+
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+  band.classList.add('ann-mode');
+  band.innerHTML = `
+    <div class="ann">
+      <div class="ann-stage">
+        ${list.map((sl, i) => {
+          const inner = `
+            ${sl.image ? `<img class="ann-img" src="${esc(sl.image)}" alt="" loading="lazy"><span class="ann-scrim"></span>`
+                       : `<span class="ann-icon">${esc(sl.icon || '\u26A1')}</span>`}
+            <div class="ann-copy">
+              ${sl.title ? `<div class="ann-title">${esc(sl.title)}</div>` : ''}
+              ${sl.text ? `<div class="ann-text">${esc(sl.text)}</div>` : ''}
+            </div>
+            ${sl.badge ? `<span class="ann-badge">${esc(sl.badge)}</span>` : ''}`;
+          return sl.link
+            ? `<a class="ann-slide${i ? '' : ' on'}" href="${esc(sl.link)}" target="_blank" rel="noopener">${inner}</a>`
+            : `<div class="ann-slide${i ? '' : ' on'}">${inner}</div>`;
+        }).join('')}
+      </div>
+      ${list.length > 1 ? `<div class="ann-dots">${list.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>` : ''}
+    </div>`;
+
+  const ms = Math.max(2, Math.min(20, Number(s.slideSpeed) || 5)) * 1000;
+  const els = [...band.querySelectorAll('.ann-slide')];
+  const dots = [...band.querySelectorAll('.ann-dots i')];
+  if (els.length < 2) return;
+
+  let cur = 0, t = null;
+  const show = i => {
+    const prev = cur;
+    cur = (i + els.length) % els.length;
+    if (cur === prev) return;
+    els.forEach((e, k) => {
+      e.classList.remove('out');
+      if (k === cur) e.classList.add('on');
+      else {
+        // Sa ki t ap montre a glise anlè; lòt yo tann anba — pa gen tèks ki sipèpoze
+        if (k === prev) e.classList.add('out');
+        e.classList.remove('on');
+      }
+    });
+    dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+  };
+  const play  = () => { if (!t) t = setInterval(() => show(cur + 1), ms); };
+  const pause = () => { clearInterval(t); t = null; };
+  const bump  = () => { pause(); setTimeout(play, 4000); };   // repran pou kont li
+
+  dots.forEach((d, i) => d.onclick = e => { e.preventDefault(); show(i); bump(); });
+  if (matchMedia('(hover: hover)').matches) {
+    band.addEventListener('mouseenter', pause);
+    band.addEventListener('mouseleave', play);
+  }
+  band.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') bump(); }, { passive: true });
+  // Pa gaspiye bateri lè paj la pa vizib
+  document.addEventListener('visibilitychange', () => document.hidden ? pause() : play());
+  play();
+}
+
 /* ── FENÈT PWOMO ── */
 function setupPopup(s) {
   if (!s.popupActive) return;
@@ -786,6 +904,7 @@ async function loadSite() {
   }
 
   setupPopup(s);
+  setupSlides(s, '.flash-band');
 }
 
 /* ── PAJ DETAY PWODWI ── */

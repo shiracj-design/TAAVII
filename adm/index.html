@@ -83,6 +83,40 @@ main{padding:32px 34px 80px;max-width:960px}
 .gal-del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:#0a0e1acc;color:#fff;border:none;font-size:12px;line-height:1;cursor:pointer;padding:0}
 .gal-del:hover{background:var(--danger)}
 .hint{color:var(--muted);font-size:12px;margin-top:9px;line-height:1.55}
+/* ── ANONS KI AP PASE ── */
+.sl-row{display:grid;grid-template-columns:104px 1fr auto;gap:13px;padding:13px;background:var(--navy);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px}
+.sl-thumb{position:relative;aspect-ratio:3/1;border-radius:8px;overflow:hidden;background:var(--surface);border:1px dashed var(--line);display:grid;place-items:center;cursor:pointer;font-size:11px;color:var(--muted);text-align:center;padding:4px}
+.sl-thumb:hover{border-color:var(--gold);color:var(--text)}
+.sl-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.sl-fields{display:grid;gap:8px;min-width:0}
+.sl-fields input{padding:9px 11px;font-size:13px}
+.sl-mini{display:grid;grid-template-columns:64px 1fr;gap:8px}
+.sl-acts{display:flex;flex-direction:column;gap:6px}
+.sl-acts button{padding:0;width:30px;height:26px;font-size:12px;line-height:1;background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:7px}
+.sl-acts button:hover{border-color:var(--gold);color:var(--gold)}
+.sl-acts button.del:hover{border-color:var(--danger);color:var(--danger)}
+.sl-num{font-size:11px;color:var(--muted);text-align:center;margin-top:5px;font-variant-numeric:tabular-nums}
+
+/* Karousèl (menm mak-up nan panel la ak sou sit la) */
+.ann{position:relative;width:100%}
+.ann-stage{position:relative;width:100%;height:84px;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#1a1200,#2a1f00);border:1px solid var(--gold-dim)}
+.ann-slide{position:absolute;inset:0;display:flex;align-items:center;gap:12px;padding:0 14px;text-decoration:none;color:var(--text);opacity:0;transform:translateY(60%);pointer-events:none;transition:opacity .4s ease,transform .55s cubic-bezier(.22,.61,.36,1)}
+.ann-slide.on{opacity:1;transform:none;pointer-events:auto}
+.ann-slide.out{opacity:0;transform:translateY(-60%)}
+.ann-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.ann-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(6,8,14,.86) 0%,rgba(6,8,14,.42) 58%,rgba(6,8,14,.12) 100%)}
+.ann-icon{position:relative;z-index:2;flex:none;font-size:26px;line-height:1}
+.ann-copy{position:relative;z-index:2;min-width:0;flex:1}
+.ann-title{font-size:13px;font-weight:700;color:var(--gold);line-height:1.25}
+.ann-text{font-size:11px;color:#ccc;margin-top:2px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ann-badge{position:relative;z-index:2;flex:none;background:var(--danger);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;white-space:nowrap}
+.ann-dots{position:absolute;bottom:6px;left:0;right:0;display:flex;justify-content:center;gap:5px;z-index:3}
+.ann-dots i{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .25s,width .25s}
+.ann-dots i.on{background:var(--gold);width:14px;border-radius:3px}
+.ann-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;padding:14px}
+@media(prefers-reduced-motion:reduce){.ann-slide{transition:opacity .3s;transform:none}.ann-slide.out{transform:none}}
+@media(max-width:760px){.sl-row{grid-template-columns:84px 1fr auto}}
+
 /* ── PREVIEW FENÈT PWOMO ── */
 .pv-wrap{background:var(--navy);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:4px}
 .pv-frame{position:relative;background:#0b0b0f;border:1px solid var(--line);border-radius:12px;min-height:290px;display:grid;place-items:center;padding:26px 18px;overflow:hidden}
@@ -228,6 +262,28 @@ main{padding:32px 34px 80px;max-width:960px}
       </div>
 
       <div class="card">
+        <h3 style="font-size:17px;margin-bottom:5px" data-t="h_slides">Anons ki ap pase</h3>
+        <p class="sub" style="margin-bottom:18px" data-t="sub_slides">Ranplase ban « Flash Sale » la. Ou ka mete jiska 10 anons — imaj oswa tèks — epi yo pase youn apre lòt pou kont yo.</p>
+
+        <div class="pv-wrap" style="margin-bottom:18px">
+          <div class="ann" id="slidePreview"></div>
+          <div class="pv-bar">
+            <span class="pv-note" data-t="hint_slide_img">Imaj: 1200 × 160 piksèl bay yon rezilta egzak. Yon 1200 × 400 mache tou, men li koupe anwo ak anba — kenbe sa ki enpòtan nan mitan an.</span>
+          </div>
+        </div>
+
+        <div id="slides"></div>
+        <button class="btn-ghost btn-sm" onclick="addSlide()" data-t="btn_add_slide">+ Ajoute yon anons</button>
+        <input type="file" id="slideFile" accept="image/*" style="display:none" onchange="pickSlideImage(this)">
+
+        <div class="row" style="margin-top:18px">
+          <div class="field"><label data-t="lbl_slide_speed">Chak konbyen segond</label><input type="number" id="s-slideSpeed" min="2" max="20" step="1" value="5"></div>
+          <div class="field"></div>
+        </div>
+        <div class="toggle"><input type="checkbox" id="s-slidesOn"><div><b data-t="tg_slides">Montre anons yo</b><small data-t="tg_slides_s">Dekoche pou remete ban « Flash Sale » orijinal la.</small></div></div>
+      </div>
+
+      <div class="card">
         <h3 style="font-size:17px;margin-bottom:16px" data-t="h_sections">Seksyon sit la</h3>
         <div class="toggle"><input type="checkbox" id="s-shop"><div><b data-t="tg_shop">Boutik</b><small data-t="tg_shop_s">Kite l fèmen jiskaske w gen pwodwi an stòk.</small></div></div>
         <div class="toggle"><input type="checkbox" id="s-design" checked><div><b data-t="tg_design">Sèvis dizany</b><small data-t="tg_design_s">Paj kòmand dizany grafik la.</small></div></div>
@@ -323,6 +379,25 @@ const LANGS = { ht: 'KREYÒL', en: 'ENGLISH', fr: 'FRANÇAIS', es: 'ESPAÑOL', p
 
 const I18N = {
 ht: {
+  ph_slide_icon:'⚡',
+  ph_slide_badge:'Ti etikèt (egz. 35% RABÈ)',
+  h_slides:'Anons ki ap pase',
+  sub_slides:'Ranplase ban « Flash Sale » la. Ou ka mete jiska 10 anons — imaj oswa tèks — epi yo pase youn apre lòt pou kont yo.',
+  hint_slide_img:'Imaj: 1200 × 160 piksèl bay yon rezilta egzak. Yon 1200 × 400 mache tou, men li koupe anwo ak anba — kenbe sa ki enpòtan nan mitan an.',
+  btn_add_slide:'+ Ajoute yon anons',
+  lbl_slide_speed:'Chak konbyen segond',
+  tg_slides:'Montre anons yo',
+  tg_slides_s:'Dekoche pou remete ban « Flash Sale » orijinal la.',
+  ph_slide_title:'Tit anons lan',
+  ph_slide_text:'Ti fraz anba a (opsyonèl)',
+  ph_slide_link:'Lyen lè moun klike (opsyonèl)',
+  sl_pick:'Klike pou mete yon imaj',
+  sl_up:'Monte',
+  sl_down:'Desann',
+  sl_del:'Retire',
+  sl_none:'Poko gen anons. Klike « + Ajoute yon anons ».',
+  sl_off:'Anons yo fèmen. Koche « Montre anons yo ».',
+  sl_max:'Limit la se 10 anons.',
   h_popup:'Fenèt pwomo',
   sub_popup:'Yon ti kad ki louvri sou sit la lè yon moun rive. Preview la anba a montre egzakteman sa kliyan an ap wè.',
   sub_preview:'Preview la mete ajou pandan w ap tape.',
@@ -382,6 +457,25 @@ ht: {
   ok_settings:'Paramèt yo anrejistre. Sit la mete ajou.', err_settings:'Anrejistreman an pa pase. Eseye ankò.'
 },
 en: {
+  ph_slide_icon:'⚡',
+  ph_slide_badge:'Small badge (e.g. 35% OFF)',
+  h_slides:'Rotating announcements',
+  sub_slides:'Replaces the “Flash Sale” band. Add up to 10 announcements — image or text — and they cycle on their own.',
+  hint_slide_img:'Image: 1200 × 160 pixels fits exactly. A 1200 × 400 works too but gets cropped top and bottom — keep what matters in the middle.',
+  btn_add_slide:'+ Add an announcement',
+  lbl_slide_speed:'Every how many seconds',
+  tg_slides:'Show the announcements',
+  tg_slides_s:'Uncheck to bring back the original “Flash Sale” band.',
+  ph_slide_title:'Announcement title',
+  ph_slide_text:'Short line underneath (optional)',
+  ph_slide_link:'Link when clicked (optional)',
+  sl_pick:'Click to add an image',
+  sl_up:'Move up',
+  sl_down:'Move down',
+  sl_del:'Remove',
+  sl_none:'No announcements yet. Click “+ Add an announcement”.',
+  sl_off:'Announcements are off. Tick “Show the announcements”.',
+  sl_max:'The limit is 10 announcements.',
   h_popup:'Promo window',
   sub_popup:'A small card that opens on the site when someone arrives. The preview below shows exactly what the customer will see.',
   sub_preview:'The preview updates as you type.',
@@ -441,6 +535,25 @@ en: {
   ok_settings:'Settings saved. The site is updated.', err_settings:'Could not save. Please try again.'
 },
 fr: {
+  ph_slide_icon:'⚡',
+  ph_slide_badge:'Petit badge (ex. 35% OFF)',
+  h_slides:'Annonces défilantes',
+  sub_slides:'Remplace le bandeau « Flash Sale ». Ajoutez jusqu’à 10 annonces — image ou texte — elles défilent toutes seules.',
+  hint_slide_img:'Image : 1200 × 160 pixels s’ajuste exactement. Un 1200 × 400 fonctionne aussi mais sera rogné en haut et en bas — gardez l’essentiel au centre.',
+  btn_add_slide:'+ Ajouter une annonce',
+  lbl_slide_speed:'Toutes les combien de secondes',
+  tg_slides:'Afficher les annonces',
+  tg_slides_s:'Décochez pour revenir au bandeau « Flash Sale » d’origine.',
+  ph_slide_title:'Titre de l’annonce',
+  ph_slide_text:'Petite phrase en dessous (facultatif)',
+  ph_slide_link:'Lien au clic (facultatif)',
+  sl_pick:'Cliquez pour ajouter une image',
+  sl_up:'Monter',
+  sl_down:'Descendre',
+  sl_del:'Retirer',
+  sl_none:'Aucune annonce. Cliquez « + Ajouter une annonce ».',
+  sl_off:'Les annonces sont désactivées. Cochez « Afficher les annonces ».',
+  sl_max:'La limite est de 10 annonces.',
   h_popup:'Fenêtre promo',
   sub_popup:'Une petite carte qui s\'ouvre sur le site à l\'arrivée d\'un visiteur. L\'aperçu ci-dessous montre exactement ce que le client verra.',
   sub_preview:'L\'aperçu se met à jour pendant que vous tapez.',
@@ -500,6 +613,25 @@ fr: {
   ok_settings:'Paramètres enregistrés. Le site est à jour.', err_settings:'Enregistrement impossible. Réessayez.'
 },
 es: {
+  ph_slide_icon:'⚡',
+  ph_slide_badge:'Etiqueta pequeña (ej. 35% OFF)',
+  h_slides:'Anuncios rotativos',
+  sub_slides:'Sustituye la franja «Flash Sale». Añade hasta 10 anuncios — imagen o texto — y se van pasando solos.',
+  hint_slide_img:'Imagen: 1200 × 160 píxeles encaja exacto. Una de 1200 × 400 también sirve pero se recorta arriba y abajo — deja lo importante en el centro.',
+  btn_add_slide:'+ Añadir un anuncio',
+  lbl_slide_speed:'Cada cuántos segundos',
+  tg_slides:'Mostrar los anuncios',
+  tg_slides_s:'Desmarca para volver a la franja «Flash Sale» original.',
+  ph_slide_title:'Título del anuncio',
+  ph_slide_text:'Frase corta debajo (opcional)',
+  ph_slide_link:'Enlace al hacer clic (opcional)',
+  sl_pick:'Haz clic para añadir una imagen',
+  sl_up:'Subir',
+  sl_down:'Bajar',
+  sl_del:'Quitar',
+  sl_none:'Aún no hay anuncios. Haz clic en «+ Añadir un anuncio».',
+  sl_off:'Los anuncios están desactivados. Marca «Mostrar los anuncios».',
+  sl_max:'El límite es de 10 anuncios.',
   h_popup:'Ventana promocional',
   sub_popup:'Una tarjeta que se abre en el sitio cuando alguien llega. La vista previa de abajo muestra exactamente lo que verá el cliente.',
   sub_preview:'La vista previa se actualiza mientras escribes.',
@@ -559,6 +691,25 @@ es: {
   ok_settings:'Ajustes guardados. El sitio está actualizado.', err_settings:'No se pudo guardar. Inténtalo de nuevo.'
 },
 pt: {
+  ph_slide_icon:'⚡',
+  ph_slide_badge:'Etiqueta pequena (ex. 35% OFF)',
+  h_slides:'Anúncios rotativos',
+  sub_slides:'Substitui a faixa “Flash Sale”. Adicione até 10 anúncios — imagem ou texto — e eles passam sozinhos.',
+  hint_slide_img:'Imagem: 1200 × 160 pixels encaixa exato. Uma de 1200 × 400 também funciona mas é cortada em cima e embaixo — deixe o importante no centro.',
+  btn_add_slide:'+ Adicionar um anúncio',
+  lbl_slide_speed:'A cada quantos segundos',
+  tg_slides:'Mostrar os anúncios',
+  tg_slides_s:'Desmarque para voltar à faixa “Flash Sale” original.',
+  ph_slide_title:'Título do anúncio',
+  ph_slide_text:'Frase curta abaixo (opcional)',
+  ph_slide_link:'Link ao clicar (opcional)',
+  sl_pick:'Clique para adicionar uma imagem',
+  sl_up:'Subir',
+  sl_down:'Descer',
+  sl_del:'Remover',
+  sl_none:'Ainda não há anúncios. Clique em “+ Adicionar um anúncio”.',
+  sl_off:'Os anúncios estão desligados. Marque “Mostrar os anúncios”.',
+  sl_max:'O limite é de 10 anúncios.',
   h_popup:'Janela promocional',
   sub_popup:'Um cartão que abre no site quando alguém chega. A pré-visualização abaixo mostra exatamente o que o cliente verá.',
   sub_preview:'A pré-visualização atualiza enquanto você digita.',
@@ -643,7 +794,7 @@ function applyLang(l, persist) {
   ['gateLang', 'appLang'].forEach(id => { const s = $(id); if (s) s.value = LANG; });
   // Pati ki jenere pa JS yo
   const et = $('editTitle'); if (et) et.textContent = editingId ? T('h_edit') : T('h_new');
-  renderExtras(); renderGallery(); renderPopImage(); renderPopPreview(false);
+  renderExtras(); renderGallery(); renderPopImage(); renderPopPreview(false); renderSlides();
   if (auth.currentUser && $('p-list').classList.contains('on')) loadProducts();
 }
 
@@ -840,6 +991,129 @@ async function delProduct(id) {
 }
 
 
+
+/* ── ANONS KI AP PASE ── */
+let slides = [];              // [{ img:{url}|{file,dataUrl}|null, title, text, link }]
+let slidePickIndex = -1;      // ki liy k ap chwazi yon imaj
+let slideTimer = null;
+const MAX_SLIDES = 10;
+
+function renderSlides() {
+  const box = $('slides'); if (!box) return;
+  box.innerHTML = slides.map((sl, i) => {
+    const src = sl.img ? (sl.img.url || sl.img.dataUrl) : '';
+    return `
+    <div class="sl-row">
+      <div>
+        <div class="sl-thumb" onclick="chooseSlideImage(${i})">
+          ${src ? `<img src="${src}" alt="">` : `<span>${T('sl_pick')}</span>`}
+        </div>
+        <div class="sl-num">${i + 1}</div>
+      </div>
+      <div class="sl-fields">
+        <input data-sl="${i}" data-k="title" value="${esc(sl.title)}" placeholder="${T('ph_slide_title')}">
+        <input data-sl="${i}" data-k="text"  value="${esc(sl.text)}"  placeholder="${T('ph_slide_text')}">
+        <div class="sl-mini">
+          <input data-sl="${i}" data-k="icon"  value="${esc(sl.icon)}"  placeholder="${T('ph_slide_icon')}">
+          <input data-sl="${i}" data-k="badge" value="${esc(sl.badge)}" placeholder="${T('ph_slide_badge')}">
+        </div>
+        <input data-sl="${i}" data-k="link"  value="${esc(sl.link)}"  placeholder="${T('ph_slide_link')}">
+      </div>
+      <div class="sl-acts">
+        <button onclick="moveSlide(${i},-1)" title="${T('sl_up')}" ${i === 0 ? 'disabled style="opacity:.35"' : ''}>↑</button>
+        <button onclick="moveSlide(${i},1)" title="${T('sl_down')}" ${i === slides.length - 1 ? 'disabled style="opacity:.35"' : ''}>↓</button>
+        <button class="del" onclick="delSlide(${i})" title="${T('sl_del')}">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  box.querySelectorAll('input[data-sl]').forEach(inp => {
+    inp.oninput = () => {
+      slides[+inp.dataset.sl][inp.dataset.k] = inp.value;
+      renderSlidePreview();
+    };
+  });
+  renderSlidePreview();
+}
+
+window.addSlide = () => {
+  if (slides.length >= MAX_SLIDES) return say('siteMsg', T('sl_max'), "err");
+  slides.push({ img: null, title: '', text: '', icon: '', badge: '', link: '' });
+  renderSlides();
+};
+window.delSlide  = i => { slides.splice(i, 1); renderSlides(); };
+window.moveSlide = (i, d) => {
+  const j = i + d; if (j < 0 || j >= slides.length) return;
+  [slides[i], slides[j]] = [slides[j], slides[i]];
+  renderSlides();
+};
+window.chooseSlideImage = i => { slidePickIndex = i; $('slideFile').click(); };
+window.pickSlideImage = input => {
+  const f = input.files[0]; input.value = '';
+  if (!f || slidePickIndex < 0) return;
+  const i = slidePickIndex; slidePickIndex = -1;
+  const r = new FileReader();
+  r.onload = e => { slides[i].img = { file: f, dataUrl: e.target.result }; renderSlides(); };
+  r.readAsDataURL(f);
+};
+
+/* Karousèl la — menm kòd la sèvi nan preview la ak sou sit la */
+function slideMarkup(list) {
+  return `
+    <div class="ann-stage">
+      ${list.map((sl, i) => {
+        const src = sl.img ? (sl.img.url || sl.img.dataUrl) : (sl.image || '');
+        return `<div class="ann-slide${i === 0 ? ' on' : ''}">
+          ${src ? `<img class="ann-img" src="${src}" alt=""><span class="ann-scrim"></span>`
+                : `<span class="ann-icon">${esc(sl.icon || '\u26A1')}</span>`}
+          <div class="ann-copy">
+            ${sl.title ? `<div class="ann-title">${esc(sl.title)}</div>` : ''}
+            ${sl.text ? `<div class="ann-text">${esc(sl.text)}</div>` : ''}
+          </div>
+          ${sl.badge ? `<span class="ann-badge">${esc(sl.badge)}</span>` : ''}
+        </div>`;
+      }).join('')}
+    </div>
+    ${list.length > 1 ? `<div class="ann-dots">${list.map((_, i) => `<i class="${i ? '' : 'on'}"></i>`).join('')}</div>` : ''}`;
+}
+
+function runCarousel(root, ms) {
+  const els  = [...root.querySelectorAll('.ann-slide')];
+  const dots = [...root.querySelectorAll('.ann-dots i')];
+  if (els.length < 2) return null;
+  let cur = 0;
+  const show = i => {
+    const prev = cur;
+    cur = (i + els.length) % els.length;
+    if (cur === prev) return;
+    els.forEach((e, k) => {
+      e.classList.remove('out');
+      if (k === cur) e.classList.add('on');
+      else { if (k === prev) e.classList.add('out'); e.classList.remove('on'); }
+    });
+    dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+  };
+  dots.forEach((d, i) => d.onclick = () => { show(i); restart(); });
+  let t = setInterval(() => show(cur + 1), ms);
+  const restart = () => { clearInterval(t); t = setInterval(() => show(cur + 1), ms); };
+  return () => clearInterval(t);
+}
+
+function renderSlidePreview() {
+  const box = $('slidePreview'); if (!box) return;
+  if (slideTimer) { slideTimer(); slideTimer = null; }
+  const live = slides.filter(sl => sl.img || sl.title || sl.text || sl.badge);
+  if (!live.length) {
+    box.innerHTML = `<div class="ann-stage"><p class="ann-empty">${T('sl_none')}</p></div>`;
+    return;
+  }
+  const off = !$('s-slidesOn').checked;
+  box.innerHTML = slideMarkup(live)
+    + (off ? `<p class="pv-note" style="text-align:center;margin-top:8px">${T('sl_off')}</p>` : '');
+  const ms = Math.max(2, Math.min(20, parseInt($('s-slideSpeed').value, 10) || 5)) * 1000;
+  slideTimer = runCarousel(box, ms);
+}
+
 /* ── FENÈT PWOMO: preview vivan ── */
 let popImage = null;   // { url } oswa { file, dataUrl }
 
@@ -904,6 +1178,14 @@ window.pickPopImage = input => {
   r.readAsDataURL(f);
 };
 
+function wireSlideControls() {
+  ['s-slideSpeed','s-slidesOn'].forEach(id => {
+    const el = $(id); if (!el) return;
+    el.addEventListener('input',  renderSlidePreview);
+    el.addEventListener('change', renderSlidePreview);
+  });
+}
+
 function wirePopPreview() {
   POP_FIELDS.forEach(id => {
     const el = $(id); if (!el) return;
@@ -935,6 +1217,14 @@ async function loadSite() {
     $('s-popFreq').value  = s.popupFreq || 'day';
     $('s-popOn').checked  = !!s.popupActive;
     popImage = s.popupImage ? { url: s.popupImage } : null;
+    $('s-slideSpeed').value = s.slideSpeed || 5;
+    $('s-slidesOn').checked = !!s.slidesActive;
+    slides = (Array.isArray(s.slides) ? s.slides : []).slice(0, MAX_SLIDES).map(x => ({
+      img: x.image ? { url: x.image } : null,
+      title: x.title || '', text: x.text || '',
+      icon: x.icon || '', badge: x.badge || '', link: x.link || ''
+    }));
+    renderSlides();
     renderPopImage(); renderPopPreview(false);
   } catch {}
 }
@@ -952,6 +1242,24 @@ window.saveSite = async () => {
       popImage = { url: popupImageUrl };
       renderPopImage();
     }
+    // Voye imaj anons ki nouvo yo
+    const slidesOut = [];
+    for (let i = 0; i < slides.length; i++) {
+      const sl = slides[i];
+      if (!sl.img && !sl.title.trim() && !sl.text.trim() && !sl.badge.trim()) continue;
+      let url = sl.img ? (sl.img.url || '') : '';
+      if (sl.img && sl.img.file) {
+        btn.textContent = T('uploading', { i: i + 1, n: slides.length });
+        const safe = sl.img.file.name.replace(/[^\w.\-]/g, '_');
+        const snap = await uploadBytes(ref(storage, `products/anons-${Date.now()}-${safe}`), sl.img.file);
+        url = await getDownloadURL(snap.ref);
+        sl.img = { url };
+      }
+      slidesOut.push({ image: url, title: sl.title.trim(), text: sl.text.trim(),
+                       icon: sl.icon.trim(), badge: sl.badge.trim(), link: sl.link.trim() });
+    }
+    renderSlides();
+
     await setDoc(doc(db, 'settings', 'site'), {
       heroTitle: $('s-title').value.trim(),
       heroSubtitle: $('s-sub').value.trim(),
@@ -971,6 +1279,9 @@ window.saveSite = async () => {
       popupDelay: Math.max(0, Math.min(60, parseInt($('s-popDelay').value, 10) || 0)),
       popupFreq: $('s-popFreq').value,
       popupImage: popupImageUrl,
+      slidesActive: $('s-slidesOn').checked,
+      slideSpeed: Math.max(2, Math.min(20, parseInt($('s-slideSpeed').value, 10) || 5)),
+      slides: slidesOut,
       updated: Date.now()
     }, { merge: true });
     say('siteMsg', T('ok_settings'), "ok");
@@ -984,6 +1295,7 @@ $('pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
 
 buildLangSelects();
 wirePopPreview();
+wireSlideControls();
 applyLang(LANG, false);
 </script>
 </body>

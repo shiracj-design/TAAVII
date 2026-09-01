@@ -16,6 +16,19 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Deal afilye yo (taavii.com/deal) — tout moun ka li.
+    // Sèlman admin ka kreye/efase. Piblik la ka sèlman monte kontè klik la
+    // yon sèl kran alafwa, san touche okenn lòt chan.
+    match /deals/{dealId} {
+      allow read:   if true;
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin()
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clicks'])
+            && request.resource.data.clicks is int
+            && request.resource.data.clicks ==
+               (('clicks' in resource.data) ? resource.data.clicks : 0) + 1);
+    }
+
     // Konfigirasyon sit la (settings/site) — menm règ la
     match /settings/{docId} {
       allow read: if true;
