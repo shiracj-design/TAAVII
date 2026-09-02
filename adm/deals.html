@@ -112,6 +112,7 @@ main{padding:32px 34px 80px;max-width:960px}
     <div class="mark">TAAVII</div>
     <button class="nav on" data-p="list" onclick="go('list')">Deal yo</button>
     <button class="nav" data-p="edit" onclick="newDeal()">+ Ajoute yon deal</button>
+    <button class="nav" data-p="import" onclick="go('import')">Enpòte an gwoup</button>
     <a class="nav" href="/deal/" target="_blank" rel="noopener">Wè paj la ↗</a>
     <a class="nav" href="/adm/">← Panèl prensipal</a>
     <div class="spacer"></div>
@@ -181,6 +182,30 @@ main{padding:32px 34px 80px;max-width:960px}
 
       <div style="display:flex;gap:10px">
         <button class="btn-gold" id="saveBtn" onclick="saveDeal()">Sove</button>
+        <button class="btn-ghost" onclick="go('list')">Anile</button>
+      </div>
+    </section>
+
+    <!-- ENPÒTASYON -->
+    <section class="page" id="p-import">
+      <div class="head"><h1>Enpòte an gwoup</h1><button class="btn-ghost btn-sm" onclick="go('list')">Tounen</button></div>
+      <p class="sub">Kole yon lis JSON pou kreye plizyè deal yon sèl kou. Chak antre dwe gen omwen <b>name</b> ak <b>link</b>.</p>
+      <div class="msg" id="impMsg"></div>
+
+      <div class="card">
+        <div class="field">
+          <label>Done JSON</label>
+          <textarea id="imp-data" style="min-height:220px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px" placeholder='[{"name":"...","link":"https://...","merchant":"...","price":0,"oldPrice":0,"category":"...","description":"...","image":"https://...","active":true}]'></textarea>
+          <p class="hint">Chan ki aksèptab: name, link, merchant, price, oldPrice, category, description, image, active. Tout lot chan yo inyore.</p>
+        </div>
+        <label style="display:flex;align-items:center;gap:9px;cursor:pointer">
+          <input type="checkbox" id="imp-skip" checked style="width:auto">
+          <span style="color:var(--text);font-size:14px">Sote sa ki gen menm lyen ak yon deal ki deja la</span>
+        </label>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn-gold" id="impBtn" onclick="importDeals()">Enpòte</button>
         <button class="btn-ghost" onclick="go('list')">Anile</button>
       </div>
     </section>
@@ -398,6 +423,64 @@ window.saveDeal = async () => {
     console.error(e);
     say('editMsg', "Nou pa ka sove l. Verifye koneksyon ou epi eseye ankò.", "err");
   } finally { btn.disabled = false; btn.textContent = 'Sove'; }
+};
+
+/* ── ENPÒTASYON AN GWOUP ── */
+window.importDeals = async () => {
+  clear('impMsg');
+  let list;
+  try {
+    list = JSON.parse($('imp-data').value);
+    if (!Array.isArray(list)) throw 0;
+  } catch {
+    return say('impMsg', "Done yo pa yon lis JSON valab. Li dwe komànse ak [ epi fini ak ].", "err");
+  }
+  if (!list.length) return say('impMsg', "Lis la vid.", "err");
+
+  const btn = $('impBtn'); btn.disabled = true;
+  try {
+    let existing = new Set();
+    if ($('imp-skip').checked) {
+      const snap = await getDocs(collection(db, 'deals'));
+      snap.forEach(d => existing.add(d.data().link));
+    }
+
+    let added = 0, skipped = 0, bad = 0;
+    for (let i = 0; i < list.length; i++) {
+      btn.textContent = `${i + 1} / ${list.length}…`;
+      const d = list[i] || {};
+      const name = String(d.name || '').trim();
+      const link = validLink(d.link);
+      if (!name || !link) { bad++; continue; }
+      if (existing.has(link)) { skipped++; continue; }
+
+      await addDoc(collection(db, 'deals'), {
+        name,
+        link,
+        merchant:    String(d.merchant || '').trim(),
+        price:       parseFloat(d.price) || 0,
+        oldPrice:    parseFloat(d.oldPrice) || 0,
+        category:    String(d.category || '').trim(),
+        description: String(d.description || '').trim(),
+        image:       validLink(d.image) || '',
+        active:      d.active !== false,
+        clicks:      0,
+        created:     Date.now(),
+        updated:     Date.now()
+      });
+      existing.add(link);
+      added++;
+    }
+
+    const parts = [`${added} ajoute`];
+    if (skipped) parts.push(`${skipped} sote (deja la)`);
+    if (bad)     parts.push(`${bad} inyòre (non oswa lyen manke)`);
+    say('impMsg', parts.join(' · '), added ? "ok" : "err");
+    if (added) $('imp-data').value = '';
+  } catch (e) {
+    console.error(e);
+    say('impMsg', "Enpòtasyon an echwe. Verifye koneksyon ou epi eseye ankò.", "err");
+  } finally { btn.disabled = false; btn.textContent = 'Enpòte'; }
 };
 
 async function toggleDeal(id) {
