@@ -91,8 +91,11 @@
     .deal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; padding: 0 2rem 2rem; }
     .deal-card { background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid transparent; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; cursor: pointer; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
     .deal-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-3px); box-shadow: 0 14px 30px -14px rgba(0,0,0,.7); }
-    .card-thumb { width: 100%; aspect-ratio: 1; background: var(--navy); display: flex; align-items: center; justify-content: center; position: relative; font-size: 3.4rem; overflow: hidden; }
-    .card-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 10px; transition: transform .45s cubic-bezier(.22,.61,.36,1); }
+    /* Fon klè: pifò foto pwodwi vin sou blan, konsa yo fonn nan bwat la
+       olye yo parèt tankou yon bann blan sou nwa. 4/3 pou imaj ki laj. */
+    .card-thumb { width: 100%; aspect-ratio: 4 / 3; background: #ffffff; display: flex; align-items: center; justify-content: center; position: relative; font-size: 3.4rem; overflow: hidden; }
+    .card-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 14px; transition: transform .45s cubic-bezier(.22,.61,.36,1); }
+    .card-thumb.no-img { background: var(--navy); }
     .deal-card:hover .card-thumb img { transform: scale(1.06); }
     .card-badge { position: absolute; top: 0.7rem; left: 0.7rem; font-size: 0.5rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.24rem 0.6rem; border-radius: 20px; background: var(--gold); color: #0b0b0f; }
     .card-badge.off { background: #e53935; color: #fff; left: auto; right: 0.7rem; }
@@ -669,6 +672,8 @@ const CAT_I18N = {
   "ru": "На природе",
   "hi": "आउटडोर"
  },
+ "Sekirite": {"en": "Security", "fr": "Sécurité", "es": "Seguridad", "pt": "Segurança", "ht": "Sekirite", "de": "Sicherheit", "it": "Sicurezza", "zh": "安防", "ja": "セキュリティ", "ar": "الأمن", "ru": "Безопасность", "hi": "सुरक्षा"},
+ "Elektrik": {"en": "EV Charging", "fr": "Recharge VE", "es": "Carga VE", "pt": "Carga VE", "ht": "Chaj elektrik", "de": "E-Auto Laden", "it": "Ricarica EV", "zh": "电动车充电", "ja": "EV充電", "ar": "شحن كهربائي", "ru": "Зарядка EV", "hi": "EV चार्जिंग"},
  "Linet": {
   "en": "Eyewear",
   "fr": "Lunettes",
@@ -721,7 +726,7 @@ function cardEl(d) {
     : (merchant ? T('check_price', { m: merchant }) : T('see_generic'));
 
   a.innerHTML = `
-    <div class="card-thumb">
+    <div class="card-thumb${d.image ? '' : ' no-img'}">
       ${d.image ? `<img src="${esc(d.image)}" alt="${esc(d.name)}" loading="lazy">` : '🏷️'}
       ${merchant ? `<span class="card-badge">${esc(merchant)}</span>` : ''}
       ${pct >= 5 ? `<span class="card-badge off">-${pct}%</span>` : ''}
