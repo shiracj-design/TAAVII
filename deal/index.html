@@ -25,10 +25,21 @@
     body { background: var(--bg); color: var(--white); font-family: 'Montserrat', sans-serif; font-weight: 300; overflow-x: hidden; }
 
     /* ─── LANG BAR ─── */
-    .lang-bar { display: flex; justify-content: flex-end; gap: 0.3rem; padding: 0.5rem 1.5rem; background: rgba(201,168,76,0.04); border-bottom: 1px solid var(--border); }
-    .lang-btn { background: transparent; border: 1px solid transparent; color: var(--muted); font-family: 'Montserrat', sans-serif; font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.28rem 0.65rem; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
-    .lang-btn:hover { color: var(--gold); border-color: rgba(201,168,76,0.3); }
-    .lang-btn.active { color: var(--gold); border-color: var(--gold); background: rgba(201,168,76,0.06); }
+    .lang-bar { display: flex; justify-content: flex-end; align-items: center; gap: 0.45rem; padding: 0.45rem 1.5rem; background: rgba(201,168,76,0.04); border-bottom: 1px solid var(--border); }
+    .lang-bar > svg { width: 13px; height: 13px; stroke: var(--muted); fill: none; flex-shrink: 0; }
+    .lang-select { background-color: transparent; border: 1px solid var(--border); color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 0.66rem; letter-spacing: 0.08em; padding: 0.32rem 1.7rem 0.32rem 0.8rem; border-radius: 20px; cursor: pointer; outline: none; -webkit-appearance: none; appearance: none; transition: border-color 0.2s; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23c9a96e' stroke-width='1.6'/></svg>"); background-repeat: no-repeat; background-position: right 0.7rem center; background-size: 9px; }
+    .lang-select:hover, .lang-select:focus { border-color: rgba(201,168,76,0.45); }
+    .lang-select option { background: #111827; color: #f0ece4; }
+
+    /* ─── RTL (larab) ─── */
+    [dir="rtl"] .lang-bar { justify-content: flex-start; }
+    [dir="rtl"] .lang-select { padding: 0.32rem 0.8rem 0.32rem 1.7rem; background-position: left 0.7rem center; }
+    [dir="rtl"] .nav-search input { padding: 0.6rem 1.1rem 0.6rem 2.5rem; }
+    [dir="rtl"] .card-badge { left: auto; right: 0.7rem; }
+    [dir="rtl"] .card-badge.off { right: auto; left: 0.7rem; }
+    [dir="rtl"] .disclosure { border-left: 1px solid var(--border); border-right: 3px solid var(--gold); }
+    [dir="rtl"] .hero-logo-bg { right: auto; left: -20px; }
+    [dir="rtl"] .hero-btn { align-self: flex-end; }
 
     /* ─── TOP BANNER ─── */
     .top-banner { background: var(--navy); padding: 0.55rem 1.5rem; display: flex; justify-content: center; gap: 3rem; font-size: 0.7rem; font-weight: 400; color: var(--gold-light); letter-spacing: 0.06em; }
@@ -37,8 +48,8 @@
     /* ─── NAV ─── */
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 1px solid var(--border); background: rgba(11,11,15,0.97); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 100; gap: 1rem; }
     .nav-logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
-    .logo-icon { width: 40px; height: 40px; background: var(--navy); border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); flex-shrink: 0; }
-    .logo-icon svg { width: 24px; height: 24px; }
+    .logo-icon { width: 40px; height: 40px; border-radius: 10px; overflow: hidden; flex-shrink: 0; display: block; }
+    .logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; letter-spacing: 0.3em; color: var(--gold); font-weight: 400; }
     .nav-search { flex: 1; max-width: 400px; position: relative; }
     .nav-search input { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 24px; padding: 0.6rem 1.1rem 0.6rem 2.5rem; color: var(--white); font-family: 'Montserrat', sans-serif; font-size: 0.78rem; outline: none; transition: border-color 0.2s; }
@@ -59,7 +70,7 @@
     /* ─── HERO ─── */
     .hero { margin: 1.5rem 2rem; background: var(--navy); border-radius: var(--radius); padding: 3rem 2.5rem; position: relative; overflow: hidden; min-height: 240px; display: flex; flex-direction: column; justify-content: flex-end; }
     .hero-logo-bg { position: absolute; right: -20px; top: 50%; transform: translateY(-50%); opacity: 0.07; }
-    .hero-logo-bg svg { width: 300px; height: 300px; }
+    .hero-logo-bg img { width: 300px; height: 300px; object-fit: contain; }
     .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
     .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.9rem, 5vw, 2.9rem); font-weight: 300; line-height: 1.1; margin-bottom: 0.7rem; }
     .hero h1 em { font-style: italic; color: var(--gold); }
@@ -141,11 +152,8 @@
 
 <!-- LANG -->
 <div class="lang-bar">
-  <button class="lang-btn" data-lang="en">EN</button>
-  <button class="lang-btn" data-lang="fr">FR</button>
-  <button class="lang-btn" data-lang="es">ES</button>
-  <button class="lang-btn" data-lang="pt">PT</button>
-  <button class="lang-btn" data-lang="ht">HT</button>
+  <svg viewBox="0 0 24 24" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20 15.3 15.3 0 010-20z"/></svg>
+  <select class="lang-select" id="langSel" aria-label="Language"></select>
 </div>
 
 <div class="top-banner">
@@ -157,12 +165,7 @@
 <!-- NAV -->
 <nav>
   <a href="/index.html" class="nav-logo">
-    <div class="logo-icon">
-      <svg viewBox="0 0 40 40" fill="none">
-        <path d="M8 10 L20 10 L20 14 L16 14 L16 30 L12 30 L12 14 L8 14 Z" fill="#C9A84C"/>
-        <path d="M20 10 L32 10 L28 22 L32 30 L28 30 L25 24 L22 30 L18 30 L22 22 Z" fill="white" opacity="0.9"/>
-      </svg>
-    </div>
+    <span class="logo-icon"><img src="/logo.png" alt="TAAVII" width="40" height="40"></span>
     <span class="logo-text">TAAVII</span>
   </a>
   <div class="nav-search">
@@ -177,12 +180,7 @@
 
 <!-- HERO -->
 <div class="hero reveal">
-  <div class="hero-logo-bg">
-    <svg viewBox="0 0 300 300" fill="none">
-      <path d="M30 40 L150 40 L150 80 L110 80 L110 260 L70 260 L70 80 L30 80 Z" fill="white"/>
-      <path d="M150 40 L270 40 L230 140 L270 260 L230 260 L200 195 L170 260 L130 260 L170 140 Z" fill="white"/>
-    </svg>
-  </div>
+  <div class="hero-logo-bg"><img src="/logo.png" alt="" aria-hidden="true"></div>
   <p class="hero-eyebrow" data-i18n="hero_eyebrow">Chwazi TAAVII a</p>
   <h1 data-i18n-html="hero_h1">Sa nou <em>rekòmande.</em></h1>
   <p data-i18n="hero_desc">Pwodwi nou tcheke youn pa youn sou pi gwo magazen entènèt yo. Ou achte dirèk nan men yo — nou jis montre w kote pou jwenn yo.</p>
@@ -253,106 +251,440 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
   ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 
 /* ── LANG ── */
+const LANGS = ["en", "fr", "es", "pt", "ht", "de", "it", "zh", "ja", "ar", "ru", "hi"];
+const LANG_NAMES = {"en": "English", "fr": "Français", "es": "Español", "pt": "Português", "ht": "Kreyòl", "de": "Deutsch", "it": "Italiano", "zh": "中文", "ja": "日本語", "ar": "العربية", "ru": "Русский", "hi": "हिन्दी"};
 const i18n = {
-  ht: { ban1:"✦ Chwazi ak men", ban2:"🔒 Achte dirèk nan magazen an", ban3:"⚡ Pri ajou",
-        search_ph:"Chèche yon deal...", nav_shop:"Boutik TAAVII",
-        hero_eyebrow:"Chwazi TAAVII a", hero_h1:"Sa nou <em>rekòmande.</em>",
-        hero_desc:"Pwodwi nou tcheke youn pa youn sou pi gwo magazen entènèt yo. Ou achte dirèk nan men yo — nou jis montre w kote pou jwenn yo.",
-        hero_cta:"Wè deal yo", cat_all:"Tout",
-        disclosure:"Divilgasyon: paj sa a gen lyen afilye. Si ou achte apre ou klike, TAAVII ka touche yon ti komisyon — san sa pa koute w anyen anplis. Pri ak disponiblite yo se magazen an ki kontwole yo, epi yo ka chanje.",
-        sec_title:"Deal <em>ki ap kouri</em>", n_deals:"{n} deal",
-        see_on:"Wè sou {m}", see_generic:"Wè deal la", check_price:"Wè pri a sou {m}", save:"Ekonomize {v}",
-        empty:"Pa gen deal disponib kounye a. Tounen byento.",
-        empty_search:"Anyen pa matche ak rechèch ou a.",
-        err:"Nou pa ka chaje deal yo kounye a. Eseye ankò nan yon ti moman.",
-        footer:"TAAVII se yon patisipan nan divès pwogram afilyasyon. Nou pa vann pwodwi sa yo — se magazen ki make sou chak kat la ki responsab vant, livrezon ak retou.",
-        footer_link:"Wè pwodwi TAAVII yo →",
-        bnav_home:"Akèy", bnav_shop:"Boutik", bnav_deals:"Deal", bnav_haiti:"Ayiti" },
-
-  en: { ban1:"✦ Hand-picked", ban2:"🔒 Buy direct from the store", ban3:"⚡ Live pricing",
-        search_ph:"Search deals...", nav_shop:"TAAVII Shop",
-        hero_eyebrow:"The TAAVII Picks", hero_h1:"What we <em>recommend.</em>",
-        hero_desc:"Products we check one by one across the biggest online stores. You buy straight from them — we just show you where to find it.",
-        hero_cta:"See the deals", cat_all:"All",
-        disclosure:"Disclosure: this page contains affiliate links. If you buy after clicking, TAAVII may earn a small commission — at no extra cost to you. Prices and availability are set by the store and can change.",
-        sec_title:"Live <em>deals</em>", n_deals:"{n} deals",
-        see_on:"View on {m}", see_generic:"View deal", check_price:"Check price on {m}", save:"Save {v}",
-        empty:"No deals right now. Check back soon.",
-        empty_search:"Nothing matches your search.",
-        err:"We can't load the deals right now. Please try again in a moment.",
-        footer:"TAAVII participates in various affiliate programs. We do not sell these products — the store named on each card handles the sale, shipping and returns.",
-        footer_link:"See TAAVII products →",
-        bnav_home:"Home", bnav_shop:"Shop", bnav_deals:"Deals", bnav_haiti:"Haiti" },
-
-  fr: { ban1:"✦ Sélection à la main", ban2:"🔒 Achat direct en boutique", ban3:"⚡ Prix à jour",
-        search_ph:"Rechercher une offre...", nav_shop:"Boutique TAAVII",
-        hero_eyebrow:"La sélection TAAVII", hero_h1:"Ce que nous <em>recommandons.</em>",
-        hero_desc:"Des produits vérifiés un par un sur les plus grandes boutiques en ligne. Vous achetez directement chez elles — nous vous montrons simplement où.",
-        hero_cta:"Voir les offres", cat_all:"Tout",
-        disclosure:"Divulgation : cette page contient des liens affiliés. Si vous achetez après avoir cliqué, TAAVII peut toucher une petite commission — sans surcoût pour vous. Les prix et la disponibilité sont fixés par la boutique et peuvent changer.",
-        sec_title:"Offres <em>en cours</em>", n_deals:"{n} offres",
-        see_on:"Voir sur {m}", see_generic:"Voir l'offre", check_price:"Voir le prix sur {m}", save:"Économisez {v}",
-        empty:"Aucune offre pour le moment. Revenez bientôt.",
-        empty_search:"Aucun résultat pour votre recherche.",
-        err:"Impossible de charger les offres. Réessayez dans un instant.",
-        footer:"TAAVII participe à divers programmes d'affiliation. Nous ne vendons pas ces produits — la boutique indiquée sur chaque carte gère la vente, la livraison et les retours.",
-        footer_link:"Voir les produits TAAVII →",
-        bnav_home:"Accueil", bnav_shop:"Boutique", bnav_deals:"Offres", bnav_haiti:"Haïti" },
-
-  es: { ban1:"✦ Selección a mano", ban2:"🔒 Compra directa en la tienda", ban3:"⚡ Precios al día",
-        search_ph:"Buscar ofertas...", nav_shop:"Tienda TAAVII",
-        hero_eyebrow:"La selección TAAVII", hero_h1:"Lo que <em>recomendamos.</em>",
-        hero_desc:"Productos que revisamos uno por uno en las mayores tiendas online. Compras directamente con ellas — nosotros solo te mostramos dónde.",
-        hero_cta:"Ver ofertas", cat_all:"Todo",
-        disclosure:"Divulgación: esta página contiene enlaces de afiliados. Si compras tras hacer clic, TAAVII puede ganar una pequeña comisión — sin coste adicional para ti. Los precios y la disponibilidad los fija la tienda y pueden cambiar.",
-        sec_title:"Ofertas <em>activas</em>", n_deals:"{n} ofertas",
-        see_on:"Ver en {m}", see_generic:"Ver oferta", check_price:"Ver precio en {m}", save:"Ahorra {v}",
-        empty:"No hay ofertas ahora mismo. Vuelve pronto.",
-        empty_search:"Nada coincide con tu búsqueda.",
-        err:"No podemos cargar las ofertas ahora. Inténtalo en un momento.",
-        footer:"TAAVII participa en varios programas de afiliados. No vendemos estos productos — la tienda indicada en cada tarjeta gestiona la venta, el envío y las devoluciones.",
-        footer_link:"Ver productos TAAVII →",
-        bnav_home:"Inicio", bnav_shop:"Tienda", bnav_deals:"Ofertas", bnav_haiti:"Haití" },
-
-  pt: { ban1:"✦ Escolhido a dedo", ban2:"🔒 Compra direta na loja", ban3:"⚡ Preços atualizados",
-        search_ph:"Buscar ofertas...", nav_shop:"Loja TAAVII",
-        hero_eyebrow:"A seleção TAAVII", hero_h1:"O que <em>recomendamos.</em>",
-        hero_desc:"Produtos que verificamos um a um nas maiores lojas online. Você compra diretamente com elas — nós apenas mostramos onde.",
-        hero_cta:"Ver ofertas", cat_all:"Tudo",
-        disclosure:"Divulgação: esta página contém links de afiliados. Se você comprar após clicar, a TAAVII pode receber uma pequena comissão — sem custo extra para você. Preços e disponibilidade são definidos pela loja e podem mudar.",
-        sec_title:"Ofertas <em>ativas</em>", n_deals:"{n} ofertas",
-        see_on:"Ver na {m}", see_generic:"Ver oferta", check_price:"Ver preço na {m}", save:"Economize {v}",
-        empty:"Nenhuma oferta no momento. Volte em breve.",
-        empty_search:"Nada corresponde à sua busca.",
-        err:"Não conseguimos carregar as ofertas agora. Tente novamente em instantes.",
-        footer:"A TAAVII participa de vários programas de afiliados. Não vendemos estes produtos — a loja indicada em cada cartão cuida da venda, envio e devoluções.",
-        footer_link:"Ver produtos TAAVII →",
-        bnav_home:"Início", bnav_shop:"Loja", bnav_deals:"Ofertas", bnav_haiti:"Haiti" }
+ "en": {
+  "ban1": "✦ Hand-picked",
+  "ban2": "🔒 Buy direct from the store",
+  "ban3": "⚡ Live pricing",
+  "search_ph": "Search deals...",
+  "nav_shop": "TAAVII Shop",
+  "hero_eyebrow": "The TAAVII Picks",
+  "hero_h1": "What we <em>recommend.</em>",
+  "hero_desc": "Products we check one by one across the biggest online stores. You buy straight from them — we just show you where to find it.",
+  "hero_cta": "See the deals",
+  "cat_all": "All",
+  "disclosure": "Disclosure: this page contains affiliate links. If you buy after clicking, TAAVII may earn a small commission — at no extra cost to you. Prices and availability are set by the store and can change.",
+  "sec_title": "Live <em>deals</em>",
+  "n_deals": "{n} deals",
+  "see_on": "View on {m}",
+  "see_generic": "View deal",
+  "check_price": "Check price on {m}",
+  "save": "Save {v}",
+  "empty": "No deals right now. Check back soon.",
+  "empty_search": "Nothing matches your search.",
+  "err": "We can't load the deals right now. Please try again in a moment.",
+  "footer": "TAAVII participates in various affiliate programs. We do not sell these products — the store named on each card handles the sale, shipping and returns.",
+  "footer_link": "See TAAVII products →",
+  "bnav_home": "Home",
+  "bnav_shop": "Shop",
+  "bnav_deals": "Deals",
+  "bnav_haiti": "Haiti"
+ },
+ "fr": {
+  "ban1": "✦ Sélection à la main",
+  "ban2": "🔒 Achat direct en boutique",
+  "ban3": "⚡ Prix à jour",
+  "search_ph": "Rechercher une offre...",
+  "nav_shop": "Boutique TAAVII",
+  "hero_eyebrow": "La sélection TAAVII",
+  "hero_h1": "Ce que nous <em>recommandons.</em>",
+  "hero_desc": "Des produits vérifiés un par un sur les plus grandes boutiques en ligne. Vous achetez directement chez elles — nous vous montrons simplement où.",
+  "hero_cta": "Voir les offres",
+  "cat_all": "Tout",
+  "disclosure": "Divulgation : cette page contient des liens affiliés. Si vous achetez après avoir cliqué, TAAVII peut toucher une petite commission — sans surcoût pour vous. Les prix et la disponibilité sont fixés par la boutique et peuvent changer.",
+  "sec_title": "Offres <em>en cours</em>",
+  "n_deals": "{n} offres",
+  "see_on": "Voir sur {m}",
+  "see_generic": "Voir l'offre",
+  "check_price": "Voir le prix sur {m}",
+  "save": "Économisez {v}",
+  "empty": "Aucune offre pour le moment. Revenez bientôt.",
+  "empty_search": "Aucun résultat pour votre recherche.",
+  "err": "Impossible de charger les offres. Réessayez dans un instant.",
+  "footer": "TAAVII participe à divers programmes d'affiliation. Nous ne vendons pas ces produits — la boutique indiquée sur chaque carte gère la vente, la livraison et les retours.",
+  "footer_link": "Voir les produits TAAVII →",
+  "bnav_home": "Accueil",
+  "bnav_shop": "Boutique",
+  "bnav_deals": "Offres",
+  "bnav_haiti": "Haïti"
+ },
+ "es": {
+  "ban1": "✦ Selección a mano",
+  "ban2": "🔒 Compra directa en la tienda",
+  "ban3": "⚡ Precios al día",
+  "search_ph": "Buscar ofertas...",
+  "nav_shop": "Tienda TAAVII",
+  "hero_eyebrow": "La selección TAAVII",
+  "hero_h1": "Lo que <em>recomendamos.</em>",
+  "hero_desc": "Productos que revisamos uno por uno en las mayores tiendas online. Compras directamente con ellas — nosotros solo te mostramos dónde.",
+  "hero_cta": "Ver ofertas",
+  "cat_all": "Todo",
+  "disclosure": "Divulgación: esta página contiene enlaces de afiliados. Si compras tras hacer clic, TAAVII puede ganar una pequeña comisión — sin coste adicional para ti. Los precios y la disponibilidad los fija la tienda y pueden cambiar.",
+  "sec_title": "Ofertas <em>activas</em>",
+  "n_deals": "{n} ofertas",
+  "see_on": "Ver en {m}",
+  "see_generic": "Ver oferta",
+  "check_price": "Ver precio en {m}",
+  "save": "Ahorra {v}",
+  "empty": "No hay ofertas ahora mismo. Vuelve pronto.",
+  "empty_search": "Nada coincide con tu búsqueda.",
+  "err": "No podemos cargar las ofertas ahora. Inténtalo en un momento.",
+  "footer": "TAAVII participa en varios programas de afiliados. No vendemos estos productos — la tienda indicada en cada tarjeta gestiona la venta, el envío y las devoluciones.",
+  "footer_link": "Ver productos TAAVII →",
+  "bnav_home": "Inicio",
+  "bnav_shop": "Tienda",
+  "bnav_deals": "Ofertas",
+  "bnav_haiti": "Haití"
+ },
+ "pt": {
+  "ban1": "✦ Escolhido a dedo",
+  "ban2": "🔒 Compra direta na loja",
+  "ban3": "⚡ Preços atualizados",
+  "search_ph": "Buscar ofertas...",
+  "nav_shop": "Loja TAAVII",
+  "hero_eyebrow": "A seleção TAAVII",
+  "hero_h1": "O que <em>recomendamos.</em>",
+  "hero_desc": "Produtos que verificamos um a um nas maiores lojas online. Você compra diretamente com elas — nós apenas mostramos onde.",
+  "hero_cta": "Ver ofertas",
+  "cat_all": "Tudo",
+  "disclosure": "Divulgação: esta página contém links de afiliados. Se você comprar após clicar, a TAAVII pode receber uma pequena comissão — sem custo extra para você. Preços e disponibilidade são definidos pela loja e podem mudar.",
+  "sec_title": "Ofertas <em>ativas</em>",
+  "n_deals": "{n} ofertas",
+  "see_on": "Ver na {m}",
+  "see_generic": "Ver oferta",
+  "check_price": "Ver preço na {m}",
+  "save": "Economize {v}",
+  "empty": "Nenhuma oferta no momento. Volte em breve.",
+  "empty_search": "Nada corresponde à sua busca.",
+  "err": "Não conseguimos carregar as ofertas agora. Tente novamente em instantes.",
+  "footer": "A TAAVII participa de vários programas de afiliados. Não vendemos estes produtos — a loja indicada em cada cartão cuida da venda, envio e devoluções.",
+  "footer_link": "Ver produtos TAAVII →",
+  "bnav_home": "Início",
+  "bnav_shop": "Loja",
+  "bnav_deals": "Ofertas",
+  "bnav_haiti": "Haiti"
+ },
+ "ht": {
+  "ban1": "✦ Chwazi ak men",
+  "ban2": "🔒 Achte dirèk nan magazen an",
+  "ban3": "⚡ Pri ajou",
+  "search_ph": "Chèche yon deal...",
+  "nav_shop": "Boutik TAAVII",
+  "hero_eyebrow": "Chwazi TAAVII a",
+  "hero_h1": "Sa nou <em>rekòmande.</em>",
+  "hero_desc": "Pwodwi nou tcheke youn pa youn sou pi gwo magazen entènèt yo. Ou achte dirèk nan men yo — nou jis montre w kote pou jwenn yo.",
+  "hero_cta": "Wè deal yo",
+  "cat_all": "Tout",
+  "disclosure": "Divilgasyon: paj sa a gen lyen afilye. Si ou achte apre ou klike, TAAVII ka touche yon ti komisyon — san sa pa koute w anyen anplis. Pri ak disponiblite yo se magazen an ki kontwole yo, epi yo ka chanje.",
+  "sec_title": "Deal <em>ki ap kouri</em>",
+  "n_deals": "{n} deal",
+  "see_on": "Wè sou {m}",
+  "see_generic": "Wè deal la",
+  "check_price": "Wè pri a sou {m}",
+  "save": "Ekonomize {v}",
+  "empty": "Pa gen deal disponib kounye a. Tounen byento.",
+  "empty_search": "Anyen pa matche ak rechèch ou a.",
+  "err": "Nou pa ka chaje deal yo kounye a. Eseye ankò nan yon ti moman.",
+  "footer": "TAAVII se yon patisipan nan divès pwogram afilyasyon. Nou pa vann pwodwi sa yo — se magazen ki make sou chak kat la ki responsab vant, livrezon ak retou.",
+  "footer_link": "Wè pwodwi TAAVII yo →",
+  "bnav_home": "Akèy",
+  "bnav_shop": "Boutik",
+  "bnav_deals": "Deal",
+  "bnav_haiti": "Ayiti"
+ },
+ "de": {
+  "ban1": "✦ Handverlesen",
+  "ban2": "🔒 Direkt im Shop kaufen",
+  "ban3": "⚡ Aktuelle Preise",
+  "search_ph": "Angebote suchen...",
+  "nav_shop": "TAAVII Shop",
+  "hero_eyebrow": "Die TAAVII-Auswahl",
+  "hero_h1": "Was wir <em>empfehlen.</em>",
+  "hero_desc": "Produkte, die wir einzeln in den größten Onlineshops prüfen. Sie kaufen direkt dort — wir zeigen Ihnen nur, wo.",
+  "hero_cta": "Angebote ansehen",
+  "cat_all": "Alle",
+  "disclosure": "Hinweis: Diese Seite enthält Affiliate-Links. Wenn Sie nach einem Klick kaufen, erhält TAAVII möglicherweise eine kleine Provision — ohne Mehrkosten für Sie. Preise und Verfügbarkeit legt der Shop fest und können sich ändern.",
+  "sec_title": "Aktuelle <em>Angebote</em>",
+  "n_deals": "{n} Angebote",
+  "see_on": "Bei {m} ansehen",
+  "see_generic": "Angebot ansehen",
+  "check_price": "Preis bei {m} prüfen",
+  "save": "{v} sparen",
+  "empty": "Derzeit keine Angebote. Schauen Sie bald wieder vorbei.",
+  "empty_search": "Nichts passt zu Ihrer Suche.",
+  "err": "Die Angebote können gerade nicht geladen werden. Bitte versuchen Sie es gleich noch einmal.",
+  "footer": "TAAVII nimmt an verschiedenen Partnerprogrammen teil. Wir verkaufen diese Produkte nicht — der auf jeder Karte genannte Shop wickelt Verkauf, Versand und Rückgabe ab.",
+  "footer_link": "TAAVII-Produkte ansehen →",
+  "bnav_home": "Start",
+  "bnav_shop": "Shop",
+  "bnav_deals": "Angebote",
+  "bnav_haiti": "Haiti"
+ },
+ "it": {
+  "ban1": "✦ Selezionati a mano",
+  "ban2": "🔒 Acquista direttamente dal negozio",
+  "ban3": "⚡ Prezzi aggiornati",
+  "search_ph": "Cerca offerte...",
+  "nav_shop": "Negozio TAAVII",
+  "hero_eyebrow": "La selezione TAAVII",
+  "hero_h1": "Ciò che <em>consigliamo.</em>",
+  "hero_desc": "Prodotti che controlliamo uno per uno nei più grandi negozi online. Acquisti direttamente da loro — noi ti mostriamo solo dove trovarli.",
+  "hero_cta": "Vedi le offerte",
+  "cat_all": "Tutto",
+  "disclosure": "Informativa: questa pagina contiene link di affiliazione. Se acquisti dopo aver cliccato, TAAVII può ricevere una piccola commissione — senza costi aggiuntivi per te. Prezzi e disponibilità sono stabiliti dal negozio e possono cambiare.",
+  "sec_title": "Offerte <em>attive</em>",
+  "n_deals": "{n} offerte",
+  "see_on": "Vedi su {m}",
+  "see_generic": "Vedi offerta",
+  "check_price": "Vedi il prezzo su {m}",
+  "save": "Risparmi {v}",
+  "empty": "Nessuna offerta al momento. Torna presto.",
+  "empty_search": "Nessun risultato per la tua ricerca.",
+  "err": "Non riusciamo a caricare le offerte. Riprova tra poco.",
+  "footer": "TAAVII partecipa a diversi programmi di affiliazione. Non vendiamo questi prodotti — il negozio indicato su ogni scheda gestisce vendita, spedizione e resi.",
+  "footer_link": "Vedi i prodotti TAAVII →",
+  "bnav_home": "Home",
+  "bnav_shop": "Negozio",
+  "bnav_deals": "Offerte",
+  "bnav_haiti": "Haiti"
+ },
+ "zh": {
+  "ban1": "✦ 精心挑选",
+  "ban2": "🔒 直接向商店购买",
+  "ban3": "⚡ 实时价格",
+  "search_ph": "搜索优惠...",
+  "nav_shop": "TAAVII 商店",
+  "hero_eyebrow": "TAAVII 精选",
+  "hero_h1": "我们的<em>推荐。</em>",
+  "hero_desc": "我们在各大网店逐一挑选的产品。您直接向他们购买 — 我们只告诉您在哪里找到。",
+  "hero_cta": "查看优惠",
+  "cat_all": "全部",
+  "disclosure": "披露：本页包含联盟链接。如果您点击后购买，TAAVII 可能会获得少量佣金 — 您无需支付额外费用。价格和库存由商店设定，可能会变动。",
+  "sec_title": "在售<em>优惠</em>",
+  "n_deals": "{n} 个优惠",
+  "see_on": "在 {m} 查看",
+  "see_generic": "查看优惠",
+  "check_price": "在 {m} 查看价格",
+  "save": "省 {v}",
+  "empty": "目前没有优惠。请稍后再来。",
+  "empty_search": "没有符合您搜索的结果。",
+  "err": "目前无法加载优惠。请稍后再试。",
+  "footer": "TAAVII 参与多个联盟计划。我们不销售这些产品 — 每张卡片上标明的商店负责销售、配送和退货。",
+  "footer_link": "查看 TAAVII 产品 →",
+  "bnav_home": "首页",
+  "bnav_shop": "商店",
+  "bnav_deals": "优惠",
+  "bnav_haiti": "海地"
+ },
+ "ja": {
+  "ban1": "✦ 厳選",
+  "ban2": "🔒 ストアから直接購入",
+  "ban3": "⚡ 最新価格",
+  "search_ph": "お得な商品を検索...",
+  "nav_shop": "TAAVII ショップ",
+  "hero_eyebrow": "TAAVII セレクション",
+  "hero_h1": "私たちの<em>おすすめ。</em>",
+  "hero_desc": "大手オンラインストアから一つひとつ確認した商品です。ご購入は各ストアで直接 — 私たちは見つける場所をお伝えするだけです。",
+  "hero_cta": "お得な商品を見る",
+  "cat_all": "すべて",
+  "disclosure": "開示：このページにはアフィリエイトリンクが含まれます。クリック後にご購入いただくと、TAAVII が少額の手数料を受け取る場合があります — お客様に追加費用はかかりません。価格と在庫はストアが設定し、変更される場合があります。",
+  "sec_title": "販売中の<em>お得情報</em>",
+  "n_deals": "{n} 件",
+  "see_on": "{m} で見る",
+  "see_generic": "詳細を見る",
+  "check_price": "{m} で価格を確認",
+  "save": "{v} お得",
+  "empty": "現在お得な商品はありません。またお越しください。",
+  "empty_search": "検索に一致するものがありません。",
+  "err": "現在お得な商品を読み込めません。しばらくしてからお試しください。",
+  "footer": "TAAVII はさまざまなアフィリエイトプログラムに参加しています。これらの商品は当社が販売するものではなく、各カードに記載のストアが販売・配送・返品を行います。",
+  "footer_link": "TAAVII の商品を見る →",
+  "bnav_home": "ホーム",
+  "bnav_shop": "ショップ",
+  "bnav_deals": "お得",
+  "bnav_haiti": "ハイチ"
+ },
+ "ar": {
+  "ban1": "✦ مختارة بعناية",
+  "ban2": "🔒 اشترِ مباشرة من المتجر",
+  "ban3": "⚡ أسعار محدّثة",
+  "search_ph": "ابحث عن العروض...",
+  "nav_shop": "متجر TAAVII",
+  "hero_eyebrow": "اختيارات TAAVII",
+  "hero_h1": "ما <em>نوصي به.</em>",
+  "hero_desc": "منتجات نفحصها واحدًا تلو الآخر في أكبر المتاجر الإلكترونية. أنت تشتري منها مباشرة — نحن فقط نرشدك إلى مكانها.",
+  "hero_cta": "شاهد العروض",
+  "cat_all": "الكل",
+  "disclosure": "إفصاح: تحتوي هذه الصفحة على روابط تابعة. إذا اشتريت بعد النقر، قد تحصل TAAVII على عمولة صغيرة — دون أي تكلفة إضافية عليك. الأسعار والتوفر يحددها المتجر وقد تتغير.",
+  "sec_title": "عروض <em>حالية</em>",
+  "n_deals": "{n} عرضًا",
+  "see_on": "عرض على {m}",
+  "see_generic": "عرض الصفقة",
+  "check_price": "تحقق من السعر على {m}",
+  "save": "وفّر {v}",
+  "empty": "لا توجد عروض حاليًا. عد قريبًا.",
+  "empty_search": "لا شيء يطابق بحثك.",
+  "err": "لا يمكننا تحميل العروض الآن. حاول مرة أخرى بعد قليل.",
+  "footer": "تشارك TAAVII في برامج تابعة متنوعة. نحن لا نبيع هذه المنتجات — المتجر المذكور على كل بطاقة هو المسؤول عن البيع والشحن والإرجاع.",
+  "footer_link": "شاهد منتجات TAAVII ←",
+  "bnav_home": "الرئيسية",
+  "bnav_shop": "المتجر",
+  "bnav_deals": "العروض",
+  "bnav_haiti": "هايتي"
+ },
+ "ru": {
+  "ban1": "✦ Отобрано вручную",
+  "ban2": "🔒 Покупка напрямую в магазине",
+  "ban3": "⚡ Актуальные цены",
+  "search_ph": "Поиск предложений...",
+  "nav_shop": "Магазин TAAVII",
+  "hero_eyebrow": "Выбор TAAVII",
+  "hero_h1": "Что мы <em>рекомендуем.</em>",
+  "hero_desc": "Товары, которые мы проверяем один за другим в крупнейших интернет-магазинах. Вы покупаете напрямую у них — мы лишь показываем, где найти.",
+  "hero_cta": "Смотреть предложения",
+  "cat_all": "Все",
+  "disclosure": "Раскрытие: на этой странице есть партнёрские ссылки. Если вы купите после перехода, TAAVII может получить небольшую комиссию — без дополнительных затрат для вас. Цены и наличие устанавливает магазин, они могут меняться.",
+  "sec_title": "Актуальные <em>предложения</em>",
+  "n_deals": "{n} предложений",
+  "see_on": "Смотреть на {m}",
+  "see_generic": "Смотреть предложение",
+  "check_price": "Узнать цену на {m}",
+  "save": "Скидка {v}",
+  "empty": "Сейчас предложений нет. Загляните позже.",
+  "empty_search": "По вашему запросу ничего не найдено.",
+  "err": "Не удаётся загрузить предложения. Попробуйте через минуту.",
+  "footer": "TAAVII участвует в различных партнёрских программах. Мы не продаём эти товары — магазин, указанный на карточке, отвечает за продажу, доставку и возврат.",
+  "footer_link": "Товары TAAVII →",
+  "bnav_home": "Главная",
+  "bnav_shop": "Магазин",
+  "bnav_deals": "Предложения",
+  "bnav_haiti": "Гаити"
+ },
+ "hi": {
+  "ban1": "✦ चुनिंदा",
+  "ban2": "🔒 सीधे स्टोर से खरीदें",
+  "ban3": "⚡ ताज़ा कीमतें",
+  "search_ph": "डील खोजें...",
+  "nav_shop": "TAAVII स्टोर",
+  "hero_eyebrow": "TAAVII की पसंद",
+  "hero_h1": "हमारी <em>सिफ़ारिश।</em>",
+  "hero_desc": "बड़े ऑनलाइन स्टोर से एक-एक करके जाँचे गए उत्पाद। आप सीधे उन्हीं से खरीदते हैं — हम बस बताते हैं कि कहाँ मिलेगा।",
+  "hero_cta": "डील देखें",
+  "cat_all": "सभी",
+  "disclosure": "प्रकटीकरण: इस पृष्ठ पर एफ़िलिएट लिंक हैं। क्लिक करने के बाद खरीदने पर TAAVII को छोटा कमीशन मिल सकता है — आपको कोई अतिरिक्त लागत नहीं। कीमतें और उपलब्धता स्टोर तय करता है और बदल सकती हैं।",
+  "sec_title": "चालू <em>डील</em>",
+  "n_deals": "{n} डील",
+  "see_on": "{m} पर देखें",
+  "see_generic": "डील देखें",
+  "check_price": "{m} पर कीमत देखें",
+  "save": "{v} बचाएँ",
+  "empty": "अभी कोई डील नहीं है। जल्द वापस आएँ।",
+  "empty_search": "आपकी खोज से कुछ मेल नहीं खाता।",
+  "err": "अभी डील लोड नहीं हो पा रहीं। थोड़ी देर बाद कोशिश करें।",
+  "footer": "TAAVII विभिन्न एफ़िलिएट प्रोग्राम में भाग लेता है। हम ये उत्पाद नहीं बेचते — हर कार्ड पर लिखा स्टोर बिक्री, शिपिंग और वापसी संभालता है।",
+  "footer_link": "TAAVII उत्पाद देखें →",
+  "bnav_home": "होम",
+  "bnav_shop": "स्टोर",
+  "bnav_deals": "डील",
+  "bnav_haiti": "हैती"
+ }
 };
 
 let lang = localStorage.getItem('taavii_lang');
-if (!i18n[lang]) lang = (navigator.language || 'ht').slice(0, 2).toLowerCase();
-if (!i18n[lang]) lang = 'ht';
+if (!i18n[lang]) {
+  // Swiv lang aparèy la; si nou pa gen li, angle se defo a.
+  const prefs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages : [navigator.language || 'en'];
+  lang = prefs.map(l => String(l).slice(0, 2).toLowerCase()).find(l => i18n[l]) || 'en';
+}
 
 const T = (k, vars) => {
-  let s = (i18n[lang] && i18n[lang][k]) ?? i18n.ht[k] ?? k;
+  let s = (i18n[lang] && i18n[lang][k]) ?? i18n.en[k] ?? k;
   if (vars) for (const [a, b] of Object.entries(vars)) s = s.replaceAll(`{${a}}`, b);
   return s;
 };
 
+const langSel = $('langSel');
+langSel.innerHTML = LANGS.map(l =>
+  `<option value="${l}">${esc(LANG_NAMES[l])}</option>`).join('');
+
 function applyLang() {
   document.documentElement.lang = lang;
+  document.documentElement.dir  = (lang === 'ar') ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = T(el.dataset.i18n));
   document.querySelectorAll('[data-i18n-html]').forEach(el => el.innerHTML = T(el.dataset.i18nHtml));
   document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = T(el.dataset.i18nPh));
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  langSel.value = lang;
 }
-document.querySelectorAll('.lang-btn').forEach(b => b.onclick = () => {
-  lang = b.dataset.lang;
+langSel.addEventListener('change', () => {
+  lang = langSel.value;
   localStorage.setItem('taavii_lang', lang);
-  applyLang(); render();
+  applyLang(); renderCats(); render();
 });
 applyLang();
+
+/* ── KATEGORI (non yo tradui; valè ki nan Firestore la se kle a) ── */
+const CAT_I18N = {
+ "Teknoloji": {
+  "en": "Tech",
+  "fr": "Tech",
+  "es": "Tecnología",
+  "pt": "Tecnologia",
+  "ht": "Teknoloji",
+  "de": "Technik",
+  "it": "Tecnologia",
+  "zh": "科技",
+  "ja": "テック",
+  "ar": "تقنية",
+  "ru": "Техника",
+  "hi": "टेक"
+ },
+ "Machin": {
+  "en": "Car",
+  "fr": "Auto",
+  "es": "Coche",
+  "pt": "Carro",
+  "ht": "Machin",
+  "de": "Auto",
+  "it": "Auto",
+  "zh": "汽车",
+  "ja": "カー用品",
+  "ar": "سيارات",
+  "ru": "Авто",
+  "hi": "कार"
+ },
+ "Aktivite deyo": {
+  "en": "Outdoor",
+  "fr": "Plein air",
+  "es": "Aire libre",
+  "pt": "Ar livre",
+  "ht": "Aktivite deyò",
+  "de": "Outdoor",
+  "it": "Outdoor",
+  "zh": "户外",
+  "ja": "アウトドア",
+  "ar": "أنشطة خارجية",
+  "ru": "На природе",
+  "hi": "आउटडोर"
+ },
+ "Linet": {
+  "en": "Eyewear",
+  "fr": "Lunettes",
+  "es": "Gafas",
+  "pt": "Óculos",
+  "ht": "Linèt",
+  "de": "Brillen",
+  "it": "Occhiali",
+  "zh": "眼镜",
+  "ja": "アイウェア",
+  "ar": "نظارات",
+  "ru": "Очки",
+  "hi": "चश्मा"
+ }
+};
+const catLabel = c => (CAT_I18N[c] && (CAT_I18N[c][lang] || CAT_I18N[c].en)) || c;
 
 /* ── DATA ── */
 let deals = [], cat = '__all', term = '';
@@ -395,7 +727,7 @@ function cardEl(d) {
       ${pct >= 5 ? `<span class="card-badge off">-${pct}%</span>` : ''}
     </div>
     <div class="card-body">
-      ${d.category ? `<p class="card-brand">${esc(d.category)}</p>` : ''}
+      ${d.category ? `<p class="card-brand">${esc(catLabel(d.category))}</p>` : ''}
       <p class="card-name">${esc(d.name)}</p>
       ${d.description ? `<p class="card-desc">${esc(d.description)}</p>` : ''}
       <div class="card-pricing">
@@ -443,7 +775,7 @@ function renderCats() {
     box.appendChild(b);
   };
   mk('__all', T('cat_all'));
-  list.forEach(c => mk(c, c));
+  list.forEach(c => mk(c, catLabel(c)));
   box.style.display = list.length ? '' : 'none';
 }
 
@@ -452,7 +784,7 @@ function render() {
   const t = term.toLowerCase();
   const shown = deals.filter(d =>
     (cat === '__all' || (d.category || '').trim() === cat) &&
-    (!t || `${d.name} ${d.merchant || ''} ${d.category || ''} ${d.description || ''}`.toLowerCase().includes(t))
+    (!t || `${d.name} ${d.merchant || ''} ${d.category || ''} ${catLabel(d.category || '')} ${d.description || ''}`.toLowerCase().includes(t))
   );
 
   $('countTag').textContent = shown.length ? T('n_deals', { n: shown.length }) : '';
